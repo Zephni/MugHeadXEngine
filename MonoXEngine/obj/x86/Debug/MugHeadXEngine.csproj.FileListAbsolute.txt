@@ -35,3 +35,4 @@ C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\obj\x86\Debug\MugHeadXEngine.pdb
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Defaults\9Patch_16.xnb
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Defaults\9Patch_8.xnb
+C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Fonts\HeartbitXX.xnb

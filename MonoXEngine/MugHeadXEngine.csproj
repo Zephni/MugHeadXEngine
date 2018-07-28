@@ -66,6 +66,7 @@
     <Compile Include="MonoXEngine\Structs\Point3D.cs" />
     <Compile Include="MonoXEngine\Structs\Tile.cs" />
     <Compile Include="MonoXEngine\TileMap.cs" />
+    <Compile Include="MugHeadXEngine\MessageBox.cs" />
     <Compile Include="MugHeadXEngine\MugHeadXEngineMethods.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

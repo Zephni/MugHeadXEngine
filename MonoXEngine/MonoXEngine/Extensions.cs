@@ -17,6 +17,13 @@ namespace MonoXEngine
         }
         #endregion
 
+        #region Vector2
+        public static Vector2 Copy(this Vector2 value, Vector2 source)
+        {
+            return new Vector2(source.X, source.Y);
+        }
+        #endregion
+
         #region Color[]
         public static Color[] Copy1D(this Color[] origional, Rectangle selectArea)
         {

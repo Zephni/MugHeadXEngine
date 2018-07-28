@@ -75,14 +75,7 @@ namespace MyGame.Scenes
                     });
                 });
             });
-
-            // 9 Patch test
-            new Entity(entity => {
-                entity.LayerName = "Main";
-                entity.Position = new Vector2(158, 80);
-                entity.AddComponent(new Drawable() { Texture2D = MugHeadXEngine.Methods.RoundedRect(Global.Content.Load<Texture2D>("Defaults/9Patch_8"), new Point(16 * 3, 32), Color.White) });
-            });
-
+            
             // Player
             player = new Entity(entity => {
                 entity.Position = new Vector2(128, 32 * 4);
@@ -103,6 +96,24 @@ namespace MyGame.Scenes
                             fader.RunFunction("FadeOut");
                     }
                 };
+            });
+
+            // MessageBox test
+            CoroutineHelper.WaitRun(2, () => {
+                MugHeadXEngine.MessageBox mb1 = new MugHeadXEngine.MessageBox("Hello there.|.|.|| Madison!", player.Position + new Vector2(50, -100));
+
+                CoroutineHelper.WaitRun(4, () => {
+                    mb1.Destroy();
+
+                    CoroutineHelper.WaitRun(1, () => {
+                        MugHeadXEngine.MessageBox mb2 = new MugHeadXEngine.MessageBox("Who said that!?", player.Position + new Vector2(0, -42));
+
+                        CoroutineHelper.WaitRun(2, () =>
+                        {
+                            mb2.Destroy();
+                        });
+                    });
+                });
             });
 
             // Collectable prefab
@@ -136,6 +147,7 @@ namespace MyGame.Scenes
                 entity.LayerName = "Fade";
                 entity.Position = -(Global.Resolution.ToVector2() / 2);
                 entity.AddComponent(new Text()).Run<Text>(component => {
+                    component.SetSpriteFont("HeartbitXX");
                     component.Color = Color.Yellow;
 
                     entity.UpdateAction = e => {

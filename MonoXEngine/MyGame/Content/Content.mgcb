@@ -110,3 +110,10 @@
 /processorParam:TextureFormat=Color
 /build:Defaults/9Patch_8.png
 
+#begin Fonts/HeartbitXX.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/HeartbitXX.spritefont
+

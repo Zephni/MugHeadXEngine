@@ -11,7 +11,7 @@ namespace MugHeadXEngine
 {
     public static class Methods
     {
-        public static Texture2D RoundedRect(Texture2D texture9Patch, Point size, Color color)
+        public static Texture2D RoundedRect(Texture2D texture9Patch, Point size)
         {
             int border = texture9Patch.Bounds.Width / 3;
             Color[,] colors9Patch = texture9Patch.To2DArray();
@@ -64,6 +64,7 @@ namespace MugHeadXEngine
 
             Texture2D texture2D = new Texture2D(Global.GraphicsDevice, size.X, size.Y);
             texture2D.From2DArray(colors2D);
+
             return texture2D;
         }
     }
