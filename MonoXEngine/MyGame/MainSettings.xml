@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+
+<MainSettings>
+  
+  <Namespaces>
+    <Scenes>MyGame.Scenes</Scenes>
+  </Namespaces>
+  
+  <Directories>
+    <Content>Content/</Content>
+    <Audio>Audio/</Audio>
+    <Fonts>Fonts/</Fonts>
+  </Directories>
+
+  <Viewport>
+    <ResolutionX>256</ResolutionX>
+    <ResolutionY>240</ResolutionY>
+    <ViewportArea>FIT_BEST</ViewportArea>
+    <AllowResizing>True</AllowResizing>
+    <FullScreen>False</FullScreen>
+  </Viewport>
+  
+  <Initiation>
+    <StartupScene>DebugScene</StartupScene>
+  </Initiation>
+
+  <Defaults>
+    <Layer>Main</Layer>
+  </Defaults>
+    
+  <Layers>
+    <Background>
+      <SamplerState>LinearWrap</SamplerState>
+    </Background>
+    <Main>
+      <Matrix>Camera</Matrix>
+    </Main>
+    <Fade></Fade>
+  </Layers>
+
+</MainSettings>
