@@ -51,7 +51,7 @@ namespace MonoXEngine.EntityComponents
             {
                 // Apply gravity if not grounded
                 if (!this.IsGrounded)
-                    this.MoveY += (this.Gravity * Global.DeltaTime) * MugHeadXEngine.Engine.OverrideGravity;
+                    this.MoveY += (this.Gravity * Global.DeltaTime);
 
                 // Clamp values
                 this.MoveX = Math.Min(Math.Max(this.MoveX, -this.MaxX), this.MaxX);

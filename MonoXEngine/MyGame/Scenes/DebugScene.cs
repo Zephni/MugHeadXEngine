@@ -6,6 +6,9 @@ using MonoXEngine.Structs;
 using Microsoft.Xna.Framework.Graphics;
 using MonoXEngine;
 using StaticCoroutines;
+using MugHeadXEngine.EntityComponents;
+using MugHeadXEngine;
+using System;
 
 namespace MyGame.Scenes
 {
@@ -121,10 +124,10 @@ namespace MyGame.Scenes
                     component.Color = Color.Yellow;
 
                     entity.UpdateAction = e => {
-                        component.String = Global.FPS.ToString();
+                        component.String = "Entities: "+Global.CountEntities().ToString()+", Coroutines: "+Coroutines.Count.ToString()+", FPS: "+Global.FPS.ToString();
                     };
                 });
-            });
+            });          
         }
         
         public override void Update()
@@ -135,6 +138,21 @@ namespace MyGame.Scenes
             if(Global.RunOnce("Restart", Keyboard.GetState().IsKeyDown(Keys.Space)))
             {
                 Global.SceneManager.LoadScene("DebugScene");
+            }
+
+            if (Global.InputManager.Pressed(InputManager.Input.L1))
+            {
+                GameData.Set("Player/Position", player.Position.X.ToString() + "," + player.Position.Y.ToString());
+                GameData.Save();
+            }
+
+            if (Global.InputManager.Pressed(InputManager.Input.L2))
+            {
+                GameData.Load();
+
+                string[] pPosData = GameData.Get("Player/Position").Split(',');
+
+                player.Position = new Vector2(Convert.ToInt16(pPosData[0]), Convert.ToInt16(pPosData[1]));
             }
         }
     }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Input;
+using MonoXEngine;
+using MonoXEngine.EntityComponents;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoXEngine.EntityComponents
+namespace MugHeadXEngine.EntityComponents
 {
     public class PlatformerController : Physics
     {
@@ -36,7 +38,7 @@ namespace MonoXEngine.EntityComponents
 
         public override void Update()
         {
-            if (MovementEnabled && CurrentJump < MaxJumps && Global.InputManager.Pressed(InputManager.Input.Action1))
+            if (MovementEnabled && CurrentJump < MaxJumps && IsGrounded && Global.InputManager.Pressed(InputManager.Input.Action1))
             {
                 MoveY = -JumpStrength;
                 CurrentJump++;

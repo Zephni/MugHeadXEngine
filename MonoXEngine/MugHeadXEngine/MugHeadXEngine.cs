@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoXEngine;
 using MonoXEngine.EntityComponents;
+using MugHeadXEngine.EntityComponents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,6 @@ namespace MugHeadXEngine
 {
     public static class Engine
     {
-        public static float OverrideGravity = 1;
-
         public static void PhysicsActive(bool active)
         {
             Global.Entities.FindAll(entity => entity.HasComponent<Physics>()).ForEach(entity => {
@@ -39,10 +38,7 @@ namespace MugHeadXEngine
             }
             else
             {
-                player.GetComponent<PlatformerController>().MovementEnabled = false;
-                StaticCoroutines.CoroutineHelper.RunWhen(() => !Global.InputManager.Held(InputManager.Input.Action1), () => {
-                    player.GetComponent<PlatformerController>().MovementEnabled = true;
-                });
+                player.GetComponent<PlatformerController>().MovementEnabled = true;
             }
         }
 

@@ -12,12 +12,14 @@ namespace MonoXEngine
         [Flags]
         public enum Input
         {
-            Up = 1,
-            Down = 2,
-            Left = 4,
-            Right = 8,
-            Action1 = 16,
-            Action2 = 32
+            Up,
+            Down,
+            Left,
+            Right,
+            Action1,
+            Action2,
+            L1,
+            L2
         }
 
         public enum InputType
@@ -47,7 +49,9 @@ namespace MonoXEngine
                 { Input.Left,    false },
                 { Input.Right,   false },
                 { Input.Action1, false },
-                { Input.Action2, false }
+                { Input.Action2, false },
+                { Input.L1,      false },
+                { Input.L2,      false }
             };
             PressedThisFrame = EmptyInput.Copy();
             HeldThisFrame = PressedThisFrame.Copy();
@@ -59,7 +63,9 @@ namespace MonoXEngine
                 { Keys.Left,    Input.Left },
                 { Keys.Right,   Input.Right },
                 { Keys.Z,       Input.Action1 },
-                { Keys.X,       Input.Action2 }
+                { Keys.X,       Input.Action2 },
+                { Keys.A,       Input.L1 },
+                { Keys.S,       Input.L2 }
             };
 
             // Controller input
@@ -69,7 +75,9 @@ namespace MonoXEngine
                 { Buttons.DPadLeft,    Input.Left },
                 { Buttons.DPadRight,   Input.Right },
                 { Buttons.A,           Input.Action1 },
-                { Buttons.B,           Input.Action2 }
+                { Buttons.B,           Input.Action2 },
+                { Buttons.LeftShoulder,Input.L1 },
+                { Buttons.RightShoulder,Input.L2 }
             };
         }
 
