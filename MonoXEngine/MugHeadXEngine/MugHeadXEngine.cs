@@ -15,8 +15,6 @@ namespace MugHeadXEngine
     {
         public static float OverrideGravity = 1;
 
-        public static bool DisableJump = false;
-
         public static void PhysicsActive(bool active)
         {
             Global.Entities.FindAll(entity => entity.HasComponent<Physics>()).ForEach(entity => {
@@ -28,7 +26,7 @@ namespace MugHeadXEngine
             });
         }
 
-        public static void ShowMessages(List<MessageBox> Messages, Action action = null)
+        public static void ShowMessages(List<MessageBox> Messages, Entity player, Action action = null)
         {
             if(Messages.Count > 0)
             {
@@ -36,16 +34,15 @@ namespace MugHeadXEngine
                 Messages.Remove(CurrentMessage);
 
                 CurrentMessage.Build(() => {
-                    ShowMessages(Messages, action);
+                    ShowMessages(Messages, player, action);
                 });
             }
             else
             {
-                DisableJump = true;
-                StaticCoroutines.CoroutineHelper.RunWhen(() => Keyboard.GetState().IsKeyUp(Keys.Z), () => {
-                    DisableJump = false;
+                player.GetComponent<PlatformerController>().MovementEnabled = false;
+                StaticCoroutines.CoroutineHelper.RunWhen(() => !Global.InputManager.Held(InputManager.Input.Action1), () => {
+                    player.GetComponent<PlatformerController>().MovementEnabled = true;
                 });
-                action?.Invoke();
             }
         }
 

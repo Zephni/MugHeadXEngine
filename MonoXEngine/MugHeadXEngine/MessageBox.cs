@@ -97,7 +97,7 @@ namespace MugHeadXEngine
             {
                 ArrowFlash.GetComponent<Sprite>().Visible = true;
 
-                StaticCoroutines.CoroutineHelper.RunWhen(() => /*Close MSG*/ Keyboard.GetState().IsKeyDown(Keys.Z), () => {
+                StaticCoroutines.CoroutineHelper.RunWhen(() => Global.InputManager.Pressed(InputManager.Input.Action1), () => {
                     Destroy();
                     action?.Invoke();
                 });

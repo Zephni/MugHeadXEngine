@@ -36,7 +36,7 @@ namespace MonoXEngine.EntityComponents
 
         public override void Update()
         {
-            if (MovementEnabled && CurrentJump < MaxJumps && Keyboard.GetState().IsKeyDown(Keys.Z) && !MugHeadXEngine.Engine.DisableJump)
+            if (MovementEnabled && CurrentJump < MaxJumps && Global.InputManager.Pressed(InputManager.Input.Action1))
             {
                 MoveY = -JumpStrength;
                 CurrentJump++;
@@ -45,14 +45,14 @@ namespace MonoXEngine.EntityComponents
             if (IsGrounded)
                 CurrentJump = 0;                
 
-            if (MovementEnabled && Keyboard.GetState().IsKeyDown(Keys.Left))
+            if (MovementEnabled && Global.InputManager.Held(InputManager.Input.Left))
                 MoveX -= Acceleration * Global.DeltaTime;
             else if(MoveX < 0)
             {
                 MoveX += Deceleration * Global.DeltaTime;
                 if (MoveX >= -Deceleration * Global.DeltaTime) MoveX = 0;
             }
-            if (MovementEnabled && Keyboard.GetState().IsKeyDown(Keys.Right))
+            if (MovementEnabled && Global.InputManager.Held(InputManager.Input.Right))
                 MoveX += Acceleration * Global.DeltaTime;
             else if (MoveX > 0)
             {

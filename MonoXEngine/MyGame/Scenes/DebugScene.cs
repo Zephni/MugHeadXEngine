@@ -95,9 +95,8 @@ namespace MyGame.Scenes
                     {
                     new MugHeadXEngine.MessageBox("Hello there.|.|.|| Madison!", player.Position + new Vector2(50, -100)),
                     new MugHeadXEngine.MessageBox("Who said that!?", player.Position + new Vector2(0, -42))
-                    }, () => {
-                        player.GetComponent<PlatformerController>().MovementEnabled = true;
-                    }
+                    },
+                    player
                 );
             });
             

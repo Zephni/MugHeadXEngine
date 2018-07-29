@@ -78,6 +78,8 @@ namespace MonoXEngine
 
             this.ViewportTexture = new ViewportTexture(Global.Resolution, Global.MainSettings.Get<string>(new string[] { "Viewport", "ViewportArea" }));
 
+            Global.InputManager = new InputManager(InputManager.InputType.Keyboard);
+
             base.Initialize();
         }
 
@@ -106,7 +108,9 @@ namespace MonoXEngine
             Global.DeltaTime = (float)Global.GameTime.ElapsedGameTime.TotalSeconds;
             Coroutines.Update(Global.DeltaTime);
 
-            for(int I = 0; I < Global.Entities.Count; I++)
+            Global.InputManager.Update();
+
+            for (int I = 0; I < Global.Entities.Count; I++)
                 Global.Entities[I].Update();
 
             Global.SceneManager.CurrentScene.Update();

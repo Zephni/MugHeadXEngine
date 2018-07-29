@@ -89,6 +89,8 @@ namespace MonoXEngine
         /// </summary>
         public static Dictionary<string, SpriteBatchLayer> SpriteBatchLayers;
 
+        public static InputManager InputManager;
+
         /// <summary>
         /// FPS
         /// </summary>
