@@ -67,7 +67,7 @@
     <Compile Include="MonoXEngine\Structs\Tile.cs" />
     <Compile Include="MonoXEngine\TileMap.cs" />
     <Compile Include="MugHeadXEngine\MessageBox.cs" />
-    <Compile Include="MugHeadXEngine\MugHeadXEngineMethods.cs" />
+    <Compile Include="MugHeadXEngine\MugHeadXEngine.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MyGame\Scenes\DebugScene.cs" />

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MonoXEngine;
+using MonoXEngine.EntityComponents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +11,44 @@ using System.Threading.Tasks;
 
 namespace MugHeadXEngine
 {
-    public static class Methods
+    public static class Engine
     {
+        public static float OverrideGravity = 1;
+
+        public static bool DisableJump = false;
+
+        public static void PhysicsActive(bool active)
+        {
+            Global.Entities.FindAll(entity => entity.HasComponent<Physics>()).ForEach(entity => {
+                entity.GetComponent<Physics>().Disabled = !active;
+            });
+
+            Global.Entities.FindAll(entity => entity.HasComponent<PlatformerController>()).ForEach(entity => {
+                entity.GetComponent<PlatformerController>().Disabled = !active;
+            });
+        }
+
+        public static void ShowMessages(List<MessageBox> Messages, Action action = null)
+        {
+            if(Messages.Count > 0)
+            {
+                MessageBox CurrentMessage = Messages.First();
+                Messages.Remove(CurrentMessage);
+
+                CurrentMessage.Build(() => {
+                    ShowMessages(Messages, action);
+                });
+            }
+            else
+            {
+                DisableJump = true;
+                StaticCoroutines.CoroutineHelper.RunWhen(() => Keyboard.GetState().IsKeyUp(Keys.Z), () => {
+                    DisableJump = false;
+                });
+                action?.Invoke();
+            }
+        }
+
         public static Texture2D RoundedRect(Texture2D texture9Patch, Point size)
         {
             int border = texture9Patch.Bounds.Width / 3;

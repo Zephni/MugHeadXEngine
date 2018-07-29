@@ -7,6 +7,8 @@ namespace MonoXEngine.EntityComponents
 {
     public class Drawable : EntityComponent
     {
+        public bool Visible = true;
+
         private Texture2D texture2D;
         public Texture2D Texture2D
         {
@@ -77,7 +79,7 @@ namespace MonoXEngine.EntityComponents
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if(this.Texture2D != null)
+            if(this.Texture2D != null && Visible)
             {
                 spriteBatch.Draw(
                     this.Texture2D,

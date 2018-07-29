@@ -85,51 +85,22 @@ namespace MyGame.Scenes
                 });
 
                 entity.AddComponent(new PlatformerController(new PixelCollider()));
-
-                entity.CollidedWithTrigger += other => {
-                    if (other.Name == "Collectable")
-                    {
-                        Global.AudioController.Play("SFX/Collect");
-                        other.Destroy();
-
-                        if(Global.Entities.FindAll(e => e.Name == "Collectable").Count == 0)
-                            fader.RunFunction("FadeOut");
-                    }
-                };
             });
 
             // MessageBox test
             CoroutineHelper.WaitRun(2, () => {
-                MugHeadXEngine.MessageBox mb1 = new MugHeadXEngine.MessageBox("Hello there.|.|.|| Madison!", player.Position + new Vector2(50, -100));
-
-                CoroutineHelper.WaitRun(4, () => {
-                    mb1.Destroy();
-
-                    CoroutineHelper.WaitRun(1, () => {
-                        MugHeadXEngine.MessageBox mb2 = new MugHeadXEngine.MessageBox("Who said that!?", player.Position + new Vector2(0, -42));
-
-                        CoroutineHelper.WaitRun(2, () =>
-                        {
-                            mb2.Destroy();
-                        });
-                    });
-                });
+                player.GetComponent<PlatformerController>().MovementEnabled = false;
+                MugHeadXEngine.Engine.ShowMessages(
+                    new List<MugHeadXEngine.MessageBox>()
+                    {
+                    new MugHeadXEngine.MessageBox("Hello there.|.|.|| Madison!", player.Position + new Vector2(50, -100)),
+                    new MugHeadXEngine.MessageBox("Who said that!?", player.Position + new Vector2(0, -42))
+                    }, () => {
+                        player.GetComponent<PlatformerController>().MovementEnabled = true;
+                    }
+                );
             });
-
-            // Collectable prefab
-            Entity collectable = new Entity(true, entity => {
-                entity.Trigger = true;
-                entity.Name = "Collectable";
-                entity.AddComponent(new Drawable()).Run<Drawable>(component => {
-                    component.BuildRectangle(new Point(8, 8), Color.Yellow);
-                });
-            });
-
-            for(int X = 0; X < 5; X++)
-            {
-                Entity newCollectable = collectable.BuildPrefab();
-                newCollectable.Position = new Vector2(25 + (X * 25), 32*4.72f);
-            }
+            
 
             // Build TileMap
             List<Tile> tempTiles = new List<Tile>();
@@ -165,11 +136,6 @@ namespace MyGame.Scenes
             if(Global.RunOnce("Restart", Keyboard.GetState().IsKeyDown(Keys.Space)))
             {
                 Global.SceneManager.LoadScene("DebugScene");
-            }
-
-            if (Global.RunWhenEventLoops("Shift", Keyboard.GetState().IsKeyDown(Keys.Z)))
-            {
-                player.Position.X += 32;
             }
         }
     }

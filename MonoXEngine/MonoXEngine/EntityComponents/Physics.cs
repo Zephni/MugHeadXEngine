@@ -11,6 +11,7 @@ namespace MonoXEngine.EntityComponents
     public class Physics : EntityComponent
     {
         public bool Kinetic;
+        public bool Disabled;
         public float Gravity;
         public float MaxX;
         public float MaxY;
@@ -22,6 +23,7 @@ namespace MonoXEngine.EntityComponents
         public Physics()
         {
             this.Kinetic = false;
+            this.Disabled = false;
             this.Gravity = 10f;
             this.MaxX = 3;
             this.MaxY = 8;
@@ -45,11 +47,11 @@ namespace MonoXEngine.EntityComponents
             if (Collider == null)
                 return;
             
-            if(!this.Kinetic)
+            if(!this.Kinetic && !this.Disabled)
             {
                 // Apply gravity if not grounded
                 if (!this.IsGrounded)
-                    this.MoveY += this.Gravity * Global.DeltaTime;
+                    this.MoveY += (this.Gravity * Global.DeltaTime) * MugHeadXEngine.Engine.OverrideGravity;
 
                 // Clamp values
                 this.MoveX = Math.Min(Math.Max(this.MoveX, -this.MaxX), this.MaxX);

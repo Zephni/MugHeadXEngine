@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MonoXEngine;
 using MonoXEngine.EntityComponents;
 using System;
@@ -17,6 +18,7 @@ namespace MugHeadXEngine
         private Point Padding = new Point(6, 2);
         private Entity Container;
         private Entity TextObject;
+        private Entity ArrowFlash;
         private Text TextString;
         private string TestString;
 
@@ -27,10 +29,9 @@ namespace MugHeadXEngine
         {
             PassedText = text;
             PassedPosition = new Vector2().Copy(position);
-            Build();
         }
 
-        private void Build()
+        public void Build(Action action = null)
         {
             // Build and position text
             TextObject = new Entity(entity => {
@@ -39,7 +40,7 @@ namespace MugHeadXEngine
                 entity.Position = PassedPosition;
 
                 entity.AddComponent(new Text()).Run<Text>(component => {
-                    component.String = PassedText;
+                    component.String = PassedText.Replace("|", "");
                     TextString = component;
 
                     // Final positioning
@@ -54,18 +55,30 @@ namespace MugHeadXEngine
                 entity.Origin = Vector2.Zero;
                 entity.Position = new Vector2(TextObject.Position.X - Padding.X, (TextObject.Position.Y - Padding.Y) + 1);
                 entity.AddComponent(new Drawable() {
-                    Texture2D = MugHeadXEngine.Methods.RoundedRect(Global.Content.Load<Texture2D>("Defaults/9Patch_8"),
-                    new Point(TextObject.BoundingBox.Width + Padding.X * 2, TextObject.BoundingBox.Height + Padding.Y * 2))
+                    Texture2D = MugHeadXEngine.Engine.RoundedRect(Global.Content.Load<Texture2D>("Defaults/9Patch_8"),
+                    new Point(TextObject.BoundingBox.Width + (Padding.X * 2) + 8, TextObject.BoundingBox.Height + Padding.Y * 2))
+                });
+            });
+
+            // Build arrow flasher
+            ArrowFlash = new Entity(entity => {
+                entity.LayerName = "Main";
+                entity.SortingLayer = MessageBox.defaultSortingLayer + 1;
+                entity.Position = new Vector2(TextObject.Position.X + TextObject.BoundingBox.Width + 6, TextObject.BoundingBox.Bottom +2);
+                entity.AddComponent(new Sprite() {Texture2D = Global.Content.Load<Texture2D>("Defaults/ArrowFlash")}).Run<Sprite>(sprite => {
+                    sprite.AddAnimation(new Animation("Flashing", 0.5f, new Point(8, 8), new Point(0, 0), new Point(1, 0)));
+                    sprite.RunAnimation("Flashing");
+                    sprite.Visible = false;
                 });
             });
 
             // Write text from scratch
             TextString.String = "";
             TestString = "";
-            ProgressText();
+            ProgressText(action);
         }
 
-        private void ProgressText()
+        private void ProgressText(Action action = null)
         {
             TestString = PassedText.Substring(0, TestString.Length + 1);
             TextString.String = TestString.Replace("|", "");
@@ -77,7 +90,16 @@ namespace MugHeadXEngine
                     stepTime = 0.3f;
 
                 StaticCoroutines.CoroutineHelper.WaitRun(stepTime, () => {
-                    ProgressText();
+                    ProgressText(action);
+                });
+            }
+            else
+            {
+                ArrowFlash.GetComponent<Sprite>().Visible = true;
+
+                StaticCoroutines.CoroutineHelper.RunWhen(() => /*Close MSG*/ Keyboard.GetState().IsKeyDown(Keys.Z), () => {
+                    Destroy();
+                    action?.Invoke();
                 });
             }
         }
@@ -86,6 +108,7 @@ namespace MugHeadXEngine
         {
             TextObject.Destroy();
             Container.Destroy();
+            ArrowFlash.Destroy();
         }
     }
 }
