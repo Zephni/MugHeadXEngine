@@ -90,19 +90,29 @@ namespace MyGame.Scenes
                 entity.AddComponent(new PlatformerController(new PixelCollider()));
             });
 
-            // MessageBox test
-            CoroutineHelper.WaitRun(2, () => {
-                player.GetComponent<PlatformerController>().MovementEnabled = false;
-                MugHeadXEngine.Engine.ShowMessages(
-                    new List<MugHeadXEngine.MessageBox>()
-                    {
-                    new MugHeadXEngine.MessageBox("Hello there.|.|.|| Madison!", player.Position + new Vector2(50, -100)),
-                    new MugHeadXEngine.MessageBox("Who said that!?", player.Position + new Vector2(0, -42))
-                    },
-                    player
-                );
-            });
-            
+            // OptionSelector test
+            MugHeadXEngine.Engine.ShowOptionSelector(
+                player.Position,
+                new List<Option>() {
+                    new Option("opt1", "YES", new Vector2(0, 0)),
+                    new Option("opt2", "NO", new Vector2(0, 16)),
+                    new Option("opt3", "ABSOLUTELY", new Vector2(32, 0)),
+                    new Option("opt4", "MAYBE", new Vector2(32, 16)),
+                },
+                player,
+                result => {
+                    CoroutineHelper.WaitRun(2, () => {
+                        player.GetComponent<PlatformerController>().MovementEnabled = false;
+                        MugHeadXEngine.Engine.ShowMessages(
+                            new List<MugHeadXEngine.MessageBox>() {
+                        new MugHeadXEngine.MessageBox("Your answer was.|.|.|| "+result+"!", player.Position + new Vector2(50, -100)),
+                        new MugHeadXEngine.MessageBox("Who said that!?", player.Position + new Vector2(0, -42))
+                            },
+                            player
+                        );
+                    });
+                }
+            );            
 
             // Build TileMap
             List<Tile> tempTiles = new List<Tile>();

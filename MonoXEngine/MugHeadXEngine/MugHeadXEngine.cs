@@ -14,6 +14,8 @@ namespace MugHeadXEngine
 {
     public static class Engine
     {
+        public static int OptionsSortingLayer = 10;
+
         public static void PhysicsActive(bool active)
         {
             Global.Entities.FindAll(entity => entity.HasComponent<Physics>()).ForEach(entity => {
@@ -23,6 +25,15 @@ namespace MugHeadXEngine
             Global.Entities.FindAll(entity => entity.HasComponent<PlatformerController>()).ForEach(entity => {
                 entity.GetComponent<PlatformerController>().Disabled = !active;
             });
+        }
+
+        public static void ShowOptionSelector(Vector2 position, List<Option> optionList, Entity player, Action<string> action = null, string texture9Patch = "Defaults/9Patch_8")
+        {
+            player.GetComponent<PlatformerController>().MovementEnabled = false;
+            OptionSelector.Build(position, optionList, result => {
+                action?.Invoke(result);
+                player.GetComponent<PlatformerController>().MovementEnabled = true;
+            }, texture9Patch);
         }
 
         public static void ShowMessages(List<MessageBox> Messages, Entity player, Action action = null)

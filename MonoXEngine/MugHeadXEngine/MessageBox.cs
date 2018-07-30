@@ -13,8 +13,6 @@ namespace MugHeadXEngine
 {
     public class MessageBox
     {
-        public static int defaultSortingLayer = 5;
-
         private Point Padding = new Point(6, 2);
         private Entity Container;
         private Entity TextObject;
@@ -36,7 +34,7 @@ namespace MugHeadXEngine
             // Build and position text
             TextObject = new Entity(entity => {
                 entity.LayerName = "Main";
-                entity.SortingLayer = MessageBox.defaultSortingLayer + 1;
+                entity.SortingLayer = MugHeadXEngine.Engine.OptionsSortingLayer + 1;
                 entity.Position = PassedPosition;
 
                 entity.AddComponent(new Text()).Run<Text>(component => {
@@ -51,7 +49,7 @@ namespace MugHeadXEngine
             // Build container based on text
             Container = new Entity(entity => {
                 entity.LayerName = "Main";
-                entity.SortingLayer = MessageBox.defaultSortingLayer;
+                entity.SortingLayer = MugHeadXEngine.Engine.OptionsSortingLayer;
                 entity.Origin = Vector2.Zero;
                 entity.Position = new Vector2(TextObject.Position.X - Padding.X, (TextObject.Position.Y - Padding.Y) + 1);
                 entity.AddComponent(new Drawable() {
@@ -63,7 +61,7 @@ namespace MugHeadXEngine
             // Build arrow flasher
             ArrowFlash = new Entity(entity => {
                 entity.LayerName = "Main";
-                entity.SortingLayer = MessageBox.defaultSortingLayer + 1;
+                entity.SortingLayer = MugHeadXEngine.Engine.OptionsSortingLayer + 1;
                 entity.Position = new Vector2(TextObject.Position.X + TextObject.BoundingBox.Width + 6, TextObject.BoundingBox.Bottom +2);
                 entity.AddComponent(new Sprite() {Texture2D = Global.Content.Load<Texture2D>("Defaults/ArrowFlash")}).Run<Sprite>(sprite => {
                     sprite.AddAnimation(new Animation("Flashing", 0.5f, new Point(8, 8), new Point(0, 0), new Point(1, 0)));
