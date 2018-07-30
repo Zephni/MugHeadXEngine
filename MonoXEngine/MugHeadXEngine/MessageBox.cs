@@ -23,10 +23,19 @@ namespace MugHeadXEngine
         private string PassedText;
         private Vector2 PassedPosition;
 
-        public MessageBox(string text, Vector2 position)
+        public enum Type
+        {
+            PressToProgress,
+            ManualDestroy
+        }
+
+        Type ThisType;
+
+        public MessageBox(string text, Vector2 position, Type type = Type.PressToProgress)
         {
             PassedText = text;
             PassedPosition = new Vector2().Copy(position);
+            ThisType = type;
         }
 
         public void Build(Action action = null)
@@ -54,21 +63,24 @@ namespace MugHeadXEngine
                 entity.Position = new Vector2(TextObject.Position.X - Padding.X, (TextObject.Position.Y - Padding.Y) + 1);
                 entity.AddComponent(new Drawable() {
                     Texture2D = MugHeadXEngine.Engine.RoundedRect(Global.Content.Load<Texture2D>("Defaults/9Patch_8"),
-                    new Point(TextObject.BoundingBox.Width + (Padding.X * 2) + 8, TextObject.BoundingBox.Height + Padding.Y * 2))
+                    new Point(TextObject.BoundingBox.Width + (Padding.X * 2) + ((ThisType == Type.PressToProgress) ? 8 : 0), TextObject.BoundingBox.Height + Padding.Y * 2))
                 });
             });
 
             // Build arrow flasher
-            ArrowFlash = new Entity(entity => {
-                entity.LayerName = "Main";
-                entity.SortingLayer = MugHeadXEngine.Engine.OptionsSortingLayer + 1;
-                entity.Position = new Vector2(TextObject.Position.X + TextObject.BoundingBox.Width + 6, TextObject.BoundingBox.Bottom +2);
-                entity.AddComponent(new Sprite() {Texture2D = Global.Content.Load<Texture2D>("Defaults/ArrowFlash")}).Run<Sprite>(sprite => {
-                    sprite.AddAnimation(new Animation("Flashing", 0.5f, new Point(8, 8), new Point(0, 0), new Point(1, 0)));
-                    sprite.RunAnimation("Flashing");
-                    sprite.Visible = false;
+            if(ThisType == Type.PressToProgress)
+            {
+                ArrowFlash = new Entity(entity => {
+                    entity.LayerName = "Main";
+                    entity.SortingLayer = MugHeadXEngine.Engine.OptionsSortingLayer + 1;
+                    entity.Position = new Vector2(TextObject.Position.X + TextObject.BoundingBox.Width + 6, TextObject.BoundingBox.Bottom + 2);
+                    entity.AddComponent(new Sprite() { Texture2D = Global.Content.Load<Texture2D>("Defaults/ArrowFlash") }).Run<Sprite>(sprite => {
+                        sprite.AddAnimation(new Animation("Flashing", 0.5f, new Point(8, 8), new Point(0, 0), new Point(1, 0)));
+                        sprite.RunAnimation("Flashing");
+                        sprite.Visible = false;
+                    });
                 });
-            });
+            }
 
             // Write text from scratch
             TextString.String = "";
@@ -93,12 +105,19 @@ namespace MugHeadXEngine
             }
             else
             {
-                ArrowFlash.GetComponent<Sprite>().Visible = true;
+                if(ThisType == Type.PressToProgress)
+                {
+                    ArrowFlash.GetComponent<Sprite>().Visible = true;
 
-                StaticCoroutines.CoroutineHelper.RunWhen(() => Global.InputManager.Pressed(InputManager.Input.Action1), () => {
-                    Destroy();
+                    StaticCoroutines.CoroutineHelper.RunWhen(() => Global.InputManager.Pressed(InputManager.Input.Action1), () => {
+                        Destroy();
+                        action?.Invoke();
+                    });
+                }
+                else if(ThisType == Type.ManualDestroy)
+                {
                     action?.Invoke();
-                });
+                }
             }
         }
 
@@ -106,7 +125,9 @@ namespace MugHeadXEngine
         {
             TextObject.Destroy();
             Container.Destroy();
-            ArrowFlash.Destroy();
+
+            if(ThisType == Type.PressToProgress)
+                ArrowFlash.Destroy();
         }
     }
 }
