@@ -18,6 +18,7 @@ namespace MyGame.Scenes
 
         public override void Initialise()
         {
+            GameGlobal.InitialiseAssets();
             GameGlobal.Fader.RunFunction("FadeIn");
 
             new Entity(entity => {
@@ -74,34 +75,47 @@ namespace MyGame.Scenes
             });
 
             // OptionSelector test
-            CoroutineHelper.WaitRun(2, () => {
-                MessageBox mbQ = new MessageBox("Would you like to party?", player.Position + new Vector2(-50, -50), MessageBox.Type.ManualDestroy);
-                mbQ.Build(() => {
-                    GameMethods.ShowOptionSelector(
-                        player.Position,
-                        new List<Option>() {
+            if(GameData.Get("Flags/Init") == null)
+            {
+                CoroutineHelper.WaitRun(2, () => {
+                    MessageBox mbQ = new MessageBox("Would you like to party?", player.Position + new Vector2(-50, -50), MessageBox.Type.ManualDestroy);
+                    mbQ.Build(() => {
+                        GameMethods.ShowOptionSelector(
+                            player.Position,
+                            new List<Option>() {
                         new Option("opt1", "YES", new Vector2(0, 0)),
                         new Option("opt2", "NO", new Vector2(0, 16)),
                         new Option("opt3", "ABSOLUTELY", new Vector2(32, 0)),
                         new Option("opt4", "MAYBE", new Vector2(32, 16)),
-                        },
-                        result => {
-                            mbQ.Destroy();
-                            CoroutineHelper.WaitRun(2, () => {
-                                player.GetComponent<PlatformerController>().MovementEnabled = false;
-                                GameMethods.ShowMessages(
-                                    new List<MugHeadXEngine.MessageBox>() {
+                            },
+                            result => {
+                                GameData.Set("Flags/Init", result);
+                                mbQ.Destroy();
+                                CoroutineHelper.WaitRun(2, () => {
+                                    player.GetComponent<PlatformerController>().MovementEnabled = false;
+                                    GameMethods.ShowMessages(
+                                        new List<MugHeadXEngine.MessageBox>() {
                                 new MugHeadXEngine.MessageBox("Your answer was.|.|.|| "+result+"!", player.Position + new Vector2(50, -100)),
                                 new MugHeadXEngine.MessageBox("Who said that!?", player.Position + new Vector2(0, -42))
-                                    },
-                                    player
-                                );
-                            });
-                        },
-                        player
-                    );
+                                        },
+                                        player
+                                    );
+                                });
+                            },
+                            player
+                        );
+                    });
                 });
-            });
+            }
+            else
+            {
+                string[] pPosData = GameData.Get("Player/Position").Split(',');
+                player.Position = new Vector2(Convert.ToInt16(pPosData[0]), Convert.ToInt16(pPosData[1]));
+                player.GetComponent<PlatformerController>().MovementEnabled = false;
+                new MessageBox("You do like to party! "+ GameData.Get("Flags/Init"), player.Position + new Vector2(-50, -50)).Build(() => {
+                    player.GetComponent<PlatformerController>().MovementEnabled = true;
+                });
+            }
 
             // Build TileMap
             List<Tile> tempTiles = new List<Tile>();
@@ -135,7 +149,10 @@ namespace MyGame.Scenes
 
             if(Global.RunOnce("Restart", Keyboard.GetState().IsKeyDown(Keys.Space)))
             {
-                Global.SceneManager.LoadScene("DebugScene");
+                GameGlobal.Fader.RunFunction("FadeOut");
+                CoroutineHelper.WaitRun(2, () => {
+                    Global.SceneManager.LoadScene("Menu");
+                });
             }
 
             if (Global.InputManager.Pressed(InputManager.Input.L1))
@@ -147,10 +164,7 @@ namespace MyGame.Scenes
             if (Global.InputManager.Pressed(InputManager.Input.L2))
             {
                 GameData.Load();
-
-                string[] pPosData = GameData.Get("Player/Position").Split(',');
-
-                player.Position = new Vector2(Convert.ToInt16(pPosData[0]), Convert.ToInt16(pPosData[1]));
+                Global.SceneManager.LoadScene("DebugScene");
             }
         }
     }

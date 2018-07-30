@@ -12,26 +12,31 @@ namespace MyGame
 {
     public static class GameGlobal
     {
-        /// <summary>
-        /// Fader entity
-        /// </summary>
-        public static Entity Fader = new Entity(entity => {
-            entity.LayerName = "Fade";
-            entity.AddComponent(new Drawable()).Run<Drawable>(component => {
-                component.BuildRectangle(new Point(Global.ScreenBounds.Width, Global.ScreenBounds.Height), Color.Black);
-            });
+        public static Entity Fader;
 
-            entity.AddFunction("FadeIn", e => {
-                CoroutineHelper.RunFor(2, pcnt => { e.Opacity = 1 - pcnt; }, () => {
+        public static void InitialiseAssets()
+        {
+            // Fader
+            Fader = new Entity(entity => {
+                entity.LayerName = "Fade";
+                entity.AddComponent(new Drawable()).Run<Drawable>(component => {
+                    component.BuildRectangle(new Point(Global.ScreenBounds.Width, Global.ScreenBounds.Height), Color.Black);
+                });
 
+                Console.WriteLine("Loaded in fader");
+
+                entity.AddFunction("FadeIn", e => {
+                    CoroutineHelper.RunFor(2, pcnt => { e.Opacity = 1 - pcnt; }, () => {
+
+                    });
+                });
+
+                entity.AddFunction("FadeOut", e => {
+                    CoroutineHelper.RunFor(2, pcnt => { e.Opacity = pcnt; }, () => {
+
+                    });
                 });
             });
-
-            entity.AddFunction("FadeOut", e => {
-                CoroutineHelper.RunFor(2, pcnt => { e.Opacity = pcnt; }, () => {
-                    
-                });
-            });
-        });
+        }
     }
 }

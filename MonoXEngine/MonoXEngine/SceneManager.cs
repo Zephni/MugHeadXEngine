@@ -1,5 +1,6 @@
 ﻿using System;
 using StaticCoroutines;
+using Microsoft.Xna.Framework;
 
 namespace MonoXEngine
 {
@@ -20,6 +21,7 @@ namespace MonoXEngine
 
             Global.XIfTracker.Clear();
             Coroutines.routines.Clear();
+            Global.Camera.Position = new Vector2(0, 0);
 
             CurrentScene = scene;
             CurrentScene.Initialise();

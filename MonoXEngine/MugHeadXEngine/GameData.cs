@@ -29,7 +29,10 @@ namespace MugHeadXEngine
 
         public static string Get(string key)
         {
-            return Data[key];
+            if (Data.ContainsKey(key))
+                return Data[key];
+            else
+                return null;
         }
 
         public static void Reset()
