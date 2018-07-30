@@ -35,8 +35,8 @@ namespace MugHeadXEngine
             text = pText;
 
             TextEntity = new Entity(entity => {
-                entity.LayerName = "Main";
-                entity.SortingLayer = MugHeadXEngine.Engine.OptionsSortingLayer + 1;
+                entity.LayerName = OptionSelector.DefaultLayerName;
+                entity.SortingLayer = OptionSelector.DefaultSortingLayer + 1;
                 entity.Position = new Vector2(pPosition.X, pPosition.Y);
                 entity.AddComponent(new Text()).Run<Text>(_text => {
                     _text.String = text;
@@ -60,6 +60,9 @@ namespace MugHeadXEngine
         public static bool Selecting = true;
         private static Entity Container;
 
+        public static string DefaultLayerName = "Main";
+        public static int DefaultSortingLayer = 10;
+
         private static Option selectedOption;
         public static Option SelectedOption
         {
@@ -76,16 +79,16 @@ namespace MugHeadXEngine
             Selecting = true;
 
             Selector = new Entity(entity => {
-                entity.LayerName = "Main";
-                entity.SortingLayer = Engine.OptionsSortingLayer + 1;
+                entity.LayerName = DefaultLayerName;
+                entity.SortingLayer = DefaultSortingLayer + 1;
                 entity.AddComponent(new Sprite() { Texture2D = Global.Content.Load<Texture2D>("Defaults/OptionSelector") });
             });
 
             Container = new Entity(entity => {
                 entity.Position = position;
-                entity.LayerName = "Main";
+                entity.LayerName = DefaultLayerName;
+                entity.SortingLayer = DefaultSortingLayer;
                 entity.Origin = Vector2.Zero;
-                entity.SortingLayer = Engine.OptionsSortingLayer;
 
                 float w = 0, h = 0;
 
@@ -144,39 +147,36 @@ namespace MugHeadXEngine
             
             if (Direction == "Up")
             {
-                List<Option> possibleOptions = optionList.Where<Option>(e => e.Position.Y < SelectedOption.Position.Y).OrderByDescending(e => e.Position.Y).ToList<Option>();
-                List<Option> possibleOposites = optionList.Where<Option>(e => e.Position.Y >= SelectedOption.Position.Y).OrderBy(e => e.Position.Y).ToList<Option>();
+                List<Option> anyAhead = optionList.Where(item => item.Position.Y < SelectedOption.Position.Y).ToList<Option>();
 
-                newOption = (possibleOptions.Count > 0)
-                    ? possibleOptions.Aggregate((x, y) => Math.Abs(x.Position.X - SelectedOption.Position.X) < Math.Abs(y.Position.X - SelectedOption.Position.X) ? x : y)
-                    : possibleOposites.Aggregate((x, y) => Math.Abs(x.Position.X - SelectedOption.Position.X) < Math.Abs(y.Position.X - SelectedOption.Position.X) ? x : y);
+                newOption = (anyAhead.Count > 0)
+                    ? optionList.Where(item => item.Position.Y == (int)anyAhead.OrderBy(item2 => item2.Position.Y).Last().Position.Y).ToList<Option>().Aggregate((x, y) => Math.Abs(x.Position.X - SelectedOption.Position.X) < Math.Abs(y.Position.X - SelectedOption.Position.X) ? x : y)
+                    : optionList.OrderBy(item => item.Position.Y).ToList<Option>().Aggregate((x, y) => Math.Abs(x.Position.X - SelectedOption.Position.X) < Math.Abs(y.Position.X - SelectedOption.Position.X) ? x : y);
             }
             else if (Direction == "Down")
             {
-                List<Option> possibleOptions = optionList.Where(e => e.Position.Y > SelectedOption.Position.Y).OrderBy(e => e.Position.Y).ToList<Option>();
-                List<Option> possibleOposites = optionList.Where<Option>(e => e.Position.Y <= SelectedOption.Position.Y).OrderByDescending(e => e.Position.Y).ToList<Option>();
+                List<Option> anyAhead = optionList.Where(item => item.Position.Y > SelectedOption.Position.Y).ToList<Option>();
 
-                newOption = (possibleOptions.Count > 0)
-                    ? possibleOptions.Aggregate((x, y) => Math.Abs(x.Position.X - SelectedOption.Position.X) < Math.Abs(y.Position.X - SelectedOption.Position.X) ? x : y)
-                    : possibleOposites.Aggregate((x, y) => Math.Abs(x.Position.X - SelectedOption.Position.X) < Math.Abs(y.Position.X - SelectedOption.Position.X) ? x : y);
+                newOption = (anyAhead.Count > 0)
+                    ? optionList.Where(item => item.Position.Y == (int)anyAhead.OrderBy(item2 => item2.Position.Y).First().Position.Y).ToList<Option>().Aggregate((x, y) => Math.Abs(x.Position.X - SelectedOption.Position.X) < Math.Abs(y.Position.X - SelectedOption.Position.X) ? x : y)
+                    : optionList.OrderByDescending(item => item.Position.Y).ToList<Option>().Aggregate((x, y) => Math.Abs(x.Position.X - SelectedOption.Position.X) < Math.Abs(y.Position.X - SelectedOption.Position.X) ? x : y);
             }
             else if (Direction == "Left")
             {
-                List<Option> possibleOptions = optionList.Where<Option>(e => e.Position.X < SelectedOption.Position.X).OrderByDescending(e => e.Position.X).ToList<Option>();
-                List<Option> possibleOposites = optionList.Where<Option>(e => e.Position.X >= SelectedOption.Position.X).OrderBy(e => e.Position.X).ToList<Option>();
+                List<Option> anyAhead = optionList.Where(item => item.Position.X < SelectedOption.Position.X).ToList<Option>();
 
-                newOption = (possibleOptions.Count > 0)
-                    ? possibleOptions.Aggregate((x, y) => Math.Abs(x.Position.Y - SelectedOption.Position.Y) < Math.Abs(y.Position.Y - SelectedOption.Position.Y) ? x : y)
-                    : possibleOposites.Aggregate((x, y) => Math.Abs(x.Position.Y - SelectedOption.Position.Y) < Math.Abs(y.Position.Y - SelectedOption.Position.Y) ? x : y);
+                newOption = (anyAhead.Count > 0)
+                    ? optionList.Where(item => item.Position.X == (int)anyAhead.OrderBy(item2 => item2.Position.X).Last().Position.X).ToList<Option>().Aggregate((x, y) => Math.Abs(x.Position.Y - SelectedOption.Position.Y) < Math.Abs(y.Position.Y - SelectedOption.Position.Y) ? x : y)
+                    : optionList.OrderBy(item => item.Position.X).ToList<Option>().Aggregate((x, y) => Math.Abs(x.Position.Y - SelectedOption.Position.Y) < Math.Abs(y.Position.Y - SelectedOption.Position.Y) ? x : y);
             }
             else if (Direction == "Right")
             {
-                List<Option> possibleOptions = optionList.Where<Option>(e => e.Position.X > SelectedOption.Position.X).OrderBy(e => e.Position.X).ToList<Option>();
-                List<Option> possibleOposites = optionList.Where<Option>(e => e.Position.X <= SelectedOption.Position.X).OrderByDescending(e => e.Position.X).ToList<Option>();
 
-                newOption = (possibleOptions.Count > 0)
-                    ? possibleOptions.Aggregate((x, y) => Math.Abs(x.Position.Y - SelectedOption.Position.Y) < Math.Abs(y.Position.Y - SelectedOption.Position.Y) ? x : y)
-                    : possibleOposites.Aggregate((x, y) => Math.Abs(x.Position.Y - SelectedOption.Position.Y) < Math.Abs(y.Position.Y - SelectedOption.Position.Y) ? x : y);
+                List<Option> anyAhead = optionList.Where(item => item.Position.X > SelectedOption.Position.X).ToList<Option>();
+
+                newOption = (anyAhead.Count > 0)
+                    ? optionList.Where(item => item.Position.X == (int)anyAhead.OrderBy(item2 => item2.Position.X).First().Position.X).ToList<Option>().Aggregate((x, y) => Math.Abs(x.Position.Y - SelectedOption.Position.Y) < Math.Abs(y.Position.Y - SelectedOption.Position.Y) ? x : y)
+                    : optionList.OrderByDescending(item => item.Position.X).ToList<Option>().Aggregate((x, y) => Math.Abs(x.Position.Y - SelectedOption.Position.Y) < Math.Abs(y.Position.Y - SelectedOption.Position.Y) ? x : y);
             }
 
             SelectedOption = newOption;

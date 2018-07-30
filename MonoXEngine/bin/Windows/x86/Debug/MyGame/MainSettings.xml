@@ -17,11 +17,11 @@
     <ResolutionY>240</ResolutionY>
     <ViewportArea>FIT_BEST</ViewportArea>
     <AllowResizing>True</AllowResizing>
-    <FullScreen>True</FullScreen>
+    <FullScreen>False</FullScreen>
   </Viewport>
   
   <Initiation>
-    <StartupScene>DebugScene</StartupScene>
+    <StartupScene>Menu</StartupScene>
   </Initiation>
 
   <Defaults>

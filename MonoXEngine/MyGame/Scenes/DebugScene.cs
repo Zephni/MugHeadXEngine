@@ -18,24 +18,7 @@ namespace MyGame.Scenes
 
         public override void Initialise()
         {
-            Entity fader = new Entity(entity => {
-                entity.LayerName = "Fade";
-                entity.AddComponent(new Drawable()).Run<Drawable>(component => {
-                    component.BuildRectangle(new Point(Global.ScreenBounds.Width, Global.ScreenBounds.Height), Color.Black);
-                });
-
-                entity.AddFunction("FadeIn", e => {
-                    CoroutineHelper.RunFor(2, pcnt => { e.Opacity = 1 - pcnt; });
-                });
-
-                entity.AddFunction("FadeOut", e => {
-                    CoroutineHelper.RunFor(2, pcnt => { e.Opacity = pcnt; }, () => {
-                        Global.SceneManager.LoadScene("DebugScene");
-                    });
-                });
-            });
-
-            fader.RunFunction("FadeIn");
+            GameGlobal.Fader.RunFunction("FadeIn");
 
             new Entity(entity => {
                 entity.LayerName = "Background";
@@ -94,7 +77,7 @@ namespace MyGame.Scenes
             CoroutineHelper.WaitRun(2, () => {
                 MessageBox mbQ = new MessageBox("Would you like to party?", player.Position + new Vector2(-50, -50), MessageBox.Type.ManualDestroy);
                 mbQ.Build(() => {
-                    MugHeadXEngine.Engine.ShowOptionSelector(
+                    GameMethods.ShowOptionSelector(
                         player.Position,
                         new List<Option>() {
                         new Option("opt1", "YES", new Vector2(0, 0)),
@@ -102,12 +85,11 @@ namespace MyGame.Scenes
                         new Option("opt3", "ABSOLUTELY", new Vector2(32, 0)),
                         new Option("opt4", "MAYBE", new Vector2(32, 16)),
                         },
-                        player,
                         result => {
                             mbQ.Destroy();
                             CoroutineHelper.WaitRun(2, () => {
                                 player.GetComponent<PlatformerController>().MovementEnabled = false;
-                                MugHeadXEngine.Engine.ShowMessages(
+                                GameMethods.ShowMessages(
                                     new List<MugHeadXEngine.MessageBox>() {
                                 new MugHeadXEngine.MessageBox("Your answer was.|.|.|| "+result+"!", player.Position + new Vector2(50, -100)),
                                 new MugHeadXEngine.MessageBox("Who said that!?", player.Position + new Vector2(0, -42))
@@ -115,7 +97,8 @@ namespace MyGame.Scenes
                                     player
                                 );
                             });
-                        }
+                        },
+                        player
                     );
                 });
             });
@@ -127,7 +110,6 @@ namespace MyGame.Scenes
             
             TileMap tileMap = new TileMap(new Point(32, 32), "Tileset", tempTiles);
             tileMap.Build(new Point(30, 30));
-
             
             
             // Debug

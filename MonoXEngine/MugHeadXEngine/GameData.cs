@@ -32,6 +32,11 @@ namespace MugHeadXEngine
             return Data[key];
         }
 
+        public static void Reset()
+        {
+            Data = new Dictionary<string, string>();
+        }
+
         public static string GetFilePath()
         {
             return new Uri(SavePath).LocalPath + "\\" + SaveFile;

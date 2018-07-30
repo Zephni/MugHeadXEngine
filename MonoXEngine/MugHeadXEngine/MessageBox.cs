@@ -23,6 +23,9 @@ namespace MugHeadXEngine
         private string PassedText;
         private Vector2 PassedPosition;
 
+        public static string DefaultLayerName = "Main";
+        public static int DefaultSortingLayer = 10;
+
         public enum Type
         {
             PressToProgress,
@@ -42,8 +45,8 @@ namespace MugHeadXEngine
         {
             // Build and position text
             TextObject = new Entity(entity => {
-                entity.LayerName = "Main";
-                entity.SortingLayer = MugHeadXEngine.Engine.OptionsSortingLayer + 1;
+                entity.LayerName = DefaultLayerName;
+                entity.SortingLayer = DefaultSortingLayer + 1;
                 entity.Position = PassedPosition;
 
                 entity.AddComponent(new Text()).Run<Text>(component => {
@@ -57,8 +60,8 @@ namespace MugHeadXEngine
 
             // Build container based on text
             Container = new Entity(entity => {
-                entity.LayerName = "Main";
-                entity.SortingLayer = MugHeadXEngine.Engine.OptionsSortingLayer;
+                entity.LayerName = DefaultLayerName;
+                entity.SortingLayer = DefaultSortingLayer;
                 entity.Origin = Vector2.Zero;
                 entity.Position = new Vector2(TextObject.Position.X - Padding.X, (TextObject.Position.Y - Padding.Y) + 1);
                 entity.AddComponent(new Drawable() {
@@ -71,8 +74,8 @@ namespace MugHeadXEngine
             if(ThisType == Type.PressToProgress)
             {
                 ArrowFlash = new Entity(entity => {
-                    entity.LayerName = "Main";
-                    entity.SortingLayer = MugHeadXEngine.Engine.OptionsSortingLayer + 1;
+                    entity.LayerName = DefaultLayerName;
+                    entity.SortingLayer = DefaultSortingLayer + 1;
                     entity.Position = new Vector2(TextObject.Position.X + TextObject.BoundingBox.Width + 6, TextObject.BoundingBox.Bottom + 2);
                     entity.AddComponent(new Sprite() { Texture2D = Global.Content.Load<Texture2D>("Defaults/ArrowFlash") }).Run<Sprite>(sprite => {
                         sprite.AddAnimation(new Animation("Flashing", 0.5f, new Point(8, 8), new Point(0, 0), new Point(1, 0)));

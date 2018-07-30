@@ -1,9 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using MonoXEngine;
-using MonoXEngine.EntityComponents;
-using MugHeadXEngine.EntityComponents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,45 +11,6 @@ namespace MugHeadXEngine
 {
     public static class Engine
     {
-        public static int OptionsSortingLayer = 10;
-
-        public static void PhysicsActive(bool active)
-        {
-            Global.Entities.FindAll(entity => entity.HasComponent<Physics>()).ForEach(entity => {
-                entity.GetComponent<Physics>().Disabled = !active;
-            });
-
-            Global.Entities.FindAll(entity => entity.HasComponent<PlatformerController>()).ForEach(entity => {
-                entity.GetComponent<PlatformerController>().Disabled = !active;
-            });
-        }
-
-        public static void ShowOptionSelector(Vector2 position, List<Option> optionList, Entity player, Action<string> action = null, string texture9Patch = "Defaults/9Patch_8")
-        {
-            player.GetComponent<PlatformerController>().MovementEnabled = false;
-            OptionSelector.Build(position, optionList, result => {
-                action?.Invoke(result);
-                player.GetComponent<PlatformerController>().MovementEnabled = true;
-            }, texture9Patch);
-        }
-
-        public static void ShowMessages(List<MessageBox> Messages, Entity player, Action action = null)
-        {
-            if(Messages.Count > 0)
-            {
-                MessageBox CurrentMessage = Messages.First();
-                Messages.Remove(CurrentMessage);
-
-                CurrentMessage.Build(() => {
-                    ShowMessages(Messages, player, action);
-                });
-            }
-            else
-            {
-                player.GetComponent<PlatformerController>().MovementEnabled = true;
-            }
-        }
-
         public static Texture2D RoundedRect(Texture2D texture9Patch, Point size)
         {
             int border = texture9Patch.Bounds.Width / 3;
@@ -60,12 +18,12 @@ namespace MugHeadXEngine
             Color[,] colors2D = new Color[size.X, size.Y];
 
             // Top left
-            for(int x = 0; x < border; x++)
+            for (int x = 0; x < border; x++)
                 for (int y = 0; y < border; y++)
                     colors2D[x, y] = colors9Patch[x, y];
 
             // Top
-            for(int x = border; x < size.X - border; x++)
+            for (int x = border; x < size.X - border; x++)
                 for (int y = 0; y < border; y++)
                     colors2D[x, y] = colors9Patch[x.Wrap(border, border * 2), y];
 
