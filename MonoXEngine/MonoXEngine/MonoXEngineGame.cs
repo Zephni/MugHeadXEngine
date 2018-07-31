@@ -106,12 +106,13 @@ namespace MonoXEngine
         {
             Global.GameTime = gameTime;
             Global.DeltaTime = (float)Global.GameTime.ElapsedGameTime.TotalSeconds;
-            Coroutines.Update(Global.DeltaTime);
 
             Global.InputManager.Update();
 
             for (int I = 0; I < Global.Entities.Count; I++)
                 Global.Entities[I].Update();
+
+            Coroutines.Update(Global.DeltaTime);
 
             Global.SceneManager.CurrentScene.Update();
             base.Update(gameTime);

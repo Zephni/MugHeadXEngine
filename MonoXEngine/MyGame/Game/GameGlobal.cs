@@ -26,13 +26,13 @@ namespace MyGame
                 Console.WriteLine("Loaded in fader");
 
                 entity.AddFunction("FadeIn", (e, c) => {
-                    CoroutineHelper.RunFor(1, pcnt => { e.Opacity = 1 - pcnt; }, () => {
+                    CoroutineHelper.RunFor(0.5f, pcnt => { e.Opacity = 1 - pcnt; }, () => {
                         c?.Invoke(e);
                     });
                 });
 
                 entity.AddFunction("FadeOut", (e, c) => {
-                    CoroutineHelper.RunFor(1, pcnt => { e.Opacity = pcnt; }, () => {
+                    CoroutineHelper.RunFor(0.5f, pcnt => { e.Opacity = pcnt; }, () => {
                         c?.Invoke(e);
                     });
                 });

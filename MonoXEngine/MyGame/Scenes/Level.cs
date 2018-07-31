@@ -15,13 +15,49 @@ namespace MyGame.Scenes
 {
     public class Level : Scene
     {
-        Entity player;
+        // Static entities
+        public Entity Player;
+
+        // Debugging
+        private Entity hotspotTest;
 
         public override void Initialise()
         {
+            // Initialise and initial fade
             GameGlobal.InitialiseAssets();
             GameGlobal.Fader.RunFunction("FadeIn");
 
+
+            // DEBUGGING
+            #region Debugging
+            // Debug text
+            new Entity(entity => {
+                entity.SortingLayer = 1;
+                entity.LayerName = "Fade";
+                entity.Position = -(Global.Resolution.ToVector2() / 2);
+                entity.AddComponent(new Text()).Run<Text>(component => {
+                    component.SetSpriteFont("HeartbitXX");
+                    component.Color = Color.Yellow;
+
+                    entity.UpdateAction = e => {
+                        component.String = "Entities: " + Global.CountEntities().ToString() + ", Coroutines: " + Coroutines.Count.ToString() + ", FPS: " + Global.FPS.ToString();
+                    };
+                });
+            });
+
+            // Hotspot tester
+            hotspotTest = new Entity(entity => {
+                entity.AddComponent(new Sprite()).Run<Sprite>(d => {
+                    d.BuildRectangle(new Point(4, 4), Color.Orange);
+                });
+                entity.SortingLayer = 10;
+            });
+            CoroutineHelper.Always(() => {
+                //hotspotTest.Position = new Vector2(textTest.BoundingBox.Left + textTest.Size.X / 2, textTest.BoundingBox.Bottom);
+            });
+            #endregion
+
+            // Backgrounds
             new Entity(entity => {
                 entity.LayerName = "Background";
                 entity.Position += new Vector2(0, -80);
@@ -29,7 +65,6 @@ namespace MyGame.Scenes
                     Texture2D = Global.Content.Load<Texture2D>("SkyTest"),
                 });
             });
-
             new Entity(entity => {
                 entity.LayerName = "Background";
                 entity.Position += new Vector2(0, -50);
@@ -39,7 +74,6 @@ namespace MyGame.Scenes
                     Coefficient = new Vector2(0, 0)
                 });
             });
-
             new Entity(entity => {
                 entity.LayerName = "Background";
                 entity.Position += new Vector2(0, 0);
@@ -49,7 +83,6 @@ namespace MyGame.Scenes
                     Coefficient = new Vector2(0, 0)
                 });
             });
-
             new Entity(entity => {
                 entity.LayerName = "Background";
                 entity.Position += new Vector2(0, 80);
@@ -66,7 +99,8 @@ namespace MyGame.Scenes
                 });
             });
 
-            player = new Entity(entity => {
+            // Player entity
+            Player = new Entity(entity => {
                 entity.SortingLayer = 1;
 
                 entity.AddComponent(new Sprite()).Run<Sprite>(component => {
@@ -91,56 +125,36 @@ namespace MyGame.Scenes
                 tileMap.Build(new Point(32, 32));
 
                 // Entities
-                foreach(var item in entities)
-                {
-                    if(item.Name == "StartPosition" && GameData.Get("Player/Position") == null)
-                    {
-                        player.Position = new Vector2(item.Position.X * 16, item.Position.Y * 16);
-                    }
-                }
-            });
-
-            
-
-            // Debug
-            new Entity(entity => {
-                entity.SortingLayer = 1;
-                entity.LayerName = "Fade";
-                entity.Position = -(Global.Resolution.ToVector2() / 2);
-                entity.AddComponent(new Text()).Run<Text>(component => {
-                    component.SetSpriteFont("HeartbitXX");
-                    component.Color = Color.Yellow;
-
-                    entity.UpdateAction = e => {
-                        component.String = "Entities: "+Global.CountEntities().ToString()+", Coroutines: "+Coroutines.Count.ToString()+", FPS: "+Global.FPS.ToString();
-                    };
-                });
-            });          
+                new EntityInfoInterpreter(entities);
+            });         
         }
         
         public override void Update()
         {
-            Vector2 camPos = (player != null) ? new Vector2(player.Position.X, player.Position.Y) : Vector2.Zero;
+            Vector2 camPos = (Player != null) ? new Vector2(Player.Position.X, Player.Position.Y) : Vector2.Zero;
             Global.Camera.Position = camPos;
 
-            if(Global.RunOnce("Restart", Keyboard.GetState().IsKeyDown(Keys.Space)))
+            
+
+            if (Global.RunOnce("Restart", Keyboard.GetState().IsKeyDown(Keys.Space)))
             {
-                GameGlobal.Fader.RunFunction("FadeOut");
-                CoroutineHelper.WaitRun(2, () => {
+                GameGlobal.Fader.RunFunction("FadeOut", c => {
                     Global.SceneManager.LoadScene("Menu");
                 });
             }
 
             if (Global.InputManager.Pressed(InputManager.Input.L1))
             {
-                GameData.Set("Player/Position", player.Position.X.ToString() + "," + player.Position.Y.ToString());
+                GameData.Set("Player/Position", Player.Position.X.ToString() + "," + Player.Position.Y.ToString());
                 GameData.Save();
             }
 
             if (Global.InputManager.Pressed(InputManager.Input.L2))
             {
                 GameData.Load();
-                Global.SceneManager.LoadScene("Level");
+                GameGlobal.Fader.RunFunction("FadeOut", e => {
+                    Global.SceneManager.LoadScene("Level");
+                });
             }
         }
     }

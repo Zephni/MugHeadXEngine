@@ -22,6 +22,7 @@ namespace MyGame.Scenes
 
         public override void Initialise()
         {
+            // Initialise and fade in
             GameGlobal.InitialiseAssets();
             GameGlobal.Fader.RunFunction("FadeIn");
 
@@ -42,12 +43,13 @@ namespace MyGame.Scenes
                 });
             });
 
+            // Menu options
             GameMethods.ShowOptionSelector(
                 new Vector2(-66, -70),
                 new List<Option>() {
                     new Option("newGame", "NEW GAME", new Vector2(0, 0)),
                     new Option("loadGame", "LOAD GAME", new Vector2(0, 16)),
-                    new Option("options", "OTIONS", new Vector2(0, 32)),
+                    new Option("options", "OPTIONS", new Vector2(0, 32)),
                     new Option("quit", "QUIT", new Vector2(0, 48)),
 
                     new Option("debug", "DEBUG", new Vector2(80, 0)),
@@ -57,7 +59,7 @@ namespace MyGame.Scenes
                     {
                         GameData.Reset();
 
-                        // Initiate game data
+                        // Initiate game data here
                         GameData.Set("Level", "DebugLevel");
 
                         GameGlobal.Fader.RunFunction("FadeOut", e => {

@@ -62,12 +62,14 @@ namespace MyGame.Scenes
                     });
                 });
             });
-            
+
             // Player
-            player = new Entity(entity => {
+            player = new Entity(entity =>
+            {
                 entity.Position = new Vector2(128, 32 * 4);
 
-                entity.AddComponent(new Sprite()).Run<Sprite>(component => {
+                entity.AddComponent(new Sprite()).Run<Sprite>(component =>
+                {
                     component.BuildRectangle(new Point(16, 16), Color.Green);
                 });
 
