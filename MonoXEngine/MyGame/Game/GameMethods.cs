@@ -20,21 +20,21 @@ namespace MyGame
                 entity.GetComponent<Physics>().Disabled = !active;
             });
 
-            Global.Entities.FindAll(entity => entity.HasComponent<PlatformerController>()).ForEach(entity => {
-                entity.GetComponent<PlatformerController>().Disabled = !active;
+            Global.Entities.FindAll(entity => entity.HasComponent<PlayerController>()).ForEach(entity => {
+                entity.GetComponent<PlayerController>().Disabled = !active;
             });
         }
 
         public static void ShowOptionSelector(Vector2 position, List<Option> optionList, Action<string> action = null, Entity player = null, string texture9Patch = "Defaults/9Patch_8")
         {
             if(player != null)
-                player.GetComponent<PlatformerController>().MovementEnabled = false;
+                player.GetComponent<PlayerController>().MovementEnabled = false;
 
             OptionSelector.Build(position, optionList, result => {
                 action?.Invoke(result);
 
                 if (player != null)
-                    player.GetComponent<PlatformerController>().MovementEnabled = true;
+                    player.GetComponent<PlayerController>().MovementEnabled = true;
             }, texture9Patch);
         }
 
@@ -51,7 +51,7 @@ namespace MyGame
             }
             else
             {
-                player.GetComponent<PlatformerController>().MovementEnabled = true;
+                player.GetComponent<PlayerController>().MovementEnabled = true;
             }
         }
     }

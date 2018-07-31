@@ -37,3 +37,4 @@ C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Fonts\HeartbitXX.xnb
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Defaults\ArrowFlash.xnb
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Defaults\OptionSelector.xnb
+C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\MyGame\Game\Levels\DebugLevel.lvl

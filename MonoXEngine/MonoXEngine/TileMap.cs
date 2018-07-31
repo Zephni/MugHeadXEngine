@@ -78,7 +78,7 @@ namespace MonoXEngine
         protected Texture2D[,] Split(Texture2D original, int partWidth, int partHeight)
         {
             int yCount = original.Height / partHeight + (partHeight % original.Height == 0 ? 0 : 1);//The number of textures in each horizontal row
-            int xCount = original.Height / partHeight + (partHeight % original.Height == 0 ? 0 : 1);//The number of textures in each vertical column
+            int xCount = original.Width / partWidth + (partWidth % original.Width == 0 ? 0 : 1);//The number of textures in each vertical column
             Texture2D[,] r = new Texture2D[xCount, yCount];//Number of parts = (area of original) / (area of each part).
             int dataPerPart = partWidth * partHeight;//Number of pixels in each of the split parts
 
@@ -162,7 +162,7 @@ namespace MonoXEngine
 
                         new Entity(entity => {
                             entity.Origin = Vector2.Zero;
-                            entity.Position = new Vector2(0 * chunkSize.X, 0 * chunkSize.Y);
+                            entity.Position = new Vector2(x * chunkSize.X, y * chunkSize.Y);
                             entity.SortingLayer = chunkLayers[z];
                             entity.AddComponent(new Drawable()).Run<Drawable>(component => {
                                 component.Texture2D = chunks[x, y, z];

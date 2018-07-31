@@ -73,6 +73,11 @@
     <Compile Include="MugHeadXEngine\OptionSelector.cs" />
     <Compile Include="MyGame\Game\GameGlobal.cs" />
     <Compile Include="MyGame\Game\GameMethods.cs" />
+    <Compile Include="MyGame\Game\LevelLoader\Compressor.cs" />
+    <Compile Include="MyGame\Game\LevelLoader\EntityInfo.cs" />
+    <Compile Include="MyGame\Game\LevelLoader\LevelLoader.cs" />
+    <Compile Include="MyGame\Game\PlayerController.cs" />
+    <Compile Include="MyGame\Scenes\Level.cs" />
     <Compile Include="MyGame\Scenes\Menu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -101,6 +106,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </MonoGameContentReference>
     <None Include="app.manifest" />
+    <Content Include="MyGame\Game\Levels\DebugLevel.lvl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -57,8 +57,8 @@ namespace MugHeadXEngine
         public static Point SelectorSize = new Point(12, 12);
 
         public static Entity Selector;
+        public static Entity Container;
         public static bool Selecting = true;
-        private static Entity Container;
 
         public static string DefaultLayerName = "Main";
         public static int DefaultSortingLayer = 10;
@@ -100,7 +100,7 @@ namespace MugHeadXEngine
                     float optionBoundsY = option.Position.Y + option.Size.Y;
                     if (optionBoundsY > h) h = optionBoundsY;
 
-                    option.Position = entity.Position + option.Position + (Padding.ToVector2() / 2) + new Vector2(SelectorSize.X, 0);
+                    option.Position = (entity.Position + option.Position + (Padding.ToVector2() / 2) + new Vector2(SelectorSize.X, 0));
                 }
 
                 if (texture9Patch != null)

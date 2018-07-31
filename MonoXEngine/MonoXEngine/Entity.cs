@@ -17,7 +17,9 @@ namespace MonoXEngine
         public Vector2 Scale;
         public Vector2 TextureSize;
         public float Rotation;
-        private Dictionary<string, Action<Entity>> Functions = new Dictionary<string, Action<Entity>>();
+        public Dictionary<string, string> Data = new Dictionary<string, string>();
+
+        private Dictionary<string, Action<Entity, Action<Entity>>> Functions = new Dictionary<string, Action<Entity, Action<Entity>>>();
 
         public bool Trigger = false;
         public Action<Entity> CollidedWithTrigger;
@@ -142,14 +144,23 @@ namespace MonoXEngine
             }
         }
 
-        public void AddFunction(string alias, Action<Entity> action)
+        public void AddFunction(string alias, Action<Entity, Action<Entity>> action)
         {
             this.Functions.Add(alias, action);
         }
 
-        public void RunFunction(string alias)
+        public void AddFunction(string alias, Action<Entity> action)
         {
-            this.Functions[alias](this);
+            Action<Entity, Action<Entity>> actionBlackCallback = (e, c) => {
+                action.Invoke(e);
+            };
+
+            this.Functions.Add(alias, actionBlackCallback);
+        }
+
+        public void RunFunction(string alias, Action<Entity> callback = null)
+        {
+            this.Functions[alias](this, callback);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

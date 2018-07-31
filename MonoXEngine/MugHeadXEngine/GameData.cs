@@ -60,6 +60,8 @@ namespace MugHeadXEngine
 
         public static void Load()
         {
+            GameData.Reset();
+
             // Loading needs sorting depending on device and save slot
             string LoadString = System.IO.File.ReadAllText(GetFilePath());
 

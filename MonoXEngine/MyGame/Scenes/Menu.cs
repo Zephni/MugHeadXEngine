@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoXEngine;
+using MonoXEngine.EntityComponents;
 using MugHeadXEngine;
 using StaticCoroutines;
 using System;
@@ -12,42 +13,78 @@ namespace MyGame.Scenes
 {
     public class Menu : Scene
     {
+        public Dictionary<string, string> DebugData = new Dictionary<string, string>() {
+            { "Level",              "DebugLevel" },
+            { "Player/Position",    "250, 50" }
+        };
+
+        Entity DebugText;
+
         public override void Initialise()
         {
             GameGlobal.InitialiseAssets();
             GameGlobal.Fader.RunFunction("FadeIn");
 
+            // DebugText
+            DebugText = new Entity(entity => {
+                entity.Position = new Vector2(-55, 20);
+
+                entity.AddComponent(new Text()).Run<Text>(text => {
+                    string temp = "";
+                    foreach (var item in DebugData)
+                        temp += item.Key + ": " + item.Value+"\n";
+
+                    text.String = temp;
+
+                    CoroutineHelper.Always(() => {
+                        text.Visible = (OptionSelector.SelectedOption.ID == "debug");
+                    });
+                });
+            });
+
             GameMethods.ShowOptionSelector(
-                new Vector2(-94, -64),
+                new Vector2(-66, -70),
                 new List<Option>() {
                     new Option("newGame", "NEW GAME", new Vector2(0, 0)),
                     new Option("loadGame", "LOAD GAME", new Vector2(0, 16)),
-                    new Option("options", "OPTIONS", new Vector2(0, 32)),
+                    new Option("options", "OTIONS", new Vector2(0, 32)),
                     new Option("quit", "QUIT", new Vector2(0, 48)),
+
+                    new Option("debug", "DEBUG", new Vector2(80, 0)),
                 },
                 result => {
                     if (result == "newGame")
                     {
                         GameData.Reset();
 
-                        GameGlobal.Fader.RunFunction("FadeOut");
-                        CoroutineHelper.WaitRun(2f, () => {
-                            Global.SceneManager.LoadScene("DebugScene");
+                        // Initiate game data
+                        GameData.Set("Level", "DebugLevel");
+
+                        GameGlobal.Fader.RunFunction("FadeOut", e => {
+                            Global.SceneManager.LoadScene("Level");
                         });
                     }
                     else if (result == "loadGame")
                     {
-                        GameData.Reset();
                         GameData.Load();
 
-                        GameGlobal.Fader.RunFunction("FadeOut");
-                        CoroutineHelper.WaitRun(2f, () => {
-                            Global.SceneManager.LoadScene("DebugScene");
+                        GameGlobal.Fader.RunFunction("FadeOut", e => {
+                            Global.SceneManager.LoadScene("Level");
                         });
                     }
-                    else if(result == "quit")
+                    else if (result == "quit")
                     {
                         MonoXEngineGame.Instance.Exit();
+                    }
+                    else if (result == "debug")
+                    {
+                        GameData.Reset();
+                        foreach (var item in DebugData)
+                            GameData.Set(item.Key, item.Value);
+
+                        GameGlobal.Fader.RunFunction("FadeOut", e => {
+                            Global.SceneManager.LoadScene("Level");
+                        });
                     }
                 }
             );

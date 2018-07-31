@@ -42,7 +42,7 @@ namespace MonoXEngine.EntityComponents
         {
             this.Entity.Origin = Vector2.Zero;
 
-            if (this.SpriteFont != null)
+            if (this.SpriteFont != null && Visible)
             {
                 spriteBatch.DrawString(
                     this.SpriteFont,
