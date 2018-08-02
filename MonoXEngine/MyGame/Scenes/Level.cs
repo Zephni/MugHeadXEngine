@@ -15,7 +15,10 @@ namespace MyGame.Scenes
 {
     public class Level : Scene
     {
-        // Static entities
+        // Objects
+        public CameraController CameraController;
+
+        // Entities
         public Entity Player;
 
         // Debugging
@@ -26,7 +29,6 @@ namespace MyGame.Scenes
             // Initialise and initial fade
             GameGlobal.InitialiseAssets();
             GameGlobal.Fader.RunFunction("FadeIn");
-
 
             // DEBUGGING
             #region Debugging
@@ -100,6 +102,7 @@ namespace MyGame.Scenes
             });
 
             // Player entity
+            List<Entity> PlayerCollidingTriggers = new List<Entity>();
             Player = new Entity(entity => {
                 entity.SortingLayer = 1;
 
@@ -114,7 +117,42 @@ namespace MyGame.Scenes
                     string[] pPosData = GameData.Get("Player/Position").Split(',');
                     entity.Position = new Vector2(Convert.ToInt16(pPosData[0]), Convert.ToInt16(pPosData[1]));
                 }
-            });
+
+                entity.UpdateAction = e => {
+                    if(PlayerCollidingTriggers.Find(t => t.Name == "CameraLock") == null)
+                    {
+                        CameraController.Target = e;
+                        CameraController.ResetMinMax();
+                    }
+
+                    PlayerCollidingTriggers = new List<Entity>();
+                };
+
+                entity.CollidedWithTrigger = obj => {
+                    PlayerCollidingTriggers.Add(obj);
+
+                    if (obj.Name == "CameraLock")
+                    {
+                        foreach(var item in obj.Data["Type"].Split(','))
+                        {
+                            if (item  == "LockXY")
+                                CameraController.Target = obj;
+                            else if (item == "LockX")
+                                CameraController.TargetX = obj;
+                            else if (item == "LockY")
+                                CameraController.TargetY = obj;
+                            else if (item == "LockTop")
+                                CameraController.MinY = obj.BoundingBox.Top;
+                            else if (item == "LockBottom")
+                                CameraController.MaxY = obj.BoundingBox.Bottom;
+                            else if (item == "LockRight")
+                                CameraController.MaxX = obj.BoundingBox.Right;
+                            else if (item == "LockLeft")
+                                CameraController.MinX = obj.BoundingBox.Left;
+                        }
+                    }
+                };
+            });            
 
             // Load level
             LevelLoader levelLoader = new LevelLoader();
@@ -126,15 +164,19 @@ namespace MyGame.Scenes
 
                 // Entities
                 new EntityInfoInterpreter(entities);
-            });         
+            });
+
+            // Camera
+            CameraController = new CameraController();
+            CameraController.Target = Player;
+            CameraController.Easing = 0.2f;
+            CameraController.Mode = CameraController.Modes.LerpToTarget;
+            CameraController.SnapOnce(Player);
         }
         
         public override void Update()
         {
-            Vector2 camPos = (Player != null) ? new Vector2(Player.Position.X, Player.Position.Y) : Vector2.Zero;
-            Global.Camera.Position = camPos;
-
-            
+            CameraController.Update();
 
             if (Global.RunOnce("Restart", Keyboard.GetState().IsKeyDown(Keys.Space)))
             {

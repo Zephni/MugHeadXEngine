@@ -11,6 +11,7 @@ namespace XEditor
     {
         public string Name;
         public Vector2 Position;
-        public Dictionary<string, string> Data;
+        public Point Size;
+        public string Data;
     }
 }

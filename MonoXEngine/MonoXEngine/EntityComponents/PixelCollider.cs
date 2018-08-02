@@ -29,7 +29,9 @@ namespace MonoXEngine.EntityComponents
                     continue;
 
                 if (checkArea.Intersects(entity.BoundingBox))
+                {
                     possibleCollidingEntities.Add(entity);
+                }
             }
 
             if (IsOverlappingPixel(checkArea, possibleCollidingEntities))

@@ -23,8 +23,6 @@ namespace MyGame
                     component.BuildRectangle(new Point(Global.ScreenBounds.Width, Global.ScreenBounds.Height), Color.Black);
                 });
 
-                Console.WriteLine("Loaded in fader");
-
                 entity.AddFunction("FadeIn", (e, c) => {
                     CoroutineHelper.RunFor(0.5f, pcnt => { e.Opacity = 1 - pcnt; }, () => {
                         c?.Invoke(e);

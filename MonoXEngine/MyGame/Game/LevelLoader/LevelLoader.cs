@@ -60,7 +60,8 @@ namespace XEditor
                 entityList.Add(new EntityInfo {
                     Name = xEl.Element("Name").Value,
                     Position = new Vector2(Convert.ToInt16(location[0]), Convert.ToInt16(location[1])),
-                    Data = new Dictionary<string, string>() { { "ThisNeedsSorting", xEl.Element("CustomData").Value } }
+                    Data = xEl.Element("CustomData").Value,
+                    Size = new Point(Convert.ToInt16(size[0]), Convert.ToInt16(size[1]))
                 });
             }
             

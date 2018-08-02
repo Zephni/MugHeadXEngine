@@ -15,7 +15,7 @@ namespace MyGame.Scenes
     {
         public Dictionary<string, string> DebugData = new Dictionary<string, string>() {
             { "Level",              "DebugLevel" },
-            { "Player/Position",    "250, 50" }
+            { "Player/Position",    "350, 180" }
         };
 
         Entity DebugText;

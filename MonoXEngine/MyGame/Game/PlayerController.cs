@@ -18,15 +18,17 @@ namespace MugHeadXEngine.EntityComponents
         public int CurrentJump = 0;
         public int MaxJumps = 2;
         public bool MovementEnabled = true;
+        public List<Entity> CollidingEntities = new List<Entity>();
 
         BaseCollider passThru;
 
         public PlayerController(BaseCollider collider)
         {
             Acceleration = 4f;
-            Deceleration = 4f;
+            Deceleration = 9f;
             JumpStrength = 4f;
             passThru = collider;
+            MaxX = 2;
         }
 
         public override void Start()
@@ -38,6 +40,14 @@ namespace MugHeadXEngine.EntityComponents
 
         public override void Update()
         {
+            /*foreach(var entity in Global.Entities)
+            {
+                if(entity.Trigger && this.Collider.Colliding())
+                {
+
+                }
+            }*/
+
             if (MovementEnabled && CurrentJump < MaxJumps && IsGrounded && Global.InputManager.Pressed(InputManager.Input.Action1))
             {
                 MoveY = -JumpStrength;
