@@ -13,6 +13,7 @@ namespace MyGame
     public static class GameGlobal
     {
         public static Entity Fader;
+        public static Entity Player;
 
         public static void InitialiseAssets()
         {

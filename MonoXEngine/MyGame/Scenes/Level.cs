@@ -10,6 +10,7 @@ using MugHeadXEngine.EntityComponents;
 using MugHeadXEngine;
 using System;
 using XEditor;
+using System.Reflection;
 
 namespace MyGame.Scenes
 {
@@ -17,9 +18,6 @@ namespace MyGame.Scenes
     {
         // Objects
         public CameraController CameraController;
-
-        // Entities
-        public Entity Player;
 
         // Debugging
         private Entity hotspotTest;
@@ -60,31 +58,14 @@ namespace MyGame.Scenes
             #endregion
 
             // Backgrounds
-            new Entity(entity => {
-                entity.LayerName = "Background";
-                entity.Position += new Vector2(0, -80);
-                entity.AddComponent(new Drawable(){
-                    Texture2D = Global.Content.Load<Texture2D>("SkyTest"),
-                });
-            });
-            new Entity(entity => {
-                entity.LayerName = "Background";
-                entity.Position += new Vector2(0, -50);
-                entity.AddComponent(new CameraOffsetTexture()
-                {
-                    Texture2D = Global.Content.Load<Texture2D>("MountainsTest"),
-                    Coefficient = new Vector2(0, 0)
-                });
-            });
+            #region Backgrounds
+
             new Entity(entity => {
                 entity.LayerName = "Background";
                 entity.Position += new Vector2(0, 0);
-                entity.AddComponent(new CameraOffsetTexture()
-                {
-                    Texture2D = Global.Content.Load<Texture2D>("BGTest"),
-                    Coefficient = new Vector2(0, 0)
-                });
+                entity.AddComponent(new CameraOffsetTexture(){Texture2D = Global.Content.Load<Texture2D>("Backgrounds/night"), Coefficient = new Vector2(0, 0) });
             });
+            /*
             new Entity(entity => {
                 entity.LayerName = "Background";
                 entity.Position += new Vector2(0, 80);
@@ -99,15 +80,16 @@ namespace MyGame.Scenes
                         });
                     });
                 });
-            });
+            });*/
+            #endregion
 
             // Player entity
             List<Entity> PlayerCollidingTriggers = new List<Entity>();
-            Player = new Entity(entity => {
+            GameGlobal.Player = new Entity(entity => {
                 entity.SortingLayer = 1;
 
                 entity.AddComponent(new Sprite()).Run<Sprite>(component => {
-                    component.BuildRectangle(new Point(16, 16), Color.White);
+                    component.BuildRectangle(new Point(16, 16), Color.Blue);
                 });
 
                 entity.AddComponent(new PlayerController(new PixelCollider()));
@@ -119,7 +101,7 @@ namespace MyGame.Scenes
                 }
 
                 entity.UpdateAction = e => {
-                    if(PlayerCollidingTriggers.Find(t => t.Name == "CameraLock") == null)
+                    if(entity.GetComponent<PlayerController>().MovementEnabled && PlayerCollidingTriggers.Find(t => t.Name == "CameraLock") == null)
                     {
                         CameraController.Target = e;
                         CameraController.ResetMinMax();
@@ -129,6 +111,9 @@ namespace MyGame.Scenes
                 };
 
                 entity.CollidedWithTrigger = obj => {
+                    if (!entity.GetComponent<PlayerController>().MovementEnabled)
+                        return;
+
                     PlayerCollidingTriggers.Add(obj);
 
                     if (obj.Name == "CameraLock")
@@ -159,7 +144,7 @@ namespace MyGame.Scenes
             levelLoader.Load(GameData.Get("Level"), (tiles, entities) => {
 
                 // Create tilemap
-                TileMap tileMap = new TileMap(new Point(16, 16), "Tileset", tiles);
+                TileMap tileMap = new TileMap(new Point(16, 16), "Tilesets/Forest", tiles);
                 tileMap.Build(new Point(32, 32));
 
                 // Entities
@@ -168,10 +153,16 @@ namespace MyGame.Scenes
 
             // Camera
             CameraController = new CameraController();
-            CameraController.Target = Player;
+            CameraController.Target = GameGlobal.Player;
             CameraController.Easing = 0.2f;
             CameraController.Mode = CameraController.Modes.LerpToTarget;
-            CameraController.SnapOnce(Player);
+            CameraController.SnapOnce(GameGlobal.Player);
+
+            // Level script
+            LevelScripts levelScripts = new LevelScripts();
+            Type type = levelScripts.GetType();
+            MethodInfo method = type.GetMethod(GameData.Get("Level"));
+            method.Invoke(levelScripts, new object[0]);
         }
         
         public override void Update()
@@ -187,7 +178,7 @@ namespace MyGame.Scenes
 
             if (Global.InputManager.Pressed(InputManager.Input.L1))
             {
-                GameData.Set("Player/Position", Player.Position.X.ToString() + "," + Player.Position.Y.ToString());
+                GameData.Set("Player/Position", GameGlobal.Player.Position.X.ToString() + "," + GameGlobal.Player.Position.Y.ToString());
                 GameData.Save();
             }
 

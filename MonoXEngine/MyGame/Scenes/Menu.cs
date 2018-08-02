@@ -14,7 +14,7 @@ namespace MyGame.Scenes
     public class Menu : Scene
     {
         public Dictionary<string, string> DebugData = new Dictionary<string, string>() {
-            { "Level",              "DebugLevel" },
+            { "Level",              "TheTree" },
             { "Player/Position",    "350, 180" }
         };
 
@@ -60,7 +60,7 @@ namespace MyGame.Scenes
                         GameData.Reset();
 
                         // Initiate game data here
-                        GameData.Set("Level", "DebugLevel");
+                        GameData.Set("Level", "TheTree");
 
                         GameGlobal.Fader.RunFunction("FadeOut", e => {
                             Global.SceneManager.LoadScene("Level");

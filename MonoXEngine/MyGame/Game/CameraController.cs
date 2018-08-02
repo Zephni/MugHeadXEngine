@@ -28,13 +28,19 @@ namespace MyGame
         public float? MinY = null;
 
         public float Easing;
+        public float MaxStep = 1000;
         public float MaxDistance;
+
+        public static CameraController Instance = null;
 
         public CameraController()
         {
             Mode = Modes.SnapToTarget;
             Easing = 0.03f;
             MaxDistance = 64;
+
+            if (Instance == null)
+                Instance = this;
         }
 
         public void ResetMinMax()
@@ -82,7 +88,10 @@ namespace MyGame
                 double distance = Math.Sqrt(xyDist.X * xyDist.X + xyDist.Y * xyDist.Y);
 
                 if (distance > 1)
-                    camPos += new Vector2(xyDist.X * Easing, xyDist.Y * Easing);
+                    camPos += new Vector2(
+                        Math.Min(xyDist.X * Easing, MaxStep),
+                        Math.Min(xyDist.Y * Easing, MaxStep)
+                        );
             }
             else if(Mode == Modes.SnapToTarget)
             {

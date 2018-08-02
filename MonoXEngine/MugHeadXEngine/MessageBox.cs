@@ -14,11 +14,21 @@ namespace MugHeadXEngine
     public class MessageBox
     {
         private Point Padding = new Point(6, 2);
-        private Entity Container;
+        public Entity Container;
         private Entity TextObject;
         private Entity ArrowFlash;
         private Text TextString;
         private string TestString;
+
+        public Vector2 Position
+        {
+            get { return Container.Position; }
+            set
+            {
+                TextObject.Position = value + Padding.ToVector2();
+                Container.Position = value;
+            }
+        }
 
         private string PassedText;
         private Vector2 PassedPosition;

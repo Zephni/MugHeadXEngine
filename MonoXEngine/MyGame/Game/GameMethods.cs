@@ -38,7 +38,7 @@ namespace MyGame
             }, texture9Patch);
         }
 
-        public static void ShowMessages(List<MessageBox> Messages, Entity player, Action action = null)
+        public static void ShowMessages(List<MessageBox> Messages, Entity player = null, Action action = null)
         {
             if (Messages.Count > 0)
             {
@@ -51,7 +51,10 @@ namespace MyGame
             }
             else
             {
-                player.GetComponent<PlayerController>().MovementEnabled = true;
+                action?.Invoke();
+
+                if(player != null)
+                    player.GetComponent<PlayerController>().MovementEnabled = true;
             }
         }
     }

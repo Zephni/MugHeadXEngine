@@ -29,7 +29,20 @@ namespace MyGame
         {
             if (entityInfo.Name == "StartPosition" && GameData.Get("Player/Position") == null)
             {
-                LevelScene.Player.Position = new Vector2(entityInfo.Position.X * 16, entityInfo.Position.Y * 16);
+                GameGlobal.Player.Position = new Vector2(entityInfo.Position.X * 16, entityInfo.Position.Y * 16);
+            }
+            else if (entityInfo.Name == "Graphic")
+            {
+                new Entity(entity => {
+                    entity.Name = "Graphic";
+                    entity.LayerName = "Main";
+                    entity.Origin = Vector2.Zero;
+                    //entity.SortingLayer = entityInfo.; (Need Z pos)
+                    entity.AddComponent(new Drawable()).Run<Drawable>(d => {
+                        d.LoadTexture("Graphics/"+entityInfo.Data);
+                        entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
+                    });
+                });
             }
             else if(entityInfo.Name == "CameraLock")
             {
@@ -38,7 +51,7 @@ namespace MyGame
                     entity.Name = "CameraLock";
                     entity.LayerName = "Main";
                     entity.Data.Add("Type", entityInfo.Data);
-                    entity.SortingLayer = LevelScene.Player.SortingLayer;
+                    entity.SortingLayer = GameGlobal.Player.SortingLayer;
                     entity.Opacity = 0;
                     entity.AddComponent(new Drawable()).Run<Drawable>(d => {
                         d.BuildRectangle(new Point(entityInfo.Size.X * 16, entityInfo.Size.Y * 16), Color.Red);

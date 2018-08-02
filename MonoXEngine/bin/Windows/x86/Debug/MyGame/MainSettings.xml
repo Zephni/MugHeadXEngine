@@ -13,11 +13,11 @@
   </Directories>
 
   <Viewport>
-    <ResolutionX>256</ResolutionX>
+    <ResolutionX>320</ResolutionX>
     <ResolutionY>240</ResolutionY>
     <ViewportArea>FIT_BEST</ViewportArea>
     <AllowResizing>True</AllowResizing>
-    <FullScreen>True</FullScreen>
+    <FullScreen>False</FullScreen>
   </Viewport>
   
   <Initiation>
