@@ -89,8 +89,8 @@ namespace MyGame
 
                 if (distance > 1)
                     camPos += new Vector2(
-                        Math.Min(xyDist.X * Easing, MaxStep),
-                        Math.Min(xyDist.Y * Easing, MaxStep)
+                        Math.Min(xyDist.X * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier,
+                        Math.Min(xyDist.Y * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier
                         );
             }
             else if(Mode == Modes.SnapToTarget)

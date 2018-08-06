@@ -8,10 +8,11 @@ namespace MonoXEngine.EntityComponents
     public class CameraOffsetTexture : Sprite
     {
         public Vector2 Coefficient = new Vector2(1, 1);
+        public Vector2 Offset = new Vector2(0, 0);
 
         public override void Update()
         {
-            this.SourceRectangle = new Rectangle((Global.Camera.Position * this.Coefficient).ToPoint(), this.Entity.TextureSize.ToPoint());
+            this.SourceRectangle = new Rectangle(Offset.ToPoint() + (Global.Camera.Position * this.Coefficient).ToPoint(), this.Entity.TextureSize.ToPoint());
         }
     }
 }

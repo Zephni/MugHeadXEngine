@@ -59,12 +59,6 @@ namespace MyGame.Scenes
 
             // Backgrounds
             #region Backgrounds
-
-            new Entity(entity => {
-                entity.LayerName = "Background";
-                entity.Position += new Vector2(0, 0);
-                entity.AddComponent(new CameraOffsetTexture(){Texture2D = Global.Content.Load<Texture2D>("Backgrounds/night"), Coefficient = new Vector2(0, 0) });
-            });
             /*
             new Entity(entity => {
                 entity.LayerName = "Background";
@@ -169,11 +163,12 @@ namespace MyGame.Scenes
         {
             CameraController.Update();
 
-            if (Global.RunOnce("Restart", Keyboard.GetState().IsKeyDown(Keys.Space)))
+            // Temp speed up game
+            MonoXEngineGame.Instance.DeltaTimeMultiplier = (Keyboard.GetState().IsKeyDown(Keys.Space)) ? 15 : 1;
+
+            if (Global.RunOnce("Restart", Keyboard.GetState().IsKeyDown(Keys.F2)))
             {
-                GameGlobal.Fader.RunFunction("FadeOut", c => {
-                    Global.SceneManager.LoadScene("Menu");
-                });
+                Global.SceneManager.LoadScene("Menu");
             }
 
             if (Global.InputManager.Pressed(InputManager.Input.L1))

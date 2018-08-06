@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoXEngine;
 using MonoXEngine.EntityComponents;
 using MugHeadXEngine;
@@ -17,26 +18,49 @@ namespace MyGame
     {
         public void TheTree()
         {
-            if(GameData.Get("Levels/TheTree/Intro") == "True")
+            // Backgrounds
+            new Entity(entity => {
+                entity.LayerName = "Background";
+                entity.Position = new Vector2(0, 0);
+                entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/NeutralSky"), Coefficient = new Vector2(0f, 0.1f), Offset = new Vector2(0, -80) });
+            });
+            new Entity(entity => {
+                entity.LayerName = "Background";
+                entity.Position = new Vector2(0, 0);
+                entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/ForestBG_Rocks"), Coefficient = new Vector2(0.05f, 0.3f), Offset = new Vector2(-80, -180) });
+            });
+
+            if (GameData.Get("Levels/TheTree/Intro") == "True")
             {
                 return;
             }
+
+            // Initial fade
+            GameGlobal.Fader.RunFunction("Cancel");
+            GameGlobal.Fader.RunFunction("BlackOut");
+            GameGlobal.Fader.Data["Time"] = "5";
+            CoroutineHelper.WaitRun(2, () => {
+                GameGlobal.Fader.RunFunction("Resume");
+                GameGlobal.Fader.RunFunction("FadeIn", e => {
+                    e.Data["Time"] = "0.5";
+                });
+            });
 
             GameGlobal.Player.GetComponent<PlayerController>().MovementEnabled = false;
             GameGlobal.Player.GetComponent<PlayerController>().Kinetic = true;
             GameGlobal.Player.GetComponent<Sprite>().Visible = false;
 
             // Camera pan down
-            Entity camePos = new Entity(e => { e.Position = GameGlobal.Player.Position + new Vector2(0, -200); });
-            CameraController.Instance.Easing = 0.01f;
+            Entity camePos = new Entity(e => { e.Position = GameGlobal.Player.Position + new Vector2(0, -400); });
+            CameraController.Instance.Easing = 0.03f;
             CameraController.Instance.MaxStep = 1f;
             CameraController.Instance.Target = camePos;
             CameraController.Instance.SnapOnce();
 
-            CoroutineHelper.WaitRun(2, () => {
+            CoroutineHelper.WaitRun(9, () => {
                 camePos.Position = GameGlobal.Player.Position + new Vector2(0, -40);
 
-                CoroutineHelper.WaitRun(6, () => {
+                CoroutineHelper.WaitRun(5, () => {
                     GameMethods.ShowMessages(new List<MessageBox>() {
                         new MessageBox(".|.|.|| !", camePos.Position),
                         new MessageBox("Huh|.|.|.||| I don't remember\nsleeping there!?", camePos.Position)
@@ -48,8 +72,11 @@ namespace MyGame
                             MessageBox WoahMSG = new MessageBox("woah!", camePos.Position, MessageBox.Type.ManualDestroy);
                             WoahMSG.Build();
 
-                            CoroutineHelper.RunUntil(() => { return GameGlobal.Player.Position.Y > camePos.Position.Y + 50; }, () => {
-                                GameGlobal.Player.Position.Y += 2.5f;
+                            float temp = GameGlobal.Player.Position.Y;
+                            CoroutineHelper.RunFor(0.7f, p => {
+                                if (GameGlobal.Player.Position.Y < camePos.Position.Y + 50)
+                                    GameGlobal.Player.Position.Y += 1f * (p * 4.15f);
+
                                 if (GameGlobal.Player.Position.Y > WoahMSG.Position.Y + 32)
                                     WoahMSG.Position = GameGlobal.Player.Position + new Vector2(-WoahMSG.Container.Size.X / 2, -32);
                             }, () => {
@@ -73,7 +100,7 @@ namespace MyGame
                                     }, null, () => {
                                         GameGlobal.Player.GetComponent<PlayerController>().MovementEnabled = true;
                                         GameGlobal.Player.GetComponent<PlayerController>().Kinetic = false;
-                                        CameraController.Instance.Easing = 0.2f;
+                                        CameraController.Instance.Easing = 0.1f;
                                         CameraController.Instance.MaxStep = 1000;
                                         CameraController.Instance.Target = GameGlobal.Player;
                                         camePos.Destroy();

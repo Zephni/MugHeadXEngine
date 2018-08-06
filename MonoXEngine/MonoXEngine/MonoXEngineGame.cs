@@ -102,10 +102,11 @@ namespace MonoXEngine
             Content.Unload();
         }
 
+        public float DeltaTimeMultiplier = 1;
         protected override void Update(GameTime gameTime)
         {
             Global.GameTime = gameTime;
-            Global.DeltaTime = (float)Global.GameTime.ElapsedGameTime.TotalSeconds;
+            Global.DeltaTime = (float)Global.GameTime.ElapsedGameTime.TotalSeconds * DeltaTimeMultiplier;
 
             Global.InputManager.Update();
 

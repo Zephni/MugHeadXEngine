@@ -105,7 +105,7 @@
 /processorParam:TextureFormat=Color
 /build:Graphics/TheTree.png
 
-#begin Backgrounds/night.png
+#begin Backgrounds/NeutralSky.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -115,5 +115,17 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Backgrounds/night.png
+/build:Backgrounds/NeutralSky.png
+
+#begin Backgrounds/ForestBG_Rocks.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Backgrounds/ForestBG_Rocks.png
 

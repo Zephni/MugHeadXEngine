@@ -20,20 +20,35 @@ namespace MyGame
             // Fader
             Fader = new Entity(entity => {
                 entity.LayerName = "Fade";
+                entity.Data.Add("Time", "0.5");
+                entity.Data.Add("Cancel", "false");
+
                 entity.AddComponent(new Drawable()).Run<Drawable>(component => {
                     component.BuildRectangle(new Point(Global.ScreenBounds.Width, Global.ScreenBounds.Height), Color.Black);
                 });
 
                 entity.AddFunction("FadeIn", (e, c) => {
-                    CoroutineHelper.RunFor(0.5f, pcnt => { e.Opacity = 1 - pcnt; }, () => {
+                    CoroutineHelper.RunFor((float)Convert.ToDecimal(entity.Data["Time"]), pcnt => { if(entity.Data["Cancel"] != "true") e.Opacity = 1 - pcnt; }, () => {
                         c?.Invoke(e);
                     });
                 });
 
                 entity.AddFunction("FadeOut", (e, c) => {
-                    CoroutineHelper.RunFor(0.5f, pcnt => { e.Opacity = pcnt; }, () => {
+                    CoroutineHelper.RunFor((float)Convert.ToDecimal(entity.Data["Time"]), pcnt => { if (entity.Data["Cancel"] != "true") e.Opacity = pcnt; }, () => {
                         c?.Invoke(e);
                     });
+                });
+
+                entity.AddFunction("BlackOut", (e) => {
+                    e.Opacity = 1;
+                });
+
+                entity.AddFunction("Cancel", (e) => {
+                    entity.Data["Cancel"] = "true";
+                });
+
+                entity.AddFunction("Resume", (e) => {
+                    entity.Data["Cancel"] = "false";
                 });
             });
         }
