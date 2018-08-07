@@ -65,5 +65,21 @@ namespace MonoXEngine
         {
             MediaPlayer.Stop();
         }
+
+        public bool MusicIsPlaying(string SongName = "")
+        {
+            if (SongName != "" && SongInstance != null)
+            {
+                Console.WriteLine(SongName);
+                Console.WriteLine(SongInstance.Name);
+
+                return SongName == SongInstance.Name;
+            }
+
+            if (SongName == "")
+                return MediaPlayer.State == MediaState.Playing;
+
+            return false;
+        }
     }
 }

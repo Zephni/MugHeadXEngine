@@ -22,6 +22,8 @@ namespace MugHeadXEngine.EntityComponents
         public bool MovementEnabled = true;
         public List<Entity> CollidingEntities = new List<Entity>();
         public int Direction = 1;
+        bool Crouching = false;
+        public bool ObstructCrouching = true;
 
         public Entity GraphicEntity;
 
@@ -29,11 +31,11 @@ namespace MugHeadXEngine.EntityComponents
 
         public PlayerController(BaseCollider collider)
         {
-            Acceleration = 4f;
+            Acceleration = 2f;
             Deceleration = 9f;
             JumpStrength = 4f;
             passThru = collider;
-            MaxX = 2;
+            MaxX = 1.2f;
         }
 
         public void Animate(string Alias)
@@ -65,37 +67,17 @@ namespace MugHeadXEngine.EntityComponents
                 Global.AudioController.Play("SFX/Jump");
             }
 
-            if (IsGrounded)
-            {
-                CurrentJump = 0;
-            }
-
-            if (MovementEnabled && Global.InputManager.Held(InputManager.Input.Down))
-            {
-                if(Direction == 1)
-                    GameGlobal.PlayerGraphic.RunAnimation("LayRight");
-                else
-                    GameGlobal.PlayerGraphic.RunAnimation("LayLeft");
-            }
-            else
-            {
-                if (Direction == 1)
-                    GameGlobal.PlayerGraphic.RunAnimation("StandRight");
-                else
-                    GameGlobal.PlayerGraphic.RunAnimation("StandLeft");
-            }
-
             if (MovementEnabled && Global.InputManager.Held(InputManager.Input.Left))
             {
                 MoveX -= Acceleration * Global.DeltaTime;
-                GameGlobal.PlayerGraphic.RunAnimation("WalkLeft");
+                if(!Kinetic) GameGlobal.PlayerGraphic.RunAnimation("WalkLeft");
             }
             else if(MoveX < 0)
             {
                 MoveX += Deceleration * Global.DeltaTime;
                 if (MoveX >= -Deceleration * Global.DeltaTime)
                 {
-                    GameGlobal.PlayerGraphic.RunAnimation("StandLeft");
+                    if(!Kinetic) GameGlobal.PlayerGraphic.RunAnimation("StandLeft");
                     MoveX = 0;
                 }
             }
@@ -103,24 +85,43 @@ namespace MugHeadXEngine.EntityComponents
             if (MovementEnabled && Global.InputManager.Held(InputManager.Input.Right))
             {
                 MoveX += Acceleration * Global.DeltaTime;
-                GameGlobal.PlayerGraphic.RunAnimation("WalkRight");
+                if (!Kinetic) GameGlobal.PlayerGraphic.RunAnimation("WalkRight");
             }
             else if (MoveX > 0)
             {
                 MoveX -= Deceleration * Global.DeltaTime;
                 if (MoveX <= Deceleration * Global.DeltaTime)
                 {
-                    GameGlobal.PlayerGraphic.RunAnimation("StandRight");
+                    if (!Kinetic) GameGlobal.PlayerGraphic.RunAnimation("StandRight");
                     MoveX = 0;
                 }
             }
 
-            if(!IsGrounded)
+            if (MovementEnabled && !ObstructCrouching && Global.InputManager.Held(InputManager.Input.Down))
             {
-                if (Direction == 1)
-                    GameGlobal.PlayerGraphic.RunAnimation("JumpRight");
-                else
-                    GameGlobal.PlayerGraphic.RunAnimation("JumpLeft");
+                if (!Kinetic)
+                {
+                    Crouching = true;
+                    GameGlobal.PlayerGraphic.RunAnimation((Direction == 1) ? "LayRight" : "LayLeft");
+                }
+            }
+
+            if (IsGrounded)
+            {
+                CurrentJump = 0;
+
+                if(MoveX == 0 && !Kinetic && !Crouching)
+                    GameGlobal.PlayerGraphic.RunAnimation((Direction == 1) ? "StandRight" : "StandLeft");
+
+                if (Crouching && !Global.InputManager.Held(InputManager.Input.Down))
+                {
+                    Crouching = false;
+                    GameGlobal.PlayerGraphic.RunAnimation((Direction == 1) ? "StandRight" : "StandLeft");
+                }
+            }
+            else
+            {
+                if (!Kinetic) GameGlobal.PlayerGraphic.RunAnimation((Direction == 1) ? "JumpRight" : "JumpLeft");
             }
 
             if (MoveX != 0)

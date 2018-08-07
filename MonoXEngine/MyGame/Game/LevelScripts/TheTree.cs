@@ -27,16 +27,17 @@ namespace MyGame
             new Entity(entity => {
                 entity.LayerName = "Background";
                 entity.Position = new Vector2(0, 0);
-                entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/ForestBG_Rocks"), Coefficient = new Vector2(0.04f, 0.4f), Offset = new Vector2(-80, -220) });
+                entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/ForestBG_Rocks"), Coefficient = new Vector2(0.04f, 0.4f), Offset = new Vector2(-80, -250) });
             });
+
+            // Music
+            if(!Global.AudioController.MusicIsPlaying("Overworld1"))
+                Global.AudioController.PlayMusic("Music/Overworld1");
 
             if (GameData.Get("Levels/TheTree/Intro") == "True")
             {
                 return;
             }
-
-            // Music
-            Global.AudioController.PlayMusic("Music/Overworld1");
 
             // Initial fade
             GameGlobal.Fader.RunFunction("Cancel");
@@ -64,14 +65,16 @@ namespace MyGame
                 camePos.Position = GameGlobal.Player.Position + new Vector2(0, -40);
 
                 CoroutineHelper.WaitRun(5, () => {
+
+                    GameGlobal.Player.Position = camePos.Position + new Vector2(0, -20);
+                    GameGlobal.PlayerGraphic.RunAnimation("JumpLeft");
+
                     GameMethods.ShowMessages(new List<MessageBox>() {
                         new MessageBox(".|.|.|| !", camePos.Position),
                         new MessageBox("Huh|.|.|.||| I don't remember\nsleeping there!?", camePos.Position)
                     }, null, () => {
                         CoroutineHelper.WaitRun(3, () => {
                             GameGlobal.PlayerGraphic.Visible = true;
-                            GameGlobal.PlayerGraphic.RunAnimation("JumpLeft");
-                            GameGlobal.Player.Position = camePos.Position + new Vector2(0, -20);
 
                             MessageBox WoahMSG = new MessageBox("woah!", camePos.Position, MessageBox.Type.ManualDestroy);
                             WoahMSG.Build();
@@ -112,6 +115,8 @@ namespace MyGame
                                         camePos.Destroy();
 
                                         GameGlobal.PlayerGraphic.RunAnimation("StandRight");
+                                        GameGlobal.Player.GetComponent<PlayerController>().Direction = 1;
+                                        GameGlobal.Player.GetComponent<PlayerController>().IsGrounded = true;
 
                                         GameData.Set("Levels/TheTree/Intro", "True");
                                     });

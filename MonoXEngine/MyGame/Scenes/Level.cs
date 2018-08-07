@@ -80,7 +80,7 @@ namespace MyGame.Scenes
             // Player entity
             List<Entity> PlayerCollidingTriggers = new List<Entity>();
             GameGlobal.Player = new Entity(entity => {
-                entity.SortingLayer = 1;
+                entity.SortingLayer = 2;
 
                 entity.AddComponent(new Sprite()).Run<Sprite>(component => {
                     component.BuildRectangle(new Point(8, 8), Color.Blue);
@@ -101,8 +101,8 @@ namespace MyGame.Scenes
                         s.AddAnimation(new Animation("JumpRight", 0.2f, new Point(32, 32), new Point(0, 5), new Point(1, 5), new Point(2, 5), new Point(3, 5)));
                         s.AddAnimation(new Animation("CrawlLeft", 0.2f, new Point(32, 32), new Point(0, 6), new Point(1, 6), new Point(2, 6), new Point(3, 6)));
                         s.AddAnimation(new Animation("CrawlRight", 0.2f, new Point(32, 32), new Point(0, 7), new Point(1, 7), new Point(2, 7), new Point(3, 7)));
-                        s.AddAnimation(new Animation("LayLeft", 0.2f, new Point(32, 32), new Point(0, 6), new Point(1, 6)));
-                        s.AddAnimation(new Animation("LayRight", 0.2f, new Point(32, 32), new Point(0, 7), new Point(1, 7)));
+                        s.AddAnimation(new Animation("LayLeft", 0.2f, new Point(32, 32), new Point(0, 6)));
+                        s.AddAnimation(new Animation("LayRight", 0.2f, new Point(32, 32), new Point(0, 7)));
                     });
                 });
 
@@ -121,12 +121,14 @@ namespace MyGame.Scenes
 
                     PlayerCollidingTriggers = new List<Entity>();
 
-                    GameGlobal.PlayerGraphicEntity.Position = entity.Position + new Vector2(0, -10);
+                    GameGlobal.PlayerGraphicEntity.Position = entity.Position + new Vector2(0, -12);
                 };
 
                 entity.CollidedWithTrigger = obj => {
                     if (!entity.GetComponent<PlayerController>().MovementEnabled)
                         return;
+
+                    entity.GetComponent<PlayerController>().ObstructCrouching = false;
 
                     PlayerCollidingTriggers.Add(obj);
 
@@ -148,6 +150,18 @@ namespace MyGame.Scenes
                                 CameraController.MaxX = obj.BoundingBox.Right;
                             else if (item == "LockLeft")
                                 CameraController.MinX = obj.BoundingBox.Left;
+                        }
+                    }
+
+                    if(obj.Name == "Door")
+                    {
+                        entity.GetComponent<PlayerController>().ObstructCrouching = true;
+                        if(Global.InputManager.Pressed(InputManager.Input.Down))
+                        {
+                            GameGlobal.Fader.RunFunction("FadeOut", e => {
+                                GameData.Set("Level", obj.Data["Level"]);
+                                Global.SceneManager.LoadScene("Level");
+                            });
                         }
                     }
                 };

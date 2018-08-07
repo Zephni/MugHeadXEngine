@@ -36,11 +36,11 @@ namespace MonoXEngine.EntityComponents
         /// <param name="name">Name of an animation that has already been added to this sprite</param>
         public void RunAnimation(string name)
         {
-            CurrentAnimation = this.GetAnimation(name).Name;
-
             if(CurrentAnimation != name)
             {
+                CurrentAnimation = name;
                 this.SourceRectangle = this.GetAnimation(CurrentAnimation).SourceRectangles[0];
+                CurrentAnimationFrame = 0;
                 AnimTimer = 0;
             }
         }

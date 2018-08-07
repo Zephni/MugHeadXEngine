@@ -115,10 +115,11 @@ namespace MugHeadXEngine
 
             if (TestString != PassedText)
             {
-                Global.AudioController.Play("SFX/Text");
                 float stepTime = 0.02f;
                 if (TestString.Length > 0 && TestString[TestString.Length-1] == '|')
                     stepTime = 0.3f;
+                else
+                    Global.AudioController.Play("SFX/Text");
 
                 StaticCoroutines.CoroutineHelper.WaitRun(stepTime, () => {
                     ProgressText(action);
