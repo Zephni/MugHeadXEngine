@@ -18,6 +18,7 @@ namespace MonoXEngine
         public Vector2 TextureSize;
         public float Rotation;
         public Dictionary<string, string> Data = new Dictionary<string, string>();
+        public bool CheckPixels = true;
 
         private Dictionary<string, Action<Entity, Action<Entity>>> Functions = new Dictionary<string, Action<Entity, Action<Entity>>>();
 

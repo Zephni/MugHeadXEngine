@@ -14,6 +14,8 @@ namespace MyGame
     {
         public static Entity Fader;
         public static Entity Player;
+        public static Entity PlayerGraphicEntity;
+        public static Sprite PlayerGraphic { get { return GameGlobal.PlayerGraphicEntity.GetComponent<Sprite>(); } }
 
         public static void InitialiseAssets()
         {

@@ -1,6 +1,8 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using MonoXEngine;
 using MonoXEngine.EntityComponents;
+using MyGame;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,6 +21,9 @@ namespace MugHeadXEngine.EntityComponents
         public int MaxJumps = 2;
         public bool MovementEnabled = true;
         public List<Entity> CollidingEntities = new List<Entity>();
+        public int Direction = 1;
+
+        public Entity GraphicEntity;
 
         BaseCollider passThru;
 
@@ -29,6 +34,11 @@ namespace MugHeadXEngine.EntityComponents
             JumpStrength = 4f;
             passThru = collider;
             MaxX = 2;
+        }
+
+        public void Animate(string Alias)
+        {
+            GraphicEntity.GetComponent<Sprite>().RunAnimation(Alias);
         }
 
         public override void Start()
@@ -52,24 +62,70 @@ namespace MugHeadXEngine.EntityComponents
             {
                 MoveY = -JumpStrength;
                 CurrentJump++;
+                Global.AudioController.Play("SFX/Jump");
             }
 
             if (IsGrounded)
-                CurrentJump = 0;                
+            {
+                CurrentJump = 0;
+            }
+
+            if (MovementEnabled && Global.InputManager.Held(InputManager.Input.Down))
+            {
+                if(Direction == 1)
+                    GameGlobal.PlayerGraphic.RunAnimation("LayRight");
+                else
+                    GameGlobal.PlayerGraphic.RunAnimation("LayLeft");
+            }
+            else
+            {
+                if (Direction == 1)
+                    GameGlobal.PlayerGraphic.RunAnimation("StandRight");
+                else
+                    GameGlobal.PlayerGraphic.RunAnimation("StandLeft");
+            }
 
             if (MovementEnabled && Global.InputManager.Held(InputManager.Input.Left))
+            {
                 MoveX -= Acceleration * Global.DeltaTime;
+                GameGlobal.PlayerGraphic.RunAnimation("WalkLeft");
+            }
             else if(MoveX < 0)
             {
                 MoveX += Deceleration * Global.DeltaTime;
-                if (MoveX >= -Deceleration * Global.DeltaTime) MoveX = 0;
+                if (MoveX >= -Deceleration * Global.DeltaTime)
+                {
+                    GameGlobal.PlayerGraphic.RunAnimation("StandLeft");
+                    MoveX = 0;
+                }
             }
+
             if (MovementEnabled && Global.InputManager.Held(InputManager.Input.Right))
+            {
                 MoveX += Acceleration * Global.DeltaTime;
+                GameGlobal.PlayerGraphic.RunAnimation("WalkRight");
+            }
             else if (MoveX > 0)
             {
                 MoveX -= Deceleration * Global.DeltaTime;
-                if (MoveX <= Deceleration * Global.DeltaTime) MoveX = 0;
+                if (MoveX <= Deceleration * Global.DeltaTime)
+                {
+                    GameGlobal.PlayerGraphic.RunAnimation("StandRight");
+                    MoveX = 0;
+                }
+            }
+
+            if(!IsGrounded)
+            {
+                if (Direction == 1)
+                    GameGlobal.PlayerGraphic.RunAnimation("JumpRight");
+                else
+                    GameGlobal.PlayerGraphic.RunAnimation("JumpLeft");
+            }
+
+            if (MoveX != 0)
+            {
+                Direction = (MoveX > 0) ? 1 : -1;
             }
 
             base.Update();

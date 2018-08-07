@@ -20,12 +20,6 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Arial-12.spritefont
 
-#begin Audio/SFX/Collect.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/SFX/Collect.wav
-
 #begin Defaults/9Patch_16.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -128,4 +122,40 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Backgrounds/ForestBG_Rocks.png
+
+#begin Entities/Pause.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Entities/Pause.png
+
+#begin Audio/SFX/Text.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SFX/Text.wav
+
+#begin Audio/SFX/Jump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SFX/Jump.wav
+
+#begin Audio/SFX/Thump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SFX/Thump.wav
+
+#begin Audio/Music/Overworld1.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Audio/Music/Overworld1.mp3
 

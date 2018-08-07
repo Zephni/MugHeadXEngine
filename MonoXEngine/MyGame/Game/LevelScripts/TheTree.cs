@@ -27,13 +27,16 @@ namespace MyGame
             new Entity(entity => {
                 entity.LayerName = "Background";
                 entity.Position = new Vector2(0, 0);
-                entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/ForestBG_Rocks"), Coefficient = new Vector2(0.05f, 0.3f), Offset = new Vector2(-80, -180) });
+                entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/ForestBG_Rocks"), Coefficient = new Vector2(0.04f, 0.4f), Offset = new Vector2(-80, -220) });
             });
 
             if (GameData.Get("Levels/TheTree/Intro") == "True")
             {
                 return;
             }
+
+            // Music
+            Global.AudioController.PlayMusic("Music/Overworld1");
 
             // Initial fade
             GameGlobal.Fader.RunFunction("Cancel");
@@ -48,7 +51,7 @@ namespace MyGame
 
             GameGlobal.Player.GetComponent<PlayerController>().MovementEnabled = false;
             GameGlobal.Player.GetComponent<PlayerController>().Kinetic = true;
-            GameGlobal.Player.GetComponent<Sprite>().Visible = false;
+            GameGlobal.PlayerGraphic.Visible = false;
 
             // Camera pan down
             Entity camePos = new Entity(e => { e.Position = GameGlobal.Player.Position + new Vector2(0, -400); });
@@ -66,7 +69,8 @@ namespace MyGame
                         new MessageBox("Huh|.|.|.||| I don't remember\nsleeping there!?", camePos.Position)
                     }, null, () => {
                         CoroutineHelper.WaitRun(3, () => {
-                            GameGlobal.Player.GetComponent<Sprite>().Visible = true;
+                            GameGlobal.PlayerGraphic.Visible = true;
+                            GameGlobal.PlayerGraphic.RunAnimation("JumpLeft");
                             GameGlobal.Player.Position = camePos.Position + new Vector2(0, -20);
 
                             MessageBox WoahMSG = new MessageBox("woah!", camePos.Position, MessageBox.Type.ManualDestroy);
@@ -80,7 +84,9 @@ namespace MyGame
                                 if (GameGlobal.Player.Position.Y > WoahMSG.Position.Y + 32)
                                     WoahMSG.Position = GameGlobal.Player.Position + new Vector2(-WoahMSG.Container.Size.X / 2, -32);
                             }, () => {
-                                GameGlobal.Player.Position.Y = camePos.Position.Y + 48;
+                                GameGlobal.Player.Position.Y = camePos.Position.Y + 50;
+                                GameGlobal.PlayerGraphic.RunAnimation("LayLeft");
+                                Global.AudioController.Play("SFX/Thump");
                                 WoahMSG.Destroy();
 
                                 Vector2 sPos = Global.Camera.Position;
@@ -93,17 +99,19 @@ namespace MyGame
                                     Global.Camera.Position = sPos;
                                 });
 
-
                                 CoroutineHelper.WaitRun(2, () => {
                                     GameMethods.ShowMessages(new List<MessageBox>() {
                                         new MessageBox("OUCH!", GameGlobal.Player.Position + new Vector2(0, -32)),
                                     }, null, () => {
+                                        
                                         GameGlobal.Player.GetComponent<PlayerController>().MovementEnabled = true;
                                         GameGlobal.Player.GetComponent<PlayerController>().Kinetic = false;
                                         CameraController.Instance.Easing = 0.1f;
                                         CameraController.Instance.MaxStep = 1000;
                                         CameraController.Instance.Target = GameGlobal.Player;
                                         camePos.Destroy();
+
+                                        GameGlobal.PlayerGraphic.RunAnimation("StandRight");
 
                                         GameData.Set("Levels/TheTree/Intro", "True");
                                     });

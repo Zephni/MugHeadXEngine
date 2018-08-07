@@ -25,7 +25,7 @@ namespace MonoXEngine.EntityComponents
             List<Entity> possibleCollidingEntities = new List<Entity>();
             foreach(Entity entity in Global.Entities.FindAll(e => e.LayerName == this.Entity.LayerName))
             {
-                if (entity.SortingLayer != Entity.SortingLayer || entity == Entity)
+                if (entity == Entity || entity.SortingLayer != Entity.SortingLayer || !entity.CheckPixels)
                     continue;
 
                 if (checkArea.Intersects(entity.BoundingBox))

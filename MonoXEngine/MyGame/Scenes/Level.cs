@@ -83,16 +83,34 @@ namespace MyGame.Scenes
                 entity.SortingLayer = 1;
 
                 entity.AddComponent(new Sprite()).Run<Sprite>(component => {
-                    component.BuildRectangle(new Point(16, 16), Color.Blue);
+                    component.BuildRectangle(new Point(8, 8), Color.Blue);
+                    component.Visible = false;
                 });
 
                 entity.AddComponent(new PlayerController(new PixelCollider()));
 
-                if(GameData.Get("Player/Position") != null)
+                GameGlobal.PlayerGraphicEntity = new Entity(e => {
+                    e.SortingLayer = entity.SortingLayer;
+                    e.CheckPixels = false;
+                    e.AddComponent(new Sprite() { Texture2D = Global.Content.Load<Texture2D>("Entities/Pause") }).Run<Sprite>(s => {
+                        s.AddAnimation(new Animation("StandLeft", 0.2f, new Point(32, 32), new Point(0, 0)));
+                        s.AddAnimation(new Animation("StandRight", 0.2f, new Point(32, 32), new Point(0, 1)));
+                        s.AddAnimation(new Animation("WalkLeft", 0.2f, new Point(32, 32), new Point(0, 2), new Point(1, 2), new Point(2, 2), new Point(3, 2)));
+                        s.AddAnimation(new Animation("WalkRight", 0.2f, new Point(32, 32), new Point(0, 3), new Point(1, 3), new Point(2, 3), new Point(3, 3)));
+                        s.AddAnimation(new Animation("JumpLeft", 0.2f, new Point(32, 32), new Point(0, 4), new Point(1, 4), new Point(2, 4), new Point(3, 4)));
+                        s.AddAnimation(new Animation("JumpRight", 0.2f, new Point(32, 32), new Point(0, 5), new Point(1, 5), new Point(2, 5), new Point(3, 5)));
+                        s.AddAnimation(new Animation("CrawlLeft", 0.2f, new Point(32, 32), new Point(0, 6), new Point(1, 6), new Point(2, 6), new Point(3, 6)));
+                        s.AddAnimation(new Animation("CrawlRight", 0.2f, new Point(32, 32), new Point(0, 7), new Point(1, 7), new Point(2, 7), new Point(3, 7)));
+                        s.AddAnimation(new Animation("LayLeft", 0.2f, new Point(32, 32), new Point(0, 6), new Point(1, 6)));
+                        s.AddAnimation(new Animation("LayRight", 0.2f, new Point(32, 32), new Point(0, 7), new Point(1, 7)));
+                    });
+                });
+
+                if (GameData.Get("Player/Position") != null)
                 {
                     string[] pPosData = GameData.Get("Player/Position").Split(',');
                     entity.Position = new Vector2(Convert.ToInt16(pPosData[0]), Convert.ToInt16(pPosData[1]));
-                }
+                }                
 
                 entity.UpdateAction = e => {
                     if(entity.GetComponent<PlayerController>().MovementEnabled && PlayerCollidingTriggers.Find(t => t.Name == "CameraLock") == null)
@@ -102,6 +120,8 @@ namespace MyGame.Scenes
                     }
 
                     PlayerCollidingTriggers = new List<Entity>();
+
+                    GameGlobal.PlayerGraphicEntity.Position = entity.Position + new Vector2(0, -10);
                 };
 
                 entity.CollidedWithTrigger = obj => {
@@ -164,12 +184,18 @@ namespace MyGame.Scenes
             CameraController.Update();
 
             // Temp speed up game
-            MonoXEngineGame.Instance.DeltaTimeMultiplier = (Keyboard.GetState().IsKeyDown(Keys.Space)) ? 15 : 1;
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+                MonoXEngineGame.Instance.DeltaTimeMultiplier = 30;
+            else if (Keyboard.GetState().IsKeyDown(Keys.Q))
+                MonoXEngineGame.Instance.DeltaTimeMultiplier = 0.2f;
+            else
+                MonoXEngineGame.Instance.DeltaTimeMultiplier = 1;
 
             if (Global.RunOnce("Restart", Keyboard.GetState().IsKeyDown(Keys.F2)))
             {
                 Global.SceneManager.LoadScene("Menu");
             }
+
 
             if (Global.InputManager.Pressed(InputManager.Input.L1))
             {

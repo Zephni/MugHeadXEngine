@@ -106,8 +106,16 @@ namespace MugHeadXEngine
             TestString = PassedText.Substring(0, TestString.Length + 1);
             TextString.String = TestString.Replace("|", "");
 
+            // Skip
+            if (Global.InputManager.Held(InputManager.Input.Action1) && !PassedText.Substring(TestString.Length).Contains("|"))
+            {
+                TestString = PassedText;
+                TextString.String = TestString.Replace("|", "");
+            }
+
             if (TestString != PassedText)
             {
+                Global.AudioController.Play("SFX/Text");
                 float stepTime = 0.02f;
                 if (TestString.Length > 0 && TestString[TestString.Length-1] == '|')
                     stepTime = 0.3f;

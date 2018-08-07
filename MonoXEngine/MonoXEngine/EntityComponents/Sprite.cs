@@ -13,6 +13,8 @@ namespace MonoXEngine.EntityComponents
 
         private int CurrentAnimationFrame;
 
+        public string CurrentAnimation;
+
         public Sprite()
         {
             this.Animations = new Dictionary<string, Animation>();
@@ -34,18 +36,35 @@ namespace MonoXEngine.EntityComponents
         /// <param name="name">Name of an animation that has already been added to this sprite</param>
         public void RunAnimation(string name)
         {
-            Animation thisAnimation = this.GetAnimation(name);
+            CurrentAnimation = this.GetAnimation(name).Name;
 
-            this.SourceRectangle = thisAnimation.SourceRectangles[0];
+            if(CurrentAnimation != name)
+            {
+                this.SourceRectangle = this.GetAnimation(CurrentAnimation).SourceRectangles[0];
+                AnimTimer = 0;
+            }
+        }
 
-            CoroutineHelper.Every(thisAnimation.FrameInterval, () => {
-                CurrentAnimationFrame++;
+        private float AnimTimer = 0;
 
-                if (CurrentAnimationFrame >= thisAnimation.SourceRectangles.Count)
-                    CurrentAnimationFrame = 0;
-                
-                this.SourceRectangle = thisAnimation.SourceRectangles[CurrentAnimationFrame];
-            });
+        public override void Update()
+        {
+            if(CurrentAnimation != null)
+            {
+                AnimTimer += Global.DeltaTime;
+
+                if(AnimTimer >= this.GetAnimation(CurrentAnimation).FrameInterval)
+                {
+                    AnimTimer = 0;
+
+                    CurrentAnimationFrame++;
+
+                    if (CurrentAnimationFrame >= this.GetAnimation(CurrentAnimation).SourceRectangles.Count)
+                        CurrentAnimationFrame = 0;
+
+                    this.SourceRectangle = this.GetAnimation(CurrentAnimation).SourceRectangles[CurrentAnimationFrame];
+                }
+            }
         }
     }
 }

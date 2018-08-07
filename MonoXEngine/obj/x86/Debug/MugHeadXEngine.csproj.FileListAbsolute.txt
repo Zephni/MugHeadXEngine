@@ -42,7 +42,6 @@ C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoX
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Defaults\OptionSelector.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Tilesets\Forest.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Graphics\TheTree.xnb
-C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\Collect.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Fonts\Arial-12.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Fonts\HeartbitXX.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\MyGame\Game\Levels\TheTree.lvl
@@ -76,3 +75,9 @@ C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoX
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\obj\x86\Debug\MugHeadXEngine.pdb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Backgrounds\ForestBG_Rocks.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Backgrounds\NeutralSky.xnb
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Entities\Pause.xnb
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\Jump.xnb
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\Text.xnb
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\Thump.xnb
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\Music\Overworld1.wma
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\Music\Overworld1.xnb
