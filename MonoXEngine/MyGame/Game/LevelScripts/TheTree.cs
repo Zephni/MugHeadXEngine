@@ -22,12 +22,12 @@ namespace MyGame
             new Entity(entity => {
                 entity.LayerName = "Background";
                 entity.Position = new Vector2(0, 0);
-                entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/NeutralSky"), Coefficient = new Vector2(0f, 0.1f), Offset = new Vector2(0, -80) });
+                entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/Blue_Sky"), Coefficient = new Vector2(0f, 0.0251f), Offset = new Vector2(0, -120) });
             });
             new Entity(entity => {
                 entity.LayerName = "Background";
                 entity.Position = new Vector2(0, 0);
-                entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/ForestBG_Rocks"), Coefficient = new Vector2(0.04f, 0.4f), Offset = new Vector2(-80, -250) });
+                entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/ForestBG_Rocks"), Coefficient = new Vector2(0.04f, 0.4f), Offset = new Vector2(30, -300) });
             });
 
             // Music
