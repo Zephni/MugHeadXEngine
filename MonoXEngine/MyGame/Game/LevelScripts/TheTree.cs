@@ -70,13 +70,13 @@ namespace MyGame
                     GameGlobal.PlayerGraphic.RunAnimation("JumpLeft");
 
                     GameMethods.ShowMessages(new List<MessageBox>() {
-                        new MessageBox(".|.|.|| !", camePos.Position),
-                        new MessageBox("Huh|.|.|.||| I don't remember\nsleeping there!?", camePos.Position)
+                        new MessageBox("Pause", ".|.|.|| !", camePos.Position),
+                        new MessageBox("Pause", "Huh|.|.|.||| I don't remember\nsleeping there!?", camePos.Position)
                     }, null, () => {
                         CoroutineHelper.WaitRun(3, () => {
                             GameGlobal.PlayerGraphic.Visible = true;
 
-                            MessageBox WoahMSG = new MessageBox("woah!", camePos.Position, MessageBox.Type.ManualDestroy);
+                            MessageBox WoahMSG = new MessageBox("Pause", "woah!", camePos.Position, MessageBox.Type.ManualDestroy);
                             WoahMSG.Build();
 
                             float temp = GameGlobal.Player.Position.Y;
@@ -104,7 +104,7 @@ namespace MyGame
 
                                 CoroutineHelper.WaitRun(2, () => {
                                     GameMethods.ShowMessages(new List<MessageBox>() {
-                                        new MessageBox("OUCH!", GameGlobal.Player.Position + new Vector2(0, -32)),
+                                        new MessageBox("Pause", "OUCH!", GameGlobal.Player.Position + new Vector2(0, -32)),
                                     }, null, () => {
                                         
                                         GameGlobal.Player.GetComponent<PlayerController>().MovementEnabled = true;

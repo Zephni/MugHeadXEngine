@@ -15,7 +15,7 @@ namespace MonoXEngine.EntityComponents
             
         }
 
-        public override bool Colliding(Point offset)
+        public override bool Colliding(Point offset, int layerOffset = 0)
         {
             Rectangle checkArea = new Rectangle(
                 (this.Entity.Position.ToPoint() - (this.Entity.Size/2).ToPoint()) + offset,
@@ -25,7 +25,7 @@ namespace MonoXEngine.EntityComponents
             List<Entity> possibleCollidingEntities = new List<Entity>();
             foreach(Entity entity in Global.Entities.FindAll(e => e.LayerName == this.Entity.LayerName))
             {
-                if (entity == Entity || entity.SortingLayer != Entity.SortingLayer || !entity.CheckPixels)
+                if (entity == Entity || entity.SortingLayer - layerOffset != Entity.SortingLayer || !entity.CheckPixels)
                     continue;
 
                 if (checkArea.Intersects(entity.BoundingBox))

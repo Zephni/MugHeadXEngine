@@ -19,6 +19,7 @@ namespace MugHeadXEngine
         private Entity ArrowFlash;
         private Text TextString;
         private string TestString;
+        private string Speaker;
 
         public Vector2 Position
         {
@@ -44,15 +45,20 @@ namespace MugHeadXEngine
 
         Type ThisType;
 
-        public MessageBox(string text, Vector2 position, Type type = Type.PressToProgress)
+        public MessageBox(string speaker, string text, Vector2 position, Type type = Type.PressToProgress)
         {
             PassedText = text;
             PassedPosition = new Vector2().Copy(position);
+            Speaker = speaker;
             ThisType = type;
         }
 
         public void Build(Action action = null)
         {
+            if (Speaker != null && Speaker != "")
+                PassedText = Speaker + "\n" + PassedText;
+
+
             // Build and position text
             TextObject = new Entity(entity => {
                 entity.LayerName = DefaultLayerName;
@@ -95,9 +101,17 @@ namespace MugHeadXEngine
                 });
             }
 
-            // Write text from scratch
-            TextString.String = "";
-            TestString = "";
+            if(Speaker != null && Speaker != "")
+            {
+                TextString.String = Speaker + "\n";
+                TestString = Speaker + "\n";
+            }
+            else
+            {
+                TextString.String = "";
+                TestString = "";
+            }
+
             ProgressText(action);
         }
 

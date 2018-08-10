@@ -80,7 +80,7 @@ namespace MyGame.Scenes
             if(GameData.Get("Flags/Init") == null)
             {
                 CoroutineHelper.WaitRun(2, () => {
-                    MessageBox mbQ = new MessageBox("Would you like to party?", player.Position + new Vector2(-50, -50), MessageBox.Type.ManualDestroy);
+                    MessageBox mbQ = new MessageBox(null, "Would you like to party?", player.Position + new Vector2(-50, -50), MessageBox.Type.ManualDestroy);
                     mbQ.Build(() => {
                         GameMethods.ShowOptionSelector(
                             player.Position,
@@ -97,8 +97,8 @@ namespace MyGame.Scenes
                                     player.GetComponent<PlatformerController>().MovementEnabled = false;
                                     GameMethods.ShowMessages(
                                         new List<MugHeadXEngine.MessageBox>() {
-                                new MugHeadXEngine.MessageBox("Your answer was.|.|.|| "+result+"!", player.Position + new Vector2(50, -100)),
-                                new MugHeadXEngine.MessageBox("Who said that!?", player.Position + new Vector2(0, -42))
+                                new MugHeadXEngine.MessageBox(null, "Your answer was.|.|.|| "+result+"!", player.Position + new Vector2(50, -100)),
+                                new MugHeadXEngine.MessageBox(null, "Who said that!?", player.Position + new Vector2(0, -42))
                                         },
                                         player
                                     );
@@ -114,7 +114,7 @@ namespace MyGame.Scenes
                 string[] pPosData = GameData.Get("Player/Position").Split(',');
                 player.Position = new Vector2(Convert.ToInt16(pPosData[0]), Convert.ToInt16(pPosData[1]));
                 player.GetComponent<PlatformerController>().MovementEnabled = false;
-                new MessageBox("You do like to party! "+ GameData.Get("Flags/Init"), player.Position + new Vector2(-50, -50)).Build(() => {
+                new MessageBox(null,  "You do like to party! " + GameData.Get("Flags/Init"), player.Position + new Vector2(-50, -50)).Build(() => {
                     player.GetComponent<PlatformerController>().MovementEnabled = true;
                 });
             }

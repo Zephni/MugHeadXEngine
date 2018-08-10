@@ -80,7 +80,7 @@ namespace MyGame.Scenes
             // Player entity
             List<Entity> PlayerCollidingTriggers = new List<Entity>();
             GameGlobal.Player = new Entity(entity => {
-                entity.SortingLayer = 2;
+                entity.SortingLayer = 4;
 
                 entity.AddComponent(new Sprite()).Run<Sprite>(component => {
                     component.BuildRectangle(new Point(8, 8), Color.Blue);
@@ -169,10 +169,10 @@ namespace MyGame.Scenes
 
             // Load level
             LevelLoader levelLoader = new LevelLoader();
-            levelLoader.Load(GameData.Get("Level"), (tiles, entities) => {
+            levelLoader.Load(GameData.Get("Level"), (tileset, tiles, entities) => {
 
                 // Create tilemap
-                TileMap tileMap = new TileMap(new Point(16, 16), "Tilesets/Forest", tiles);
+                TileMap tileMap = new TileMap(new Point(16, 16), "Tilesets/"+ tileset.Substring(0, tileset.LastIndexOf('.')), tiles);
                 tileMap.Build(new Point(32, 32));
 
                 // Entities

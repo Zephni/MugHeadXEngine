@@ -14,7 +14,7 @@ namespace XEditor
 {
     public class LevelLoader
     {
-        public void Load(string file, Action<List<Tile>, List<EntityInfo>> action)
+        public void Load(string file, Action<string, List<Tile>, List<EntityInfo>> action)
         {
             string b64CompressedData = File.ReadAllText("MyGame/Game/Levels/" + file + ".lvl");
             XDocument loadedDoc = XDocument.Parse(Compressor.Unzip(Convert.FromBase64String(b64CompressedData)));
@@ -22,9 +22,9 @@ namespace XEditor
             GameData.Set("Level", file);
         }
 
-        private void DataFromDocument(XDocument xDoc, Action<List<Tile>, List<EntityInfo>> action)
+        private void DataFromDocument(XDocument xDoc, Action<string, List<Tile>, List<EntityInfo>> action)
         {
-            string tilesetPath = xDoc.Root.Element("EditorConfig").Element("Tileset").Value;
+            string tileset = xDoc.Root.Element("Config").Element("Tileset").Value;
 
             string[] mapSize = xDoc.Root.Element("Config").Element("MapSize").Value.Split(',');
             Point mapSizep = new Point(Convert.ToInt16(mapSize[0]), Convert.ToInt16(mapSize[1]));
@@ -65,7 +65,7 @@ namespace XEditor
                 });
             }
             
-            action.Invoke(tileList, entityList);
+            action.Invoke(tileset, tileList, entityList);
         }
     }
 }

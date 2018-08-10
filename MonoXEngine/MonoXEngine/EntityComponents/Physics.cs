@@ -19,6 +19,7 @@ namespace MonoXEngine.EntityComponents
         public float MoveY;
         public bool IsGrounded;
         public BaseCollider Collider;
+        public bool UsePlatforms = true;
 
         public Physics()
         {
@@ -72,6 +73,10 @@ namespace MonoXEngine.EntityComponents
                 {
                     if (Collider.Colliding(new Point(0, (MoveY > 0) ? 1 : -1)))
                         this.MoveY = 0;
+
+                    if(UsePlatforms && MoveY > 0) // Uses layer offset for platforms, can be turned off
+                        if (Collider.Colliding(new Point(0, 1), -1))
+                            this.MoveY = 0;
 
                     if (this.MoveY != 0)
                         this.Entity.Position.Y += (this.MoveY > 0) ? 1 : -1;
