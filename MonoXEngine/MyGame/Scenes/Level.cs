@@ -99,8 +99,8 @@ namespace MyGame.Scenes
                         s.AddAnimation(new Animation("WalkRight", 0.2f, new Point(32, 32), new Point(0, 3), new Point(1, 3), new Point(2, 3), new Point(3, 3)));
                         s.AddAnimation(new Animation("JumpLeft", 0.2f, new Point(32, 32), new Point(0, 4), new Point(1, 4), new Point(2, 4), new Point(3, 4)));
                         s.AddAnimation(new Animation("JumpRight", 0.2f, new Point(32, 32), new Point(0, 5), new Point(1, 5), new Point(2, 5), new Point(3, 5)));
-                        s.AddAnimation(new Animation("CrawlLeft", 0.2f, new Point(32, 32), new Point(0, 6), new Point(1, 6), new Point(2, 6), new Point(3, 6)));
-                        s.AddAnimation(new Animation("CrawlRight", 0.2f, new Point(32, 32), new Point(0, 7), new Point(1, 7), new Point(2, 7), new Point(3, 7)));
+                        s.AddAnimation(new Animation("CrawlLeft", 0.15f, new Point(32, 32), new Point(0, 6), new Point(1, 6), new Point(2, 6), new Point(3, 6)));
+                        s.AddAnimation(new Animation("CrawlRight", 0.15f, new Point(32, 32), new Point(0, 7), new Point(1, 7), new Point(2, 7), new Point(3, 7)));
                         s.AddAnimation(new Animation("LayLeft", 0.2f, new Point(32, 32), new Point(0, 6)));
                         s.AddAnimation(new Animation("LayRight", 0.2f, new Point(32, 32), new Point(0, 7)));
                     });

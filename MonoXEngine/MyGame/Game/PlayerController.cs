@@ -48,6 +48,7 @@ namespace MugHeadXEngine.EntityComponents
             this.Entity.AddComponent(passThru);
             this.Collider = passThru;
             passThru = null;
+            ObstructCrouching = false;
         }
 
         public override void Update()
@@ -73,12 +74,12 @@ namespace MugHeadXEngine.EntityComponents
                 Global.AudioController.Play("SFX/Jump");
             }
 
-            if (MovementEnabled && Global.InputManager.Held(InputManager.Input.Left))
+            if (!Crouching && MovementEnabled && Global.InputManager.Held(InputManager.Input.Left))
             {
                 MoveX -= Acceleration * Global.DeltaTime;
                 if(!Kinetic) GameGlobal.PlayerGraphic.RunAnimation("WalkLeft");
             }
-            else if(MoveX < 0)
+            else if(!Crouching && MoveX < 0)
             {
                 MoveX += Deceleration * Global.DeltaTime;
                 if (MoveX >= -Deceleration * Global.DeltaTime)
@@ -86,14 +87,12 @@ namespace MugHeadXEngine.EntityComponents
                     if(!Kinetic) GameGlobal.PlayerGraphic.RunAnimation("StandLeft");
                     MoveX = 0;
                 }
-            }
-
-            if (MovementEnabled && Global.InputManager.Held(InputManager.Input.Right))
+            }else if (!Crouching && MovementEnabled && Global.InputManager.Held(InputManager.Input.Right))
             {
                 MoveX += Acceleration * Global.DeltaTime;
                 if (!Kinetic) GameGlobal.PlayerGraphic.RunAnimation("WalkRight");
             }
-            else if (MoveX > 0)
+            else if (!Crouching && MoveX > 0)
             {
                 MoveX -= Deceleration * Global.DeltaTime;
                 if (MoveX <= Deceleration * Global.DeltaTime)
@@ -108,7 +107,17 @@ namespace MugHeadXEngine.EntityComponents
                 if (!Kinetic)
                 {
                     Crouching = true;
-                    GameGlobal.PlayerGraphic.RunAnimation((Direction == 1) ? "LayRight" : "LayLeft");
+                    
+                    if (Global.InputManager.Held(InputManager.Input.Left) || Global.InputManager.Held(InputManager.Input.Right))
+                    {
+                        GameGlobal.PlayerGraphic.RunAnimation((Direction == 1) ? "CrawlRight" : "CrawlLeft");
+                        MoveX = (Direction == 1) ? 1 : -1;
+                    }
+                    else
+                    {
+                        MoveX = 0;
+                        GameGlobal.PlayerGraphic.RunAnimation((Direction == 1) ? "LayRight" : "LayLeft");
+                    }
                 }
             }
 
@@ -129,18 +138,6 @@ namespace MugHeadXEngine.EntityComponents
             {
                 if (!Kinetic) GameGlobal.PlayerGraphic.RunAnimation((Direction == 1) ? "JumpRight" : "JumpLeft");
             }
-
-            // Slopes
-            /*if (Direction > 0)
-            {
-                if (this.Collider.Colliding(new Point(1, 0), 0) && !this.Collider.Colliding(new Point(1, -1), 0)) this.Entity.Position.Y -= 1;
-                else if (IsGrounded && !this.Collider.Colliding(new Point(1, 1), 0)) Entity.Position.Y += 1;
-            }
-            else
-            {
-                if (Direction < 0 && this.Collider.Colliding(new Point(-1, 0), 0) && !this.Collider.Colliding(new Point(-1, -1), 0)) this.Entity.Position.Y -= 1;
-                else if (IsGrounded && Direction < 0 && !this.Collider.Colliding(new Point(-1, 1), 0)) this.Entity.Position.Y += 1;
-            }*/
 
             base.Update();
         }
