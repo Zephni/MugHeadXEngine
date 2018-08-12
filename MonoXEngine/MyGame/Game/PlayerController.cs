@@ -31,7 +31,7 @@ namespace MugHeadXEngine.EntityComponents
 
         public PlayerController(BaseCollider collider)
         {
-            Acceleration = 2f;
+            Acceleration = 8f;
             Deceleration = 9f;
             JumpStrength = 4f;
             passThru = collider;
@@ -59,6 +59,12 @@ namespace MugHeadXEngine.EntityComponents
 
                 }
             }*/
+
+            // Direction
+            if (Global.InputManager.Held(InputManager.Input.Left))
+                Direction = -1;
+            else if (Global.InputManager.Held(InputManager.Input.Right))
+                Direction = 1;
 
             if (MovementEnabled && CurrentJump < MaxJumps && IsGrounded && Global.InputManager.Pressed(InputManager.Input.Action1))
             {
@@ -124,10 +130,17 @@ namespace MugHeadXEngine.EntityComponents
                 if (!Kinetic) GameGlobal.PlayerGraphic.RunAnimation((Direction == 1) ? "JumpRight" : "JumpLeft");
             }
 
-            if (MoveX != 0)
+            // Slopes
+            /*if (Direction > 0)
             {
-                Direction = (MoveX > 0) ? 1 : -1;
+                if (this.Collider.Colliding(new Point(1, 0), 0) && !this.Collider.Colliding(new Point(1, -1), 0)) this.Entity.Position.Y -= 1;
+                else if (IsGrounded && !this.Collider.Colliding(new Point(1, 1), 0)) Entity.Position.Y += 1;
             }
+            else
+            {
+                if (Direction < 0 && this.Collider.Colliding(new Point(-1, 0), 0) && !this.Collider.Colliding(new Point(-1, -1), 0)) this.Entity.Position.Y -= 1;
+                else if (IsGrounded && Direction < 0 && !this.Collider.Colliding(new Point(-1, 1), 0)) this.Entity.Position.Y += 1;
+            }*/
 
             base.Update();
         }

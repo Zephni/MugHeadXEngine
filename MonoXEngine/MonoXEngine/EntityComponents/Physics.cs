@@ -62,7 +62,17 @@ namespace MonoXEngine.EntityComponents
                 for (int X = 0; X < Math.Abs(this.MoveX); X++)
                 {
                     if (Collider.Colliding(new Point((MoveX > 0) ? 1 : -1, 0)))
-                        this.MoveX = 0;
+                    {
+                        // Upwards slope check
+                        if (IsGrounded && !Collider.Colliding(new Point((MoveX > 0) ? 1 : -1, -1)))
+                            this.Entity.Position.Y -= 1;
+                        else
+                            this.MoveX = 0;
+                    }
+
+                    // Downwards slope check
+                    if (IsGrounded && !Collider.Colliding(new Point((MoveX > 0) ? 1 : -1, 1)) && !Collider.Colliding(new Point((MoveX > 0) ? 1 : -1, 1), -1))
+                        this.Entity.Position.Y += 1;
 
                     if (this.MoveX != 0)
                         this.Entity.Position.X += (this.MoveX > 0) ? 1 : -1;
@@ -75,8 +85,9 @@ namespace MonoXEngine.EntityComponents
                         this.MoveY = 0;
 
                     if(UsePlatforms && MoveY > 0) // Uses layer offset for platforms, can be turned off
-                        if (Collider.Colliding(new Point(0, 1), -1))
+                        if (Collider.Colliding(new Point(0, 1), -1) && !Collider.Colliding(new Point(0, 0), -1))
                             this.MoveY = 0;
+                            
 
                     if (this.MoveY != 0)
                         this.Entity.Position.Y += (this.MoveY > 0) ? 1 : -1;
@@ -87,7 +98,7 @@ namespace MonoXEngine.EntityComponents
 
                 // Check if grounded or too deep in ground
                 this.IsGrounded = false;
-                if (Collider.Colliding(new Point(0, 1)))
+                if (Collider.Colliding(new Point(0, 1)) || (UsePlatforms && Collider.Colliding(new Point(0, 1), -1) && !Collider.Colliding(new Point(0, 0), -1)))
                     this.IsGrounded = true;
             }
         }

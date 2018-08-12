@@ -31,8 +31,8 @@ namespace MyGame
             });
 
             // Music
-            if(!Global.AudioController.MusicIsPlaying("Overworld1"))
-                Global.AudioController.PlayMusic("Music/Overworld1");
+            //if(!Global.AudioController.MusicIsPlaying("Overworld1"))
+            //    Global.AudioController.PlayMusic("Music/Overworld1");
 
             if (GameData.Get("Levels/TheTree/Intro") == "True")
             {

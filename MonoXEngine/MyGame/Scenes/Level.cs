@@ -210,14 +210,13 @@ namespace MyGame.Scenes
                 Global.SceneManager.LoadScene("Menu");
             }
 
-
-            if (Global.InputManager.Pressed(InputManager.Input.L1))
+            if (Global.InputManager.Pressed(InputManager.Input.Special1))
             {
                 GameData.Set("Player/Position", GameGlobal.Player.Position.X.ToString() + "," + GameGlobal.Player.Position.Y.ToString());
                 GameData.Save();
             }
 
-            if (Global.InputManager.Pressed(InputManager.Input.L2))
+            if (Global.InputManager.Pressed(InputManager.Input.Special2))
             {
                 GameData.Load();
                 GameGlobal.Fader.RunFunction("FadeOut", e => {

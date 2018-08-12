@@ -19,7 +19,9 @@ namespace MonoXEngine
             Action1,
             Action2,
             L1,
-            L2
+            L2,
+            Special1,
+            Special2
         }
 
         public enum InputType
@@ -51,7 +53,9 @@ namespace MonoXEngine
                 { Input.Action1, false },
                 { Input.Action2, false },
                 { Input.L1,      false },
-                { Input.L2,      false }
+                { Input.L2,      false },
+                { Input.Special1,false },
+                { Input.Special2,false }
             };
             PressedThisFrame = EmptyInput.Copy();
             HeldThisFrame = PressedThisFrame.Copy();
@@ -65,7 +69,9 @@ namespace MonoXEngine
                 { Keys.Z,       Input.Action1 },
                 { Keys.X,       Input.Action2 },
                 { Keys.A,       Input.L1 },
-                { Keys.S,       Input.L2 }
+                { Keys.S,       Input.L2 },
+                { Keys.OemComma,Input.Special1 },
+                { Keys.OemPeriod,Input.Special1 }
             };
 
             // Controller input
@@ -77,7 +83,9 @@ namespace MonoXEngine
                 { Buttons.A,           Input.Action1 },
                 { Buttons.B,           Input.Action2 },
                 { Buttons.LeftShoulder,Input.L1 },
-                { Buttons.RightShoulder,Input.L2 }
+                { Buttons.RightShoulder,Input.L2 },
+                { Buttons.LeftTrigger,  Input.Special1 },
+                { Buttons.RightTrigger,  Input.Special2 },
             };
         }
 

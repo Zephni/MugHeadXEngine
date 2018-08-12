@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/craig.dennis/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Audio/SFX/Text.wav</SourceFile>
-  <SourceTime>2018-08-10T11:46:16.0238655+01:00</SourceTime>
-  <DestFile>C:/Users/craig.dennis/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Content/bin/Windows/Audio/SFX/Text.xnb</DestFile>
-  <DestTime>2018-08-10T15:08:33.306974+01:00</DestTime>
+  <SourceFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Audio/SFX/Text.wav</SourceFile>
+  <SourceTime>2018-08-11T13:24:04.7852476+01:00</SourceTime>
+  <DestFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Content/bin/Windows/Audio/SFX/Text.xnb</DestFile>
+  <DestTime>2018-08-12T14:02:36.3045034+01:00</DestTime>
   <Importer>WavImporter</Importer>
   <ImporterTime>2017-03-01T15:05:36+00:00</ImporterTime>
   <Processor>SoundEffectProcessor</Processor>
