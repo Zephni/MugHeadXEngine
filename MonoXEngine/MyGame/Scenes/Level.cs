@@ -160,6 +160,11 @@ namespace MyGame.Scenes
                         {
                             GameGlobal.Fader.RunFunction("FadeOut", e => {
                                 GameData.Set("Level", obj.Data["Level"]);
+
+                                string[] pos = obj.Data["Position"].Split(',');
+                                Point pointPos = new Point(Convert.ToInt16(pos[0]) * 16, Convert.ToInt16(pos[1]) * 16);
+
+                                GameData.Set("Player/Position", pointPos.X.ToString() + "," + pointPos.Y.ToString());
                                 Global.SceneManager.LoadScene("Level");
                             });
                         }
@@ -190,7 +195,9 @@ namespace MyGame.Scenes
             LevelScripts levelScripts = new LevelScripts();
             Type type = levelScripts.GetType();
             MethodInfo method = type.GetMethod(GameData.Get("Level"));
-            method.Invoke(levelScripts, new object[0]);
+
+            if(method != null)
+                method.Invoke(levelScripts, new object[0]);
         }
         
         public override void Update()
