@@ -31,15 +31,30 @@ namespace MyGame
             {
                 GameGlobal.Player.Position = new Vector2(entityInfo.Position.X * 16, entityInfo.Position.Y * 16);
             }
+            else if (entityInfo.Name == "Background")
+            {
+                ZInterpreter data = new ZInterpreter(entityInfo.Data);
+                
+                new Entity(entity => {
+                    entity.LayerName = "Background";
+                    entity.Position = new Vector2(0, 0);
+
+                    float[] coefficient = data.GetFloatArr("coefficient");
+
+                    entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/"+data.GetString("image")), Coefficient = new Vector2(coefficient[0], coefficient[1]), Offset = new Vector2(0, 0) });
+                });
+            }
             else if (entityInfo.Name == "Door")
             {
                 new Entity(entity => {
                     entity.Name = "Door";
                     entity.LayerName = "Main";
                     entity.Trigger = true;
-                    string[] data = entityInfo.Data.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-                    entity.Data.Add("Level", data[0]);
-                    entity.Data.Add("Position", data[1]);
+
+                    ZInterpreter data = new ZInterpreter(entityInfo.Data);
+                    entity.Data.Add("Level", data.GetString("level"));
+                    entity.Data.Add("Position", data.GetString("position"));
+
                     entity.SortingLayer = GameGlobal.Player.SortingLayer;
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
                     entity.AddComponent(new Drawable()).Run<Drawable>(d => {
