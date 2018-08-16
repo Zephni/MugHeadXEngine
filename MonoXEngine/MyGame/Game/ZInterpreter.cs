@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace MyGame
 
             foreach (var row in str.Split(new string[] { delim1 }, StringSplitOptions.None))
             {
-                if (row.Length == 0) continue;
+                if (row.Length == 0 || row == "\n") continue;
                 string[] column = row.Split(new string[] { delim2 }, StringSplitOptions.None);
                 Data.Add(column[0].Trim(), column[1].Trim());
             }
@@ -30,6 +31,11 @@ namespace MyGame
         public int GetInt(string key)
         {
             return Convert.ToInt16(Data[key]);
+        }
+
+        public float GetFloat(string key)
+        {
+            return (float)Convert.ToDouble(Data[key]);
         }
 
         public int[] GetIntArr(string key, char split = ',')
@@ -52,6 +58,25 @@ namespace MyGame
                 intArr[I] = (float)Convert.ToDouble(items[I]);
 
             return intArr;
+        }
+
+        /// <summary>
+        /// Points with comma delimiter, points seperated by space
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public Point[] GetPointArr(string key)
+        {
+            var items = Data[key].Split(' ');
+            Point[] pointArr = new Point[items.Length];
+
+            for (int I = 0; I < pointArr.Length; I++)
+            {
+                string[] pointData = items[I].Split(',');
+                pointArr[I] = new Point(Convert.ToInt16(pointData[0]), Convert.ToInt16(pointData[1]));
+            }
+
+            return pointArr;
         }
     }
 }

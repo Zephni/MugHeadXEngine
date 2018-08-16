@@ -69,9 +69,30 @@ namespace MyGame
                     entity.Name = "Graphic";
                     entity.LayerName = "Main";
                     entity.Origin = Vector2.Zero;
-                    //entity.SortingLayer = entityInfo.; (Need Z pos)
+                    entity.SortingLayer = 3;
+
+                    ZInterpreter data = new ZInterpreter(entityInfo.Data);
+
                     entity.AddComponent(new Drawable()).Run<Drawable>(d => {
-                        d.LoadTexture("Graphics/"+entityInfo.Data);
+                        d.LoadTexture("Graphics/" + data.GetString("image"));
+                        entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
+                    });
+                });
+            }
+            else if (entityInfo.Name == "Animation")
+            {
+                new Entity(entity => {
+                    entity.Name = "Animation";
+                    entity.LayerName = "Main";
+                    entity.Origin = Vector2.Zero;
+                    entity.SortingLayer = 3;
+
+                    ZInterpreter data = new ZInterpreter(entityInfo.Data);
+
+                    entity.AddComponent(new Sprite()).Run<Sprite>(d => {
+                        d.LoadTexture("Graphics/" + data.GetString("image"));
+                        d.AddAnimation(new Animation("Default", data.GetFloat("delay"), new Point(32, 32), data.GetPointArr("frames")));
+                        d.RunAnimation("Default");
                         entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
                     });
                 });
