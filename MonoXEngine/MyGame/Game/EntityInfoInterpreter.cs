@@ -31,6 +31,22 @@ namespace MyGame
             {
                 GameGlobal.Player.Position = new Vector2(entityInfo.Position.X * 16, entityInfo.Position.Y * 16);
             }
+            else if (entityInfo.Name == "Water")
+            {
+                ZInterpreter data = new ZInterpreter(entityInfo.Data);
+
+                new Entity(entity => {
+                    entity.Name = "Water";
+                    entity.LayerName = "Main";
+                    entity.Trigger = true;
+                    entity.SortingLayer = GameGlobal.Player.SortingLayer;
+                    entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
+                    entity.Opacity = 0.8f;
+                    entity.AddComponent(new Drawable()).Run<Drawable>(d => {
+                        d.BuildRectangle(new Point(Convert.ToInt16(entityInfo.Size.X) * 16, Convert.ToInt16(entityInfo.Size.Y) * 16), Color.AliceBlue);
+                    });
+                });
+            }
             else if (entityInfo.Name == "Background")
             {
                 ZInterpreter data = new ZInterpreter(entityInfo.Data);
@@ -38,7 +54,6 @@ namespace MyGame
                 new Entity(entity => {
                     entity.LayerName = "Background";
                     entity.Position = new Vector2(0, 0);
-
                     float[] coefficient = data.GetFloatArr("coefficient");
 
                     entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/"+data.GetString("image")), Coefficient = new Vector2(coefficient[0], coefficient[1]), Offset = new Vector2(0, 0) });

@@ -61,13 +61,51 @@ namespace MyGame
             CameraController.Instance.Target = camePos;
             CameraController.Instance.SnapOnce();
 
+            // Seagulls
+            new Entity(entity => {
+                entity.LayerName = "Main";
+                entity.SortingLayer = 8;
+                entity.AddComponent(new Sprite() { Texture2D = Global.Content.Load<Texture2D>("Entities/Seagull") }).Run<Sprite>(s => {
+                    s.AddAnimation(new Animation("Default", 0.1f, new Point(16, 16), new Point(0, 0), new Point(1, 0), new Point(2, 0), new Point(3, 0)));
+                    s.RunAnimation("Default");
+                });
+
+                entity.Position = GameGlobal.Player.Position + new Vector2(0, -100);
+                entity.Scale = new Vector2(2.5f, 2.5f);
+
+                CoroutineHelper.RunUntil(() => { return entity.Position.Y < -500; }, () => {
+                    entity.Position += new Vector2(0.3f, -1.3f);
+                    entity.Scale += new Vector2(-0.005f, -0.005f);
+                    if(entity.Scale.X < 0.5f)
+                        entity.Scale = new Vector2(0.5f, 0.5f);
+                });
+            });
+            new Entity(entity => {
+                entity.LayerName = "Main";
+                entity.SortingLayer = 8;
+                entity.AddComponent(new Sprite() { Texture2D = Global.Content.Load<Texture2D>("Entities/Seagull") }).Run<Sprite>(s => {
+                    s.AddAnimation(new Animation("Default", 0.1f, new Point(16, 16), new Point(0, 0), new Point(1, 0), new Point(2, 0), new Point(3, 0)));
+                    s.RunAnimation("Default");
+                });
+
+                entity.Position = GameGlobal.Player.Position + new Vector2(-40, -100);
+                entity.Scale = new Vector2(2, 2);
+
+                CoroutineHelper.RunUntil(() => { return entity.Position.Y < -500; }, () => {
+                    entity.Position += new Vector2(0.5f, -0.8f);
+                    entity.Scale += new Vector2(-0.005f, -0.005f);
+                    if (entity.Scale.X < 0.5f)
+                        entity.Scale = new Vector2(0.5f, 0.5f);
+                });
+            });
+
             CoroutineHelper.WaitRun(9, () => {
                 camePos.Position = GameGlobal.Player.Position + new Vector2(0, -40);
 
                 CoroutineHelper.WaitRun(5, () => {
 
                     GameGlobal.Player.Position = camePos.Position + new Vector2(0, -20);
-                    GameGlobal.PlayerGraphic.RunAnimation("JumpLeft");
+                    GameGlobal.PlayerGraphic.RunAnimation("Jump");
 
                     GameMethods.ShowMessages(new List<MessageBox>() {
                         new MessageBox("Pause", ".|.|.|| !", camePos.Position),
@@ -88,7 +126,7 @@ namespace MyGame
                                     WoahMSG.Position = GameGlobal.Player.Position + new Vector2(-WoahMSG.Container.Size.X / 2, -32);
                             }, () => {
                                 GameGlobal.Player.Position.Y = camePos.Position.Y + 50;
-                                GameGlobal.PlayerGraphic.RunAnimation("LayLeft");
+                                GameGlobal.PlayerGraphic.RunAnimation("Lay");
                                 Global.AudioController.Play("SFX/Thump");
                                 WoahMSG.Destroy();
 
@@ -114,7 +152,7 @@ namespace MyGame
                                         CameraController.Instance.Target = GameGlobal.Player;
                                         camePos.Destroy();
 
-                                        GameGlobal.PlayerGraphic.RunAnimation("StandRight");
+                                        GameGlobal.PlayerGraphic.RunAnimation("Stand");
                                         GameGlobal.Player.GetComponent<PlayerController>().Direction = 1;
                                         GameGlobal.Player.GetComponent<PlayerController>().IsGrounded = true;
 

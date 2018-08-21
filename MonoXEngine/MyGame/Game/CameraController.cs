@@ -87,11 +87,10 @@ namespace MyGame
                 Vector2 xyDist = new Vector2(targetXY.X - camPos.X, targetXY.Y - camPos.Y);
                 double distance = Math.Sqrt(xyDist.X * xyDist.X + xyDist.Y * xyDist.Y);
 
-                if (distance > 1)
-                    camPos += new Vector2(
-                        Math.Min(xyDist.X * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier,
-                        Math.Min(xyDist.Y * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier
-                        );
+                camPos += new Vector2(
+                    Convert.ToInt16(Math.Min(xyDist.X * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier),
+                    Convert.ToInt16(Math.Min(xyDist.Y * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier)
+                    );
             }
             else if(Mode == Modes.SnapToTarget)
             {

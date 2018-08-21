@@ -14,7 +14,8 @@ namespace MonoXEngine.EntityComponents
         public bool Disabled;
         public float Gravity;
         public float MaxX;
-        public float MaxY;
+        public float MaxUp;
+        public float MaxDown;
         public float MoveX;
         public float MoveY;
         public bool IsGrounded;
@@ -27,7 +28,8 @@ namespace MonoXEngine.EntityComponents
             this.Disabled = false;
             this.Gravity = 10f;
             this.MaxX = 3;
-            this.MaxY = 8;
+            this.MaxUp = 4;
+            this.MaxDown = 4;
             this.MoveX = 0;
             this.MoveY = 0;
             this.IsGrounded = false;
@@ -56,42 +58,36 @@ namespace MonoXEngine.EntityComponents
 
                 // Clamp values
                 this.MoveX = Math.Min(Math.Max(this.MoveX, -this.MaxX), this.MaxX);
-                this.MoveY = Math.Min(Math.Max(this.MoveY, -this.MaxY), this.MaxY);
+                this.MoveY = Math.Min(Math.Max(this.MoveY, -this.MaxUp), this.MaxDown);
 
                 // X move
-                for (int X = 0; X < Math.Abs(this.MoveX); X++)
+                if (Collider.Colliding(new Point(Convert.ToInt16(Math.Ceiling(MoveX)), 0)))
                 {
-                    if (Collider.Colliding(new Point((MoveX > 0) ? 1 : -1, 0)))
-                    {
-                        // Upwards slope check
-                        if (IsGrounded && !Collider.Colliding(new Point((MoveX > 0) ? 1 : -1, -1)))
-                            this.Entity.Position.Y -= 1;
-                        else
-                            this.MoveX = 0;
-                    }
-
-                    // Downwards slope check
-                    if (IsGrounded && !Collider.Colliding(new Point((MoveX > 0) ? 1 : -1, 1)) && !Collider.Colliding(new Point((MoveX > 0) ? 1 : -1, 1), -1))
-                        this.Entity.Position.Y += 1;
-
-                    if (this.MoveX != 0)
-                        this.Entity.Position.X += (this.MoveX > 0) ? 1 : -1;
+                    // Upwards slope check
+                    if (IsGrounded && !Collider.Colliding(new Point(Convert.ToInt16(Math.Ceiling(MoveX)), -1)))
+                        this.Entity.Position.Y -= 1;
+                    else
+                        this.MoveX = 0;
                 }
+
+                // Downwards slope check
+                if (IsGrounded && !Collider.Colliding(new Point(Convert.ToInt16(Math.Ceiling(MoveX)), 1)) && !Collider.Colliding(new Point(Convert.ToInt16(Math.Ceiling(MoveX)), 1), -1))
+                    this.Entity.Position.Y += 1;
+
+                if (this.MoveX != 0)
+                    this.Entity.Position.X += this.MoveX;
 
                 // Y move
-                for (int Y = 0; Y < Math.Abs(this.MoveY); Y++)
-                {
-                    if (Collider.Colliding(new Point(0, (MoveY > 0) ? 1 : -1)))
-                        this.MoveY = 0;
+                if (Collider.Colliding(new Point(0, Convert.ToInt16(Math.Ceiling(MoveY)))))
+                    this.MoveY = 0;
 
-                    if(UsePlatforms && MoveY > 0) // Uses layer offset for platforms, can be turned off
-                        if (Collider.Colliding(new Point(0, 1), -1) && !Collider.Colliding(new Point(0, 0), -1))
-                            this.MoveY = 0;
+                if(UsePlatforms && MoveY > 0) // Uses layer offset for platforms, can be turned off
+                    if (Collider.Colliding(new Point(0, 1), -1) && !Collider.Colliding(new Point(0, 0), -1))
+                        this.MoveY = 0;
                             
 
-                    if (this.MoveY != 0)
-                        this.Entity.Position.Y += (this.MoveY > 0) ? 1 : -1;
-                }
+                if (this.MoveY != 0)
+                    this.Entity.Position.Y += this.MoveY;
 
                 // Always check if colliding in center (This was added for trigger detection)
                 Collider.Colliding(new Point(0, 0));
