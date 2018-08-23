@@ -33,16 +33,23 @@ namespace MyGame
         public float MaxStep = 1000;
         public float MaxDistance;
 
+        private bool Snapping = false;
+
         public static CameraController Instance = null;
 
         public CameraController()
         {
             Mode = Modes.LerpToTarget;
-            //Easing = 0.03f;
-            //MaxDistance = 64;
+            SetDefault();
 
             if (Instance == null)
                 Instance = this;
+        }
+
+        public void SetDefault()
+        {
+            Easing = 0.08f;
+            MaxDistance = 1000;
         }
 
         public void ResetMinMax()
@@ -58,6 +65,7 @@ namespace MyGame
             if (_target == null)
             {
                 Global.Camera.Position = new Vector2(TargetX.Position.X, TargetY.Position.Y);
+                Snapping = true;
             }
             else
             {
@@ -74,6 +82,12 @@ namespace MyGame
 
             if (Mode == Modes.LerpToTarget)
             {
+                if (Snapping)
+                {
+                    Easing = 1;
+                    MaxStep = 1000;
+                }
+                
                 Vector2 targetXY = new Vector2(TargetX.Position.X + Offset.X, TargetY.Position.Y + Offset.Y);
 
                 // Min, Max X, Y
@@ -94,6 +108,12 @@ namespace MyGame
                     Math.Min(xyDist.X * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier,
                     Math.Min(xyDist.Y * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier
                     );
+
+                if (Snapping)
+                {
+                    Snapping = false;
+                    SetDefault();
+                }
             }
             else if(Mode == Modes.SnapToTarget)
             {

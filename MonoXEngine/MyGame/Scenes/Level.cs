@@ -19,6 +19,8 @@ namespace MyGame.Scenes
         // Objects
         public CameraController CameraController;
 
+        public float LevelTime = 0;
+
         // Debugging
         private Entity hotspotTest;
 
@@ -229,11 +231,18 @@ namespace MyGame.Scenes
             if(method != null)
                 method.Invoke(levelScripts, new object[0]);
 
-            GameGlobal.Fader.RunFunction("FadeIn");
+            CoroutineHelper.WaitRun(0.05f, () => {
+                GameGlobal.Fader.RunFunction("FadeIn");
+            });
         }
         
         public override void Update()
         {
+            if (LevelTime < 0.5f)
+                CameraController.SnapOnce();
+
+            LevelTime += Global.DeltaTime;
+            
             CameraController.Update();
 
             // Temp speed up game
