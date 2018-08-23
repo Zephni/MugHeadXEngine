@@ -80,6 +80,8 @@ namespace MonoXEngine
 
             Global.InputManager = new InputManager(InputManager.InputType.Keyboard);
 
+            this.IsFixedTimeStep = false;
+
             base.Initialize();
         }
 

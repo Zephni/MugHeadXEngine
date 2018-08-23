@@ -18,18 +18,6 @@ namespace MyGame
     {
         public void TheTree()
         {
-            // Backgrounds
-            new Entity(entity => {
-                entity.LayerName = "Background";
-                entity.Position = new Vector2(0, 0);
-                entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/Blue_Sky"), Coefficient = new Vector2(0f, 0.0251f), Offset = new Vector2(0, -120) });
-            });
-            new Entity(entity => {
-                entity.LayerName = "Background";
-                entity.Position = new Vector2(0, 0);
-                entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/ForestBG_Rocks"), Coefficient = new Vector2(0.04f, 0.4f), Offset = new Vector2(30, -300) });
-            });
-
             // Music
             //if(!Global.AudioController.MusicIsPlaying("Overworld1"))
             //    Global.AudioController.PlayMusic("Music/Overworld1");
@@ -45,11 +33,9 @@ namespace MyGame
             GameGlobal.Fader.Data["Time"] = "5";
             CoroutineHelper.WaitRun(2, () => {
                 GameGlobal.Fader.RunFunction("Resume");
-                GameGlobal.Fader.RunFunction("FadeIn", e => {
-                    e.Data["Time"] = "0.5";
-                });
+                GameGlobal.Fader.RunFunction("FadeIn");
             });
-
+            
             GameGlobal.Player.GetComponent<PlayerController>().MovementEnabled = false;
             GameGlobal.Player.GetComponent<PlayerController>().Kinetic = true;
             GameGlobal.PlayerGraphic.Visible = false;
@@ -62,40 +48,42 @@ namespace MyGame
             CameraController.Instance.SnapOnce();
 
             // Seagulls
-            new Entity(entity => {
-                entity.LayerName = "Main";
-                entity.SortingLayer = 8;
-                entity.AddComponent(new Sprite() { Texture2D = Global.Content.Load<Texture2D>("Entities/Seagull") }).Run<Sprite>(s => {
-                    s.AddAnimation(new Animation("Default", 0.1f, new Point(16, 16), new Point(0, 0), new Point(1, 0), new Point(2, 0), new Point(3, 0)));
-                    s.RunAnimation("Default");
+            CoroutineHelper.WaitRun(6, () => {
+                new Entity(entity => {
+                    entity.LayerName = "Main";
+                    entity.SortingLayer = 8;
+                    entity.AddComponent(new Sprite() { Texture2D = Global.Content.Load<Texture2D>("Entities/Seagull") }).Run<Sprite>(s => {
+                        s.AddAnimation(new Animation("Default", 0.1f, new Point(16, 16), new Point(0, 0), new Point(1, 0), new Point(2, 0), new Point(3, 0)));
+                        s.RunAnimation("Default");
+                    });
+
+                    entity.Position = GameGlobal.Player.Position + new Vector2(0, -100);
+                    entity.Scale = new Vector2(2.1f, 2.1f);
+
+                    CoroutineHelper.RunUntil(() => { return entity.Position.Y < -500; }, () => {
+                        entity.Position += new Vector2(0.3f, -0.7f * entity.Scale.Y);
+                        entity.Scale += new Vector2(-0.005f, -0.005f);
+                        if (entity.Scale.X < 0.5f)
+                            entity.Scale = new Vector2(0.5f, 0.5f);
+                    });
                 });
+                new Entity(entity => {
+                    entity.LayerName = "Main";
+                    entity.SortingLayer = 8;
+                    entity.AddComponent(new Sprite() { Texture2D = Global.Content.Load<Texture2D>("Entities/Seagull") }).Run<Sprite>(s => {
+                        s.AddAnimation(new Animation("Default", 0.1f, new Point(16, 16), new Point(0, 0), new Point(1, 0), new Point(2, 0), new Point(3, 0)));
+                        s.RunAnimation("Default");
+                    });
 
-                entity.Position = GameGlobal.Player.Position + new Vector2(0, -100);
-                entity.Scale = new Vector2(2.5f, 2.5f);
+                    entity.Position = GameGlobal.Player.Position + new Vector2(-40, -100);
+                    entity.Scale = new Vector2(2, 2);
 
-                CoroutineHelper.RunUntil(() => { return entity.Position.Y < -500; }, () => {
-                    entity.Position += new Vector2(0.3f, -1.3f);
-                    entity.Scale += new Vector2(-0.005f, -0.005f);
-                    if(entity.Scale.X < 0.5f)
-                        entity.Scale = new Vector2(0.5f, 0.5f);
-                });
-            });
-            new Entity(entity => {
-                entity.LayerName = "Main";
-                entity.SortingLayer = 8;
-                entity.AddComponent(new Sprite() { Texture2D = Global.Content.Load<Texture2D>("Entities/Seagull") }).Run<Sprite>(s => {
-                    s.AddAnimation(new Animation("Default", 0.1f, new Point(16, 16), new Point(0, 0), new Point(1, 0), new Point(2, 0), new Point(3, 0)));
-                    s.RunAnimation("Default");
-                });
-
-                entity.Position = GameGlobal.Player.Position + new Vector2(-40, -100);
-                entity.Scale = new Vector2(2, 2);
-
-                CoroutineHelper.RunUntil(() => { return entity.Position.Y < -500; }, () => {
-                    entity.Position += new Vector2(0.5f, -0.8f);
-                    entity.Scale += new Vector2(-0.005f, -0.005f);
-                    if (entity.Scale.X < 0.5f)
-                        entity.Scale = new Vector2(0.5f, 0.5f);
+                    CoroutineHelper.RunUntil(() => { return entity.Position.Y < -500; }, () => {
+                        entity.Position += new Vector2(0.3f, -0.7f * entity.Scale.Y);
+                        entity.Scale += new Vector2(-0.005f, -0.005f);
+                        if (entity.Scale.X < 0.5f)
+                            entity.Scale = new Vector2(0.5f, 0.5f);
+                    });
                 });
             });
 
@@ -119,13 +107,13 @@ namespace MyGame
 
                             float temp = GameGlobal.Player.Position.Y;
                             CoroutineHelper.RunFor(0.7f, p => {
-                                if (GameGlobal.Player.Position.Y < camePos.Position.Y + 50)
+                                if (GameGlobal.Player.Position.Y < camePos.Position.Y + 45)
                                     GameGlobal.Player.Position.Y += 1f * (p * 4.15f);
 
                                 if (GameGlobal.Player.Position.Y > WoahMSG.Position.Y + 32)
                                     WoahMSG.Position = GameGlobal.Player.Position + new Vector2(-WoahMSG.Container.Size.X / 2, -32);
                             }, () => {
-                                GameGlobal.Player.Position.Y = camePos.Position.Y + 50;
+                                GameGlobal.Player.Position.Y = camePos.Position.Y + 45;
                                 GameGlobal.PlayerGraphic.RunAnimation("Lay");
                                 Global.AudioController.Play("SFX/Thump");
                                 WoahMSG.Destroy();
@@ -157,6 +145,8 @@ namespace MyGame
                                         GameGlobal.Player.GetComponent<PlayerController>().IsGrounded = true;
 
                                         GameData.Set("Levels/TheTree/Intro", "True");
+
+                                        GameGlobal.Fader.RunFunction("SetDefault");
                                     });
                                 });
                             });

@@ -71,7 +71,7 @@ namespace MonoXEngine
                 { Keys.A,       Input.L1 },
                 { Keys.S,       Input.L2 },
                 { Keys.OemComma,Input.Special1 },
-                { Keys.OemPeriod,Input.Special1 }
+                { Keys.OemPeriod,Input.Special2 }
             };
 
             // Controller input

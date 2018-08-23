@@ -68,7 +68,7 @@ namespace MugHeadXEngine.EntityComponents
                 if(MovementMode == MovementModes.Normal)
                 {
                     Acceleration = 4f;
-                    Deceleration = 3f;
+                    Deceleration = 8f;
                     Gravity = 7f;
                     JumpStrength = 3.5f;
                     MaxX = 1.7f;
@@ -78,10 +78,10 @@ namespace MugHeadXEngine.EntityComponents
                 {
                     this.MoveX = 0;
                     this.MoveY = 0;
-                    this.Gravity = 3f;
+                    this.Gravity = 0.5f;
                     this.Acceleration = 1f;
                     this.JumpStrength = 2f;
-                    MaxX = 0.8f;
+                    MaxX = 1f;
                     MaxDown = 0.5f;
                 }
             }

@@ -15,7 +15,7 @@ namespace MonoXEngine.EntityComponents
             
         }
 
-        public override bool Colliding(Point offset, int layerOffset = 0)
+        public override bool Colliding(Point offset, Entity.CollisionType CollisionType = Entity.CollisionType.Pixel)
         {
             Rectangle checkArea = new Rectangle(
                 (this.Entity.Position.ToPoint() - (this.Entity.Size/2).ToPoint()) + offset,
@@ -25,7 +25,7 @@ namespace MonoXEngine.EntityComponents
             List<Entity> possibleCollidingEntities = new List<Entity>();
             foreach(Entity entity in Global.Entities.FindAll(e => e.LayerName == this.Entity.LayerName))
             {
-                if (entity == Entity || entity.SortingLayer - layerOffset != Entity.SortingLayer || !entity.CheckPixels)
+                if (entity == Entity || entity.Collider != CollisionType || !entity.CheckPixels)
                     continue;
 
                 if (checkArea.Intersects(entity.BoundingBox))
@@ -49,8 +49,7 @@ namespace MonoXEngine.EntityComponents
 
                 Rectangle entityBox = entity.BoundingBox;
 
-                Rectangle intersectRect;
-                Rectangle.Intersect(ref checkRect, ref entityBox, out intersectRect);
+                Rectangle.Intersect(ref checkRect, ref entityBox, out Rectangle intersectRect);
 
                 if (intersectRect.Width > 0 && intersectRect.Height > 0)
                 {
@@ -65,8 +64,7 @@ namespace MonoXEngine.EntityComponents
                         {
                             if(entity.Trigger)
                             {
-                                if (Entity.CollidedWithTrigger != null)
-                                    Entity.CollidedWithTrigger(entity);
+                                Entity.CollidedWithTrigger?.Invoke(entity);
                             }
                             else
                             {

@@ -27,6 +27,15 @@ namespace MonoXEngine
         
         public int SortingLayer;
 
+        public enum CollisionType
+        {
+            None,
+            BoundingBox,
+            Pixel,
+            Platform
+        }
+        public CollisionType Collider = CollisionType.None;
+
         public Rectangle BoundingBox
         {
             get { return new Rectangle(this.Position.ToPoint() - (this.Origin * this.Size).ToPoint(), this.Size.ToPoint()); }
@@ -95,7 +104,7 @@ namespace MonoXEngine
             Global.Entities.Add(newEntity);
 
             if (this.prefabAction != null)
-                this.prefabAction(newEntity);
+                prefabAction(newEntity);
 
             newEntity.Start();
             return newEntity;
@@ -137,7 +146,7 @@ namespace MonoXEngine
         public virtual void Update()
         {
             if(this.UpdateAction != null)
-                this.UpdateAction(this);
+                UpdateAction(this);
 
             foreach (EntityComponent component in this.EntityComponents)
             {

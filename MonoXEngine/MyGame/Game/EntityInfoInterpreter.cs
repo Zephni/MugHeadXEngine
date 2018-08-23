@@ -39,11 +39,12 @@ namespace MyGame
                     entity.Name = "Water";
                     entity.LayerName = "Main";
                     entity.Trigger = true;
-                    entity.SortingLayer = GameGlobal.Player.SortingLayer;
+                    entity.Collider = Entity.CollisionType.Pixel;
+                    entity.SortingLayer = GameGlobal.Player.SortingLayer+1;
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
-                    entity.Opacity = 0.8f;
+                    entity.Opacity = 0.75f;
                     entity.AddComponent(new Drawable()).Run<Drawable>(d => {
-                        d.BuildRectangle(new Point(Convert.ToInt16(entityInfo.Size.X) * 16, Convert.ToInt16(entityInfo.Size.Y) * 16), Color.AliceBlue);
+                        d.BuildRectangle(new Point(Convert.ToInt16(entityInfo.Size.X) * 16, Convert.ToInt16(entityInfo.Size.Y) * 16), Color.CornflowerBlue);
                     });
                 });
             }
@@ -64,6 +65,7 @@ namespace MyGame
                 new Entity(entity => {
                     entity.Name = "Door";
                     entity.LayerName = "Main";
+                    entity.Collider = Entity.CollisionType.Pixel;
                     entity.Trigger = true;
 
                     ZInterpreter data = new ZInterpreter(entityInfo.Data);
@@ -118,6 +120,7 @@ namespace MyGame
                     entity.Trigger = true;
                     entity.Name = "CameraLock";
                     entity.LayerName = "Main";
+                    entity.Collider = Entity.CollisionType.Pixel;
                     entity.Data.Add("Type", entityInfo.Data);
                     entity.SortingLayer = GameGlobal.Player.SortingLayer;
                     entity.Opacity = 0;

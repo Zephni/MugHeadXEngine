@@ -22,12 +22,20 @@ namespace MyGame
             // Fader
             Fader = new Entity(entity => {
                 entity.LayerName = "Fade";
-                entity.Data.Add("Time", "0.5");
-                entity.Data.Add("Cancel", "false");
+
+                entity.Data.Add("Time", "");
+                entity.Data.Add("Cancel", "");
 
                 entity.AddComponent(new Drawable()).Run<Drawable>(component => {
                     component.BuildRectangle(new Point(Global.ScreenBounds.Width, Global.ScreenBounds.Height), Color.Black);
                 });
+
+                entity.AddFunction("SetDefault", (e) => {
+                    entity.Data["Time"] = "0.5";
+                    entity.Data["Cancel"] = "false";
+                });
+
+                entity.RunFunction("SetDefault");
 
                 entity.AddFunction("FadeIn", (e, c) => {
                     CoroutineHelper.RunFor((float)Convert.ToDecimal(entity.Data["Time"]), pcnt => { if(entity.Data["Cancel"] != "true") e.Opacity = 1 - pcnt; }, () => {

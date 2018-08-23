@@ -24,9 +24,8 @@ namespace MyGame.Scenes
 
         public override void Initialise()
         {
-            // Initialise and initial fade
+            // Initialise and
             GameGlobal.InitialiseAssets();
-            GameGlobal.Fader.RunFunction("FadeIn");
 
             // DEBUGGING
             #region Debugging
@@ -83,7 +82,7 @@ namespace MyGame.Scenes
                 entity.SortingLayer = 4;
 
                 entity.AddComponent(new Sprite()).Run<Sprite>(component => {
-                    component.BuildRectangle(new Point(8, 8), Color.Blue);
+                    component.BuildRectangle(new Point(8, 20), Color.Blue);
                     component.Visible = false;
                 });
 
@@ -104,7 +103,7 @@ namespace MyGame.Scenes
                 if (GameData.Get("Player/Position") != null)
                 {
                     string[] pPosData = GameData.Get("Player/Position").Split(',');
-                    entity.Position = new Vector2(Convert.ToInt16(pPosData[0])-4, Convert.ToInt16(pPosData[1]));
+                    entity.Position = new Vector2(Convert.ToInt16(pPosData[0])+8, Convert.ToInt16(pPosData[1]));
                 }                
 
                 entity.UpdateAction = e => {
@@ -119,9 +118,14 @@ namespace MyGame.Scenes
                         entity.GetComponent<PlayerController>().MovementMode = PlayerController.MovementModes.Normal;
                     }
 
+                    if (entity.GetComponent<PlayerController>().Direction == -1)
+                        CameraController.Offset = new Vector2(-16, 0);
+                    if (entity.GetComponent<PlayerController>().Direction == 1)
+                        CameraController.Offset = new Vector2(16, 0);
+
                     PlayerCollidingTriggers = new List<Entity>();
 
-                    GameGlobal.PlayerGraphicEntity.Position = entity.Position + new Vector2(0, -12);
+                    GameGlobal.PlayerGraphicEntity.Position = entity.Position + new Vector2(0, -6);
                 };
 
                 entity.CollidedWithTrigger = obj => {
@@ -137,11 +141,22 @@ namespace MyGame.Scenes
                         foreach(var item in obj.Data["Type"].Split(','))
                         {
                             if (item  == "LockXY")
-                                CameraController.Target = obj;
+                            {
+                                CameraController.MinX = obj.BoundingBox.Left;
+                                CameraController.MaxX = obj.BoundingBox.Right;
+                                CameraController.MinY = obj.BoundingBox.Top;
+                                CameraController.MaxY = obj.BoundingBox.Bottom;
+                            }
                             else if (item == "LockX")
-                                CameraController.TargetX = obj;
+                            {
+                                CameraController.MinX = obj.BoundingBox.Left;
+                                CameraController.MaxX = obj.BoundingBox.Right;
+                            }
                             else if (item == "LockY")
-                                CameraController.TargetY = obj;
+                            {
+                                CameraController.MinY = obj.BoundingBox.Top;
+                                CameraController.MaxY = obj.BoundingBox.Bottom;
+                            }
                             else if (item == "LockTop")
                                 CameraController.MinY = obj.BoundingBox.Top;
                             else if (item == "LockBottom")
@@ -185,16 +200,26 @@ namespace MyGame.Scenes
                 TileMap tileMap = new TileMap(new Point(16, 16), "Tilesets/"+ tileset.Substring(0, tileset.LastIndexOf('.')), tiles);
                 tileMap.Build(new Point(32, 32));
 
+                // Map collision
+                foreach (var tgroup in tileMap.TileGroupEntities)
+                    if (tgroup.SortingLayer == GameGlobal.Player.SortingLayer)
+                        tgroup.Collider = Entity.CollisionType.Pixel;
+                    else if (tgroup.SortingLayer == GameGlobal.Player.SortingLayer-1)
+                        tgroup.Collider = Entity.CollisionType.Platform;
+
                 // Entities
                 new EntityInfoInterpreter(entities);
             });
 
             // Camera
-            CameraController = new CameraController();
-            CameraController.Target = GameGlobal.Player;
-            CameraController.Easing = 0.2f;
-            CameraController.Mode = CameraController.Modes.LerpToTarget;
+            CameraController = new CameraController
+            {
+                Target = GameGlobal.Player,
+                Easing = 0.08f,
+                MaxStep = 1000
+            };
             CameraController.SnapOnce(GameGlobal.Player);
+            CameraController.Mode = CameraController.Modes.LerpToTarget;
 
             // Level script
             LevelScripts levelScripts = new LevelScripts();
@@ -203,6 +228,8 @@ namespace MyGame.Scenes
 
             if(method != null)
                 method.Invoke(levelScripts, new object[0]);
+
+            GameGlobal.Fader.RunFunction("FadeIn");
         }
         
         public override void Update()

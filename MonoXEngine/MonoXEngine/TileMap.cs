@@ -20,6 +20,8 @@ namespace MonoXEngine
         private Point chunkSize;
         private List<int> chunkLayers;
 
+        public List<Entity> TileGroupEntities;
+
         /// <summary>
         /// TileMap construct
         /// </summary>
@@ -35,6 +37,8 @@ namespace MonoXEngine
 
             if(tiles != null)
                 this.SetTiles(tiles);
+
+            TileGroupEntities = new List<Entity>();
         }
 
         /// <summary>
@@ -174,14 +178,14 @@ namespace MonoXEngine
                         if (chunks[x, y, z] == null)
                             continue;
 
-                        new Entity(entity => {
+                        TileGroupEntities.Add(new Entity(entity => {
                             entity.Origin = Vector2.Zero;
                             entity.Position = new Vector2(x * chunkSize.X, y * chunkSize.Y);
                             entity.SortingLayer = chunkLayers[z];
                             entity.AddComponent(new Drawable()).Run<Drawable>(component => {
                                 component.Texture2D = chunks[x, y, z];
                             });
-                        });
+                        }));
                     }
                 }
             }

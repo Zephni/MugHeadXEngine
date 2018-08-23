@@ -22,6 +22,8 @@ namespace MyGame
         public Entity TargetX;
         public Entity TargetY;
 
+        public Vector2 Offset = Vector2.Zero;
+
         public float? MaxX = null;
         public float? MinX = null;
         public float? MaxY = null;
@@ -35,9 +37,9 @@ namespace MyGame
 
         public CameraController()
         {
-            Mode = Modes.SnapToTarget;
-            Easing = 0.03f;
-            MaxDistance = 64;
+            Mode = Modes.LerpToTarget;
+            //Easing = 0.03f;
+            //MaxDistance = 64;
 
             if (Instance == null)
                 Instance = this;
@@ -72,7 +74,7 @@ namespace MyGame
 
             if (Mode == Modes.LerpToTarget)
             {
-                Vector2 targetXY = new Vector2(TargetX.Position.X, TargetY.Position.Y);
+                Vector2 targetXY = new Vector2(TargetX.Position.X + Offset.X, TargetY.Position.Y + Offset.Y);
 
                 // Min, Max X, Y
                 if (MinY != null && (targetXY.Y - Global.ScreenBounds.Height / 2) < MinY)
@@ -87,9 +89,10 @@ namespace MyGame
                 Vector2 xyDist = new Vector2(targetXY.X - camPos.X, targetXY.Y - camPos.Y);
                 double distance = Math.Sqrt(xyDist.X * xyDist.X + xyDist.Y * xyDist.Y);
 
+                if(distance > 2)
                 camPos += new Vector2(
-                    Convert.ToInt16(Math.Min(xyDist.X * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier),
-                    Convert.ToInt16(Math.Min(xyDist.Y * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier)
+                    Math.Min(xyDist.X * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier,
+                    Math.Min(xyDist.Y * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier
                     );
             }
             else if(Mode == Modes.SnapToTarget)

@@ -17,6 +17,18 @@ namespace MonoXEngine
         }
         #endregion
 
+        #region float
+        public static int ToInt(this float value)
+        {
+            return Convert.ToInt16(value);
+        }
+
+        public static float Wrap(this float value, float min, float max)
+        {
+            return (((value - min) % (max - min)) + (max - min)) % (max - min) + min;
+        }
+        #endregion
+
         #region Vector2
         public static Vector2 Copy(this Vector2 value, Vector2 source)
         {
