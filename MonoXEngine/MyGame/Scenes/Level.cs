@@ -120,6 +120,11 @@ namespace MyGame.Scenes
                         entity.GetComponent<PlayerController>().MovementMode = PlayerController.MovementModes.Normal;
                     }
 
+                    if (entity.GetComponent<PlayerController>().MovementEnabled && PlayerCollidingTriggers.Find(t => t.Name == "Door") == null)
+                    {
+                        entity.GetComponent<PlayerController>().ObstructCrouching = false;
+                    }
+
                     if (entity.GetComponent<PlayerController>().Direction == -1)
                         CameraController.Offset = new Vector2(-16, 0);
                     if (entity.GetComponent<PlayerController>().Direction == 1)
@@ -133,8 +138,6 @@ namespace MyGame.Scenes
                 entity.CollidedWithTrigger = obj => {
                     if (!entity.GetComponent<PlayerController>().MovementEnabled)
                         return;
-
-                    entity.GetComponent<PlayerController>().ObstructCrouching = false;
 
                     PlayerCollidingTriggers.Add(obj);
 
@@ -175,6 +178,7 @@ namespace MyGame.Scenes
                         entity.GetComponent<PlayerController>().ObstructCrouching = true;
                         if(Global.InputManager.Pressed(InputManager.Input.Down))
                         {
+                            entity.GetComponent<PlayerController>().MovementEnabled = false;
                             GameGlobal.Fader.RunFunction("FadeOut", e => {
                                 GameData.Set("Level", obj.Data["Level"]);
 
