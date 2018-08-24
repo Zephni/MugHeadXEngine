@@ -63,7 +63,7 @@ namespace MugHeadXEngine.EntityComponents
             Entity.SortingLayer = 4;
             Entity.AddComponent(new Sprite()).Run<Sprite>(component => {
                 component.BuildRectangle(new Point(8, 20), Color.Blue);
-                component.Visible = true;
+                component.Visible = false;
             });
 
             GameGlobal.PlayerGraphicEntity = new Entity(e => {
@@ -185,9 +185,9 @@ namespace MugHeadXEngine.EntityComponents
                 {
                     this.MoveX = 0;
                     this.MoveY = 0;
-                    this.Gravity = 0.5f;
+                    this.Gravity = 0.1f;
                     this.Acceleration = 1f;
-                    this.JumpStrength = 2f;
+                    this.JumpStrength = 0.2f;
                     MaxX = 1f;
                     MaxDown = 0.5f;
                 }
@@ -272,7 +272,7 @@ namespace MugHeadXEngine.EntityComponents
                     }
                 }
 
-                if (MovementEnabled && !ObstructCrouching && Global.InputManager.Held(InputManager.Input.Down))
+                if (MovementEnabled && ((!ObstructCrouching && Global.InputManager.Held(InputManager.Input.Down)) || Collider.Colliding(new Point(0, -10))))
                 {
                     if (!Crouching)
                     {
