@@ -51,6 +51,9 @@ namespace MyGame
 
         public float[] GetFloatArr(string key, char split = ',')
         {
+            if (!Data.ContainsKey(key))
+                return new float[2];
+
             var items = Data[key].Split(',');
             float[] intArr = new float[items.Length];
 
