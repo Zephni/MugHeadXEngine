@@ -17,7 +17,7 @@ namespace MyGame.Scenes
     public class Level : Scene
     {
         // Objects
-        public CameraController CameraController;
+        public static CameraController CameraController;
 
         public float LevelTime = 0;
 
@@ -79,127 +79,8 @@ namespace MyGame.Scenes
             #endregion
 
             // Player entity
-            List<Entity> PlayerCollidingTriggers = new List<Entity>();
-            GameGlobal.Player = new Entity(entity => {
-                entity.SortingLayer = 4;
-
-                entity.AddComponent(new Sprite()).Run<Sprite>(component => {
-                    component.BuildRectangle(new Point(8, 20), Color.Blue);
-                    component.Visible = false;
-                });
-
-                entity.AddComponent(new PlayerController(new PixelCollider()));
-
-                GameGlobal.PlayerGraphicEntity = new Entity(e => {
-                    e.SortingLayer = entity.SortingLayer;
-                    e.CheckPixels = false;
-                    e.AddComponent(new Sprite() { Texture2D = Global.Content.Load<Texture2D>("Entities/Pause") }).Run<Sprite>(s => {
-                        s.AddAnimation(new Animation("Stand", 0.2f, new Point(32, 32), new Point(0, 0)));
-                        s.AddAnimation(new Animation("Walk", 0.2f, new Point(32, 32), new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1)));
-                        s.AddAnimation(new Animation("Jump", 0.2f, new Point(32, 32), new Point(0, 2), new Point(1, 2), new Point(2, 2), new Point(3, 2)));
-                        s.AddAnimation(new Animation("Crawl", 0.15f, new Point(32, 32), new Point(0, 3), new Point(1, 3), new Point(2, 3), new Point(3, 3)));
-                        s.AddAnimation(new Animation("Lay", 0.2f, new Point(32, 32), new Point(0, 3)));
-                    });
-                });
-
-                if (GameData.Get("Player/Position") != null)
-                {
-                    string[] pPosData = GameData.Get("Player/Position").Split(',');
-                    entity.Position = new Vector2(Convert.ToInt16(pPosData[0])+8, Convert.ToInt16(pPosData[1]));
-                }                
-
-                entity.UpdateAction = e => {
-                    if (entity.GetComponent<PlayerController>().MovementEnabled && PlayerCollidingTriggers.Find(t => t.Name == "CameraLock") == null)
-                    {
-                        CameraController.Target = e;
-                        CameraController.ResetMinMax();
-                    }
-
-                    if (entity.GetComponent<PlayerController>().MovementEnabled && PlayerCollidingTriggers.Find(t => t.Name == "Water") == null)
-                    {
-                        entity.GetComponent<PlayerController>().MovementMode = PlayerController.MovementModes.Normal;
-                    }
-
-                    if (entity.GetComponent<PlayerController>().MovementEnabled && PlayerCollidingTriggers.Find(t => t.Name == "Door") == null)
-                    {
-                        entity.GetComponent<PlayerController>().ObstructCrouching = false;
-                    }
-
-                    if (entity.GetComponent<PlayerController>().Direction == -1)
-                        CameraController.Offset = new Vector2(-16, 0);
-                    if (entity.GetComponent<PlayerController>().Direction == 1)
-                        CameraController.Offset = new Vector2(16, 0);
-
-                    PlayerCollidingTriggers = new List<Entity>();
-
-                    if(!entity.GetComponent<PlayerController>().Crouching)
-                        GameGlobal.PlayerGraphicEntity.Position = entity.Position + new Vector2(0, -6);
-                    else
-                        GameGlobal.PlayerGraphicEntity.Position = entity.Position + new Vector2(0, -11);
-                };
-
-                entity.CollidedWithTrigger = obj => {
-                    if (!entity.GetComponent<PlayerController>().MovementEnabled)
-                        return;
-
-                    PlayerCollidingTriggers.Add(obj);
-
-                    if (obj.Name == "CameraLock")
-                    {
-                        foreach(var item in obj.Data["Type"].Split(','))
-                        {
-                            if (item  == "LockXY")
-                            {
-                                CameraController.MinX = obj.BoundingBox.Left;
-                                CameraController.MaxX = obj.BoundingBox.Right;
-                                CameraController.MinY = obj.BoundingBox.Top;
-                                CameraController.MaxY = obj.BoundingBox.Bottom;
-                            }
-                            else if (item == "LockX")
-                            {
-                                CameraController.MinX = obj.BoundingBox.Left;
-                                CameraController.MaxX = obj.BoundingBox.Right;
-                            }
-                            else if (item == "LockY")
-                            {
-                                CameraController.MinY = obj.BoundingBox.Top;
-                                CameraController.MaxY = obj.BoundingBox.Bottom;
-                            }
-                            else if (item == "LockTop")
-                                CameraController.MinY = obj.BoundingBox.Top;
-                            else if (item == "LockBottom")
-                                CameraController.MaxY = obj.BoundingBox.Bottom;
-                            else if (item == "LockRight")
-                                CameraController.MaxX = obj.BoundingBox.Right;
-                            else if (item == "LockLeft")
-                                CameraController.MinX = obj.BoundingBox.Left;
-                        }
-                    }
-
-                    if(obj.Name == "Door")
-                    {
-                        entity.GetComponent<PlayerController>().ObstructCrouching = true;
-                        if(Global.InputManager.Pressed(InputManager.Input.Down))
-                        {
-                            entity.GetComponent<PlayerController>().MovementEnabled = false;
-                            GameGlobal.Fader.RunFunction("FadeOut", e => {
-                                GameData.Set("Level", obj.Data["Level"]);
-
-                                string[] pos = obj.Data["Position"].Split(',');
-                                Point pointPos = new Point(Convert.ToInt16(pos[0]) * 16, Convert.ToInt16(pos[1]) * 16);
-
-                                GameData.Set("Player/Position", pointPos.X.ToString() + "," + pointPos.Y.ToString());
-                                Global.SceneManager.LoadScene("Level");
-                            });
-                        }
-                    }
-
-                    if (obj.Name == "Water" && entity.GetComponent<PlayerController>().MovementMode == PlayerController.MovementModes.Normal && entity.Position.Y-4 > obj.Position.Y - obj.Size.Y /2)
-                    {
-                        entity.GetComponent<PlayerController>().MovementMode = PlayerController.MovementModes.Swimming;
-                    }
-                };
-            });            
+            GameGlobal.Player = new Entity();
+            GameGlobal.Player.AddComponent(new PlayerController(new PixelCollider()));
 
             // Load level
             LevelLoader levelLoader = new LevelLoader();
@@ -249,7 +130,7 @@ namespace MyGame.Scenes
                 CameraController.SnapOnce();
 
             LevelTime += Global.DeltaTime;
-            
+
             CameraController.Update();
 
             // Temp speed up game

@@ -103,7 +103,7 @@ namespace MyGame
                 Vector2 xyDist = new Vector2(targetXY.X - camPos.X, targetXY.Y - camPos.Y);
                 double distance = Math.Sqrt(xyDist.X * xyDist.X + xyDist.Y * xyDist.Y);
 
-                if(distance > 2)
+                
                 camPos += new Vector2(
                     Math.Min(xyDist.X * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier,
                     Math.Min(xyDist.Y * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier

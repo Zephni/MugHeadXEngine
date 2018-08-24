@@ -116,6 +116,9 @@
     <Content Include="MyGame\Game\Levels\TheTree.lvl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="MyGame\Game\Levels\TheTreeCave.lvl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

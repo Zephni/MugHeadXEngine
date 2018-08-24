@@ -12,7 +12,7 @@ namespace MonoXEngine.EntityComponents
     {
         public PixelCollider()
         {
-            
+
         }
 
         public override bool Colliding(Point offset, Entity.CollisionType CollisionType = Entity.CollisionType.Pixel)

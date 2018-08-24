@@ -14,8 +14,9 @@ namespace MyGame.Scenes
     public class Menu : Scene
     {
         public Dictionary<string, string> DebugData = new Dictionary<string, string>() {
-            { "Level",              "UnderCave" }/*,
-            { "Player/Position",    "350, 180" }*/
+            { "Level",                  "TheTreeCave" },
+            { "Levels/TheTree/Intro",   "True"}
+            /*{ "Player/Position",    "350, 180" }*/
         };
 
         Entity DebugText;

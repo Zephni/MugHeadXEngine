@@ -60,6 +60,26 @@ namespace MyGame
                     entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/"+data.GetString("image")), Coefficient = new Vector2(coefficient[0], coefficient[1]), Offset = new Vector2(0, 0) });
                 });
             }
+            else if (entityInfo.Name == "AutoDoor")
+            {
+                new Entity(entity => {
+                    entity.Name = "AutoDoor";
+                    entity.LayerName = "Main";
+                    entity.Collider = Entity.CollisionType.Pixel;
+                    entity.Trigger = true;
+
+                    ZInterpreter data = new ZInterpreter(entityInfo.Data);
+                    entity.Data.Add("Level", data.GetString("level"));
+                    entity.Data.Add("Position", data.GetString("position"));
+
+                    entity.SortingLayer = GameGlobal.Player.SortingLayer;
+                    entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
+                    entity.AddComponent(new Drawable()).Run<Drawable>(d => {
+                        d.BuildRectangle(new Point(16, 16), Color.Blue);
+                        d.Visible = false;
+                    });
+                });
+            }
             else if (entityInfo.Name == "Door")
             {
                 new Entity(entity => {
