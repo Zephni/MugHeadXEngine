@@ -56,8 +56,9 @@ namespace MyGame
                     entity.LayerName = "Background";
                     entity.Position = new Vector2(0, 0);
                     float[] coefficient = data.GetFloatArr("coefficient");
+                    float[] offset = data.GetFloatArr("offset");
 
-                    entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/"+data.GetString("image")), Coefficient = new Vector2(coefficient[0], coefficient[1]), Offset = new Vector2(0, 0) });
+                    entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/"+data.GetString("image")), Coefficient = new Vector2(coefficient[0], coefficient[1]), Offset = new Vector2(offset[0], offset[1]) });
                 });
             }
             else if (entityInfo.Name == "AutoDoor")

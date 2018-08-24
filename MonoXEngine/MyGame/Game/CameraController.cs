@@ -46,6 +46,9 @@ namespace MyGame
                 Instance = this;
         }
 
+        private float PrevEasing;
+        private float PrevMaxStep;
+
         public void SetDefault()
         {
             Easing = 0.08f;
@@ -84,6 +87,8 @@ namespace MyGame
             {
                 if (Snapping)
                 {
+                    PrevEasing = Easing;
+                    PrevMaxStep = MaxStep;
                     Easing = 1;
                     MaxStep = 1000;
                 }
@@ -113,6 +118,8 @@ namespace MyGame
                 {
                     Snapping = false;
                     SetDefault();
+                    Easing = PrevEasing;
+                    MaxStep = PrevMaxStep;
                 }
             }
             else if(Mode == Modes.SnapToTarget)

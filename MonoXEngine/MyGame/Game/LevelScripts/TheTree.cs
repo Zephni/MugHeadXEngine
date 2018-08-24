@@ -61,8 +61,8 @@ namespace MyGame
                     entity.Scale = new Vector2(2.1f, 2.1f);
 
                     CoroutineHelper.RunUntil(() => { return entity.Position.Y < -500; }, () => {
-                        entity.Position += new Vector2(0.3f, -0.7f * entity.Scale.Y);
-                        entity.Scale += new Vector2(-0.005f, -0.005f);
+                        entity.Position += new Vector2(0.3f, -0.4f * entity.Scale.Y);
+                        entity.Scale += new Vector2(-0.003f, -0.003f);
                         if (entity.Scale.X < 0.5f)
                             entity.Scale = new Vector2(0.5f, 0.5f);
                     });
@@ -79,8 +79,8 @@ namespace MyGame
                     entity.Scale = new Vector2(2, 2);
 
                     CoroutineHelper.RunUntil(() => { return entity.Position.Y < -500; }, () => {
-                        entity.Position += new Vector2(0.3f, -0.7f * entity.Scale.Y);
-                        entity.Scale += new Vector2(-0.005f, -0.005f);
+                        entity.Position += new Vector2(0.3f, -0.4f * entity.Scale.Y);
+                        entity.Scale += new Vector2(-0.003f, -0.003f);
                         if (entity.Scale.X < 0.5f)
                             entity.Scale = new Vector2(0.5f, 0.5f);
                     });
