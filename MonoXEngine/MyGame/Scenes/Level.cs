@@ -132,7 +132,10 @@ namespace MyGame.Scenes
 
                     PlayerCollidingTriggers = new List<Entity>();
 
-                    GameGlobal.PlayerGraphicEntity.Position = entity.Position + new Vector2(0, -6);
+                    if(!entity.GetComponent<PlayerController>().Crouching)
+                        GameGlobal.PlayerGraphicEntity.Position = entity.Position + new Vector2(0, -6);
+                    else
+                        GameGlobal.PlayerGraphicEntity.Position = entity.Position + new Vector2(0, -11);
                 };
 
                 entity.CollidedWithTrigger = obj => {

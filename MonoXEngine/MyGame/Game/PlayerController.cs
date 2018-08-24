@@ -30,7 +30,7 @@ namespace MugHeadXEngine.EntityComponents
         public bool MovementEnabled = true;
         public List<Entity> CollidingEntities = new List<Entity>();
         public int Direction = 1;
-        bool Crouching = false;
+        public bool Crouching = false;
         public bool ObstructCrouching = true;
         
         private MovementModes LastMovementMode = MovementModes.None;
@@ -133,20 +133,26 @@ namespace MugHeadXEngine.EntityComponents
 
                 if (MovementEnabled && !ObstructCrouching && Global.InputManager.Held(InputManager.Input.Down))
                 {
-                    if (!Kinetic)
+                    if (!Crouching)
                     {
-                        Crouching = true;
+                        Entity.GetComponent<Sprite>().BuildRectangle(new Point(8, 10), Color.Blue);
+                        Entity.Position += new Vector2(0, 6);
+                    }
 
-                        if (Global.InputManager.Held(InputManager.Input.Left) || Global.InputManager.Held(InputManager.Input.Right))
-                        {
-                            GameGlobal.PlayerGraphic.RunAnimation("Crawl");
-                            MoveX = (Direction == 1) ? 1 : -1;
-                        }
-                        else
-                        {
-                            MoveX = 0;
-                            GameGlobal.PlayerGraphic.RunAnimation("Lay");
-                        }
+                    Crouching = true;
+                }
+
+                if (!Kinetic && Crouching)
+                {
+                    if (Global.InputManager.Held(InputManager.Input.Left) || Global.InputManager.Held(InputManager.Input.Right))
+                    {
+                        GameGlobal.PlayerGraphic.RunAnimation("Crawl");
+                        MoveX = (Direction == 1) ? 1 : -1;
+                    }
+                    else
+                    {
+                        MoveX = 0;
+                        GameGlobal.PlayerGraphic.RunAnimation("Lay");
                     }
                 }
 
@@ -155,12 +161,16 @@ namespace MugHeadXEngine.EntityComponents
                     CurrentJump = 0;
 
                     if (MoveX == 0 && !Kinetic && !Crouching)
+                    {
                         GameGlobal.PlayerGraphic.RunAnimation("Stand");
+                    }
 
-                    if (Crouching && !Global.InputManager.Held(InputManager.Input.Down))
+                    if (Crouching && !Global.InputManager.Held(InputManager.Input.Down) && !Collider.Colliding(new Point(0, -10)))
                     {
                         Crouching = false;
                         GameGlobal.PlayerGraphic.RunAnimation("Stand");
+                        Entity.GetComponent<Sprite>().BuildRectangle(new Point(8, 20), Color.Blue);
+                        Entity.Position += new Vector2(0, -6);
                     }
                 }
                 else
