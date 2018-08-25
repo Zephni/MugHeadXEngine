@@ -128,6 +128,20 @@ namespace MugHeadXEngine.EntityComponents
                 if (!MovementEnabled)
                     return;
 
+                if (obj.Name == "Chest")
+                {
+                    if (obj.GetComponent<Sprite>().CurrentAnimation == "Closed")
+                        ObstructCrouching = true;
+
+                    if (Global.InputManager.Pressed(InputManager.Input.Down))
+                    {
+                        if(obj.GetComponent<Sprite>().CurrentAnimation == "Closed")
+                        {
+                            obj.GetComponent<Sprite>().RunAnimation("Opening", false);
+                        }
+                    }
+                }
+
                 if (obj.Name == "Door")
                 {
                     ObstructCrouching = true;
@@ -179,14 +193,10 @@ namespace MugHeadXEngine.EntityComponents
                 }
 
                 if (obj.Name == "Water")
-                {
                     MovementMode = PlayerController.MovementModes.Normal;
-                }
 
-                if (obj.Name == "Door")
-                {
+                if(obj.Name == "Door" || obj.Name == "Chest")
                     ObstructCrouching = false;
-                }
             };
         }
 
@@ -270,7 +280,7 @@ namespace MugHeadXEngine.EntityComponents
                     }
                 }
 
-                if (MovementEnabled && ((!ObstructCrouching && Global.InputManager.Held(InputManager.Input.Down)) || (IsGrounded && Collider.Colliding(new Point(0, -10)))))
+                if (IsGrounded && MovementEnabled && ((!ObstructCrouching && Global.InputManager.Held(InputManager.Input.Down)) || (IsGrounded && Collider.Colliding(new Point(0, -10)))))
                 {
                     Crouching = true;
                 }

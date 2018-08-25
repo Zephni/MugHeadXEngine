@@ -31,6 +31,41 @@ namespace MyGame
             {
                 GameGlobal.Player.Position = new Vector2(entityInfo.Position.X * 16, entityInfo.Position.Y * 16);
             }
+            else if (entityInfo.Name == "Chest")
+            {
+                ZInterpreter data = new ZInterpreter(entityInfo.Data);
+
+                new Entity(entity => {
+                    entity.Name = "Chest";
+                    entity.LayerName = "Main";
+                    entity.Trigger = true;
+                    entity.Collider = Entity.CollisionType.Pixel;
+                    entity.SortingLayer = GameGlobal.Player.SortingLayer - 1;
+                    entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
+                    entity.AddComponent(new Sprite()).Run<Sprite>(d => {
+                        d.LoadTexture("Entities/Chest_" + data.GetString("type"));
+                        d.AddAnimation(new Animation("Closed", 0, new Point(32, 32), new Point(0, 0)));
+                        d.AddAnimation(new Animation("Opening", 0.1f, new Point(32, 32), new Point(1, 0), new Point(2, 0), new Point(3, 0), new Point(4, 0)));
+                        d.RunAnimation("Closed");
+                    });
+                });
+
+                /*new Entity(entity => {
+                    entity.Name = "Chest";                    
+                    entity.LayerName = "Main";
+                    entity.Trigger = true;
+                    entity.Collider = Entity.CollisionType.Pixel;
+                    entity.SortingLayer = GameGlobal.Player.SortingLayer;
+                    entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
+                    
+                    entity.AddComponent(new Sprite()).Run<Sprite>(d => {
+                        d.LoadTexture("Entities/Chest_"+data.GetString("type"));
+                        d.AddAnimation(new Animation("Closed", 0, new Point(32, 32), new Point(0, 0)));
+                        d.AddAnimation(new Animation("Opening", 0.2f, new Point(32, 32), new Point(1, 0), new Point(2, 0), new Point(3, 0), new Point(4, 0)));
+                        d.RunAnimation("Closed");
+                    });
+                });*/
+            }
             else if (entityInfo.Name == "NPC")
             {
                 ZInterpreter data = new ZInterpreter(entityInfo.Data);
@@ -61,7 +96,7 @@ namespace MyGame
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
                     entity.Opacity = 0.75f;
                     entity.AddComponent(new Drawable()).Run<Drawable>(d => {
-                        d.BuildRectangle(new Point(Convert.ToInt16(entityInfo.Size.X) * 16, Convert.ToInt16(entityInfo.Size.Y) * 16), Color.CornflowerBlue);
+                        d.BuildRectangle(new Point(Convert.ToInt16(entityInfo.Size.X) * 16, Convert.ToInt16(entityInfo.Size.Y) * 16), Color.Aqua);
                     });
                 });
             }
@@ -123,7 +158,6 @@ namespace MyGame
                 new Entity(entity => {
                     entity.Name = "Graphic";
                     entity.LayerName = "Main";
-                    entity.Origin = Vector2.Zero;
                     entity.SortingLayer = 3;
 
                     ZInterpreter data = new ZInterpreter(entityInfo.Data);

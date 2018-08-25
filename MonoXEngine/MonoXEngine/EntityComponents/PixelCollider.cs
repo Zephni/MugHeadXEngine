@@ -80,7 +80,9 @@ namespace MonoXEngine.EntityComponents
         {
             foreach (Entity entity in entities)
             {
-                if (entity.GetComponent<Drawable>() == null)
+                var Drawable = (entity.GetComponent<Drawable>() != null) ? entity.GetComponent<Drawable>() : entity.GetComponent<Sprite>();
+                
+                if(Drawable == null)
                     return false;
 
                 Rectangle entityBox = entity.BoundingBox;
@@ -93,7 +95,7 @@ namespace MonoXEngine.EntityComponents
 
                     int totalPixels = intersectRect.Width * intersectRect.Height;
                     Color[] colors = new Color[totalPixels];
-                    entity.GetComponent<Drawable>().Texture2D.GetData(0, intersectRect, colors, 0, totalPixels);
+                    Drawable.Texture2D.GetData(0, intersectRect, colors, 0, totalPixels);
 
                     for (int I = 0; I < colors.Length; I++)
                         if (colors[I].A != byte.MinValue)

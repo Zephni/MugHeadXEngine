@@ -11,6 +11,7 @@ namespace MonoXEngine.EntityComponents
     {
         protected Dictionary<string, Animation> Animations;
 
+        public bool Looping = false;
         private int CurrentAnimationFrame;
 
         public string CurrentAnimation;
@@ -34,10 +35,12 @@ namespace MonoXEngine.EntityComponents
         /// RunAnimation
         /// </summary>
         /// <param name="name">Name of an animation that has already been added to this sprite</param>
-        public void RunAnimation(string name)
+        public void RunAnimation(string name, bool loop = true)
         {
-            if(CurrentAnimation != name)
+            if (CurrentAnimation != name)
             {
+                Looping = loop;
+
                 CurrentAnimation = name;
                 this.SourceRectangle = this.GetAnimation(CurrentAnimation).SourceRectangles[0];
                 CurrentAnimationFrame = 0;
@@ -57,10 +60,17 @@ namespace MonoXEngine.EntityComponents
                 {
                     AnimTimer = 0;
 
-                    CurrentAnimationFrame++;
+                    if(CurrentAnimationFrame < this.GetAnimation(CurrentAnimation).SourceRectangles.Count)
+                        CurrentAnimationFrame++;
+
+                    if (Looping && CurrentAnimationFrame == this.GetAnimation(CurrentAnimation).SourceRectangles.Count)
+                        CurrentAnimationFrame = 0;
 
                     if (CurrentAnimationFrame >= this.GetAnimation(CurrentAnimation).SourceRectangles.Count)
-                        CurrentAnimationFrame = 0;
+                    {
+                        CurrentAnimationFrame = this.GetAnimation(CurrentAnimation).SourceRectangles.Count-1;
+                    }
+
 
                     this.SourceRectangle = this.GetAnimation(CurrentAnimation).SourceRectangles[CurrentAnimationFrame];
                 }
