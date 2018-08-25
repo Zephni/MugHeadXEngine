@@ -24,7 +24,9 @@ namespace MonoXEngine
 
         public bool Trigger = false;
         public Action<Entity> CollidedWithTrigger;
-        
+        public Action<Entity> CollidingWithTrigger;
+        public Action<Entity> UnCollidedWithTrigger;
+
         public int SortingLayer;
 
         public enum CollisionType

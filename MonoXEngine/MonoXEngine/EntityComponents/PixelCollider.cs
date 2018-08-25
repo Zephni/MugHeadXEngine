@@ -10,9 +10,40 @@ namespace MonoXEngine.EntityComponents
 {
     public class PixelCollider : BaseCollider 
     {
+        public static string TEST = "";
+        public List<Entity> PrevCollidingTriggers;
+        public List<Entity> CollidingTriggers;
+
         public PixelCollider()
         {
+            PrevCollidingTriggers = new List<Entity>();
+            CollidingTriggers = new List<Entity>();
+        }
 
+        public override void Update()
+        {
+            foreach(var item in CollidingTriggers)
+            {
+                // New colliding triggers
+                if (!PrevCollidingTriggers.Contains(item))
+                    Entity.CollidedWithTrigger?.Invoke(item);
+
+                // Current colliding triggers
+                Entity.CollidingWithTrigger?.Invoke(item);
+            }
+                    
+            // New uncolliding triggers
+            foreach (var item in PrevCollidingTriggers)
+                if (!CollidingTriggers.Contains(item))
+                {
+                    Entity.UnCollidedWithTrigger?.Invoke(item);
+                }
+
+            PrevCollidingTriggers = new List<Entity>();
+            foreach (var item in CollidingTriggers)
+                PrevCollidingTriggers.Add(item);
+
+            CollidingTriggers = new List<Entity>();
         }
 
         public override bool Colliding(Point offset, Entity.CollisionType CollisionType = Entity.CollisionType.Pixel)
@@ -64,7 +95,8 @@ namespace MonoXEngine.EntityComponents
                         {
                             if(entity.Trigger)
                             {
-                                Entity.CollidedWithTrigger?.Invoke(entity);
+                                if(!CollidingTriggers.Contains(entity))
+                                    CollidingTriggers.Add(entity);
                             }
                             else
                             {

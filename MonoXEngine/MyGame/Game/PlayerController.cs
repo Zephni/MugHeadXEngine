@@ -89,12 +89,8 @@ namespace MugHeadXEngine.EntityComponents
                 Direction = (GameData.Get("Player/Direction") == "1") ? 1 : -1;
             }
 
+            // New collides
             Entity.CollidedWithTrigger = obj => {
-                if (!MovementEnabled)
-                    return;
-
-                PlayerCollidingTriggers.Add(obj);
-
                 if (obj.Name == "CameraLock")
                 {
                     foreach (var item in obj.Data["Type"].Split(','))
@@ -126,6 +122,12 @@ namespace MugHeadXEngine.EntityComponents
                             MyGame.Scenes.Level.CameraController.MinX = obj.BoundingBox.Left;
                     }
                 }
+            };
+
+            // Current collides
+            Entity.CollidingWithTrigger = obj => {
+                if (!MovementEnabled)
+                    return;
 
                 if (obj.Name == "Door")
                 {
@@ -165,6 +167,28 @@ namespace MugHeadXEngine.EntityComponents
                     MovementMode = PlayerController.MovementModes.Swimming;
                 }
             };
+
+            // New uncollides
+            Entity.UnCollidedWithTrigger = obj => {
+                if (!MovementEnabled)
+                    return;
+
+                if (obj.Name == "CameraLock")
+                {
+                    MyGame.Scenes.Level.CameraController.Target = Entity;
+                    MyGame.Scenes.Level.CameraController.ResetMinMax();
+                }
+
+                if (obj.Name == "Water")
+                {
+                    MovementMode = PlayerController.MovementModes.Normal;
+                }
+
+                if (obj.Name == "Door")
+                {
+                    ObstructCrouching = false;
+                }
+            };
         }
 
         public override void Update()
@@ -193,25 +217,6 @@ namespace MugHeadXEngine.EntityComponents
                 }
             }
             LastMovementMode = MovementMode;
-
-            // Uncolliding
-            if (MovementEnabled && PlayerCollidingTriggers.Find(t => t.Name == "CameraLock") == null)
-            {
-                CameraController.Instance.Target = Entity;
-                CameraController.Instance.ResetMinMax();
-            }
-
-            if (MovementEnabled && PlayerCollidingTriggers.Find(t => t.Name == "Water") == null)
-            {
-                MovementMode = PlayerController.MovementModes.Normal;
-            }
-
-            if (MovementEnabled && PlayerCollidingTriggers.Find(t => t.Name == "Door") == null)
-            {
-                ObstructCrouching = false;
-            }
-
-            PlayerCollidingTriggers = new List<Entity>();
 
             // Dir crouch temp
             if (Direction == -1)

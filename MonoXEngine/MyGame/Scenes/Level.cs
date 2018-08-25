@@ -11,6 +11,7 @@ using MugHeadXEngine;
 using System;
 using XEditor;
 using System.Reflection;
+using System.Linq;
 
 namespace MyGame.Scenes
 {
@@ -41,7 +42,8 @@ namespace MyGame.Scenes
                     component.Color = Color.Yellow;
 
                     entity.UpdateAction = e => {
-                        component.String = "Entities: " + Global.CountEntities().ToString() + ", Coroutines: " + Coroutines.Count.ToString() + ", FPS: " + Global.FPS.ToString();
+                        //component.String = "Entities: " + Global.CountEntities().ToString() + ", Coroutines: " + Coroutines.Count.ToString() + ", FPS: " + Global.FPS.ToString();
+                        component.String = String.Join(", ", GameGlobal.Player.GetComponent<PixelCollider>().PrevCollidingTriggers.Select(x => x.Name).ToArray());
                     };
                 });
             });
