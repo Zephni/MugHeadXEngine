@@ -10,7 +10,10 @@ namespace MonoXEngine.EntityComponents
 {
     public class PixelCollider : BaseCollider 
     {
-        public static string TEST = "";
+        // Add base size change  option
+        public int AddWidth = 0;
+        public int AddHeight = 0;
+
         public List<Entity> PrevCollidingTriggers;
         public List<Entity> CollidingTriggers;
 
@@ -35,9 +38,7 @@ namespace MonoXEngine.EntityComponents
             // New uncolliding triggers
             foreach (var item in PrevCollidingTriggers)
                 if (!CollidingTriggers.Contains(item))
-                {
                     Entity.UnCollidedWithTrigger?.Invoke(item);
-                }
 
             PrevCollidingTriggers = new List<Entity>();
             foreach (var item in CollidingTriggers)
@@ -48,10 +49,14 @@ namespace MonoXEngine.EntityComponents
 
         public override bool Colliding(Point offset, Entity.CollisionType CollisionType = Entity.CollisionType.Pixel)
         {
+
             Rectangle checkArea = new Rectangle(
                 (this.Entity.Position.ToPoint() - (this.Entity.Size/2).ToPoint()) + offset,
                 this.Entity.Size.ToPoint()
             );
+
+            checkArea.Size += new Point(AddWidth, AddHeight);
+            checkArea.Location -= new Point(AddWidth, AddHeight);
 
             List<Entity> possibleCollidingEntities = new List<Entity>();
             foreach(Entity entity in Global.Entities.FindAll(e => e.LayerName == this.Entity.LayerName))

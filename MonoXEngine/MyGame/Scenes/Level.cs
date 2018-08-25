@@ -106,11 +106,11 @@ namespace MyGame.Scenes
             // Camera
             CameraController = new CameraController
             {
-                Target = GameGlobal.Player,
+                Target = GameGlobal.PlayerGraphicEntity,
                 Easing = 0.08f,
                 MaxStep = 1000
             };
-            CameraController.SnapOnce(GameGlobal.Player);
+            CameraController.SnapOnce(GameGlobal.PlayerGraphicEntity);
             CameraController.Mode = CameraController.Modes.LerpToTarget;
 
             // Level script

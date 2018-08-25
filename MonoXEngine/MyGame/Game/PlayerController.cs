@@ -36,8 +36,6 @@ namespace MugHeadXEngine.EntityComponents
         private MovementModes LastMovementMode = MovementModes.None;
         public MovementModes MovementMode = MovementModes.Normal;
 
-        public Entity GraphicEntity;
-
         BaseCollider passThru;
 
         List<Entity> PlayerCollidingTriggers = new List<Entity>();
@@ -45,11 +43,24 @@ namespace MugHeadXEngine.EntityComponents
         public PlayerController(BaseCollider collider)
         {
             passThru = collider;
+
+            GameGlobal.PlayerGraphicEntity = new Entity(e => {
+                e.SortingLayer = 4;
+                e.CheckPixels = false;
+                e.AddComponent(new Sprite() { Texture2D = Global.Content.Load<Texture2D>("Entities/Pause") }).Run<Sprite>(s => {
+                    s.Visible = true;
+                    s.AddAnimation(new Animation("Stand", 0.2f, new Point(32, 32), new Point(0, 0)));
+                    s.AddAnimation(new Animation("Walk", 0.2f, new Point(32, 32), new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1)));
+                    s.AddAnimation(new Animation("Jump", 0.2f, new Point(32, 32), new Point(0, 2), new Point(1, 2), new Point(2, 2), new Point(3, 2)));
+                    s.AddAnimation(new Animation("Crawl", 0.15f, new Point(32, 32), new Point(0, 3), new Point(1, 3), new Point(2, 3), new Point(3, 3)));
+                    s.AddAnimation(new Animation("Lay", 0.2f, new Point(32, 32), new Point(0, 3)));
+                });
+            });
         }
 
         public void Animate(string Alias)
         {
-            GraphicEntity.GetComponent<Sprite>().RunAnimation(Alias);
+            GameGlobal.PlayerGraphicEntity.GetComponent<Sprite>().RunAnimation(Alias);
         }
 
         public override void Start()
@@ -62,20 +73,8 @@ namespace MugHeadXEngine.EntityComponents
             //
             Entity.SortingLayer = 4;
             Entity.AddComponent(new Sprite()).Run<Sprite>(component => {
-                component.BuildRectangle(new Point(8, 20), Color.Blue);
+                component.BuildRectangle(new Point(8, 20), Color.White);
                 component.Visible = false;
-            });
-
-            GameGlobal.PlayerGraphicEntity = new Entity(e => {
-                e.SortingLayer = Entity.SortingLayer;
-                e.CheckPixels = false;
-                e.AddComponent(new Sprite() { Texture2D = Global.Content.Load<Texture2D>("Entities/Pause") }).Run<Sprite>(s => {
-                    s.AddAnimation(new Animation("Stand", 0.2f, new Point(32, 32), new Point(0, 0)));
-                    s.AddAnimation(new Animation("Walk", 0.2f, new Point(32, 32), new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1)));
-                    s.AddAnimation(new Animation("Jump", 0.2f, new Point(32, 32), new Point(0, 2), new Point(1, 2), new Point(2, 2), new Point(3, 2)));
-                    s.AddAnimation(new Animation("Crawl", 0.15f, new Point(32, 32), new Point(0, 3), new Point(1, 3), new Point(2, 3), new Point(3, 3)));
-                    s.AddAnimation(new Animation("Lay", 0.2f, new Point(32, 32), new Point(0, 3)));
-                });
             });
 
             if (GameData.Get("Player/Position") != null)
@@ -175,7 +174,7 @@ namespace MugHeadXEngine.EntityComponents
 
                 if (obj.Name == "CameraLock")
                 {
-                    MyGame.Scenes.Level.CameraController.Target = Entity;
+                    MyGame.Scenes.Level.CameraController.Target = GameGlobal.PlayerGraphicEntity;
                     MyGame.Scenes.Level.CameraController.ResetMinMax();
                 }
 
@@ -209,27 +208,18 @@ namespace MugHeadXEngine.EntityComponents
                 {
                     this.MoveX = 0;
                     this.MoveY = 0;
-                    this.Gravity = 0.1f;
+                    this.Gravity = 1f;
                     this.Acceleration = 1f;
-                    this.JumpStrength = 0.2f;
+                    this.JumpStrength = 1f;
                     MaxX = 1f;
                     MaxDown = 0.5f;
                 }
             }
             LastMovementMode = MovementMode;
 
-            // Dir crouch temp
-            if (Direction == -1)
-                CameraController.Instance.Offset = new Vector2(-16, 0);
-            if (Direction == 1)
-                CameraController.Instance.Offset = new Vector2(16, 0);
-
-            if (!Crouching)
-                GameGlobal.PlayerGraphicEntity.Position = Entity.Position + new Vector2(0, -6);
-            else
-                GameGlobal.PlayerGraphicEntity.Position = Entity.Position + new Vector2(0, -11);
-
             // Direction
+            MyGame.Scenes.Level.CameraController.Offset = (Direction == -1) ? new Vector2(-16, 0) : new Vector2(16, 0);
+
             if (MovementMode != MovementModes.None)
             {
                 if (Global.InputManager.Held(InputManager.Input.Left)) Direction = -1;
@@ -237,6 +227,9 @@ namespace MugHeadXEngine.EntityComponents
             }
 
             GameGlobal.PlayerGraphic.SpriteEffect = (Direction == 1) ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+
+            // Graphic position
+            GameGlobal.PlayerGraphicEntity.Position = Entity.Position + new Vector2(0, -6);
 
             // Normal movement
             if (MovementMode == MovementModes.Normal)
@@ -277,14 +270,8 @@ namespace MugHeadXEngine.EntityComponents
                     }
                 }
 
-                if (MovementEnabled && ((!ObstructCrouching && Global.InputManager.Held(InputManager.Input.Down)) || Collider.Colliding(new Point(0, -10))))
+                if (MovementEnabled && ((!ObstructCrouching && Global.InputManager.Held(InputManager.Input.Down)) || (IsGrounded && Collider.Colliding(new Point(0, -10)))))
                 {
-                    if (!Crouching)
-                    {
-                        Entity.GetComponent<Sprite>().BuildRectangle(new Point(8, 10), Color.Blue);
-                        Entity.Position += new Vector2(0, 6);
-                    }
-
                     Crouching = true;
                 }
 
@@ -315,8 +302,6 @@ namespace MugHeadXEngine.EntityComponents
                     {
                         Crouching = false;
                         GameGlobal.PlayerGraphic.RunAnimation("Stand");
-                        Entity.GetComponent<Sprite>().BuildRectangle(new Point(8, 20), Color.Blue);
-                        Entity.Position += new Vector2(0, -6);
                     }
                 }
                 else
@@ -363,6 +348,8 @@ namespace MugHeadXEngine.EntityComponents
                     }
                 }
             }
+
+            Entity.GetComponent<PixelCollider>().AddHeight = (Crouching) ? -12 : 0;
 
             GameData.Set("Player/Direction", (Direction == -1) ? "-1" : "1");
 
