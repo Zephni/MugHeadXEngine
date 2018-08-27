@@ -23,6 +23,11 @@ namespace MyGame
             }
         }
 
+        public bool HasKey(string key)
+        {
+            return Data.ContainsKey(key);
+        }
+
         public string GetString(string key)
         {
             return Data[key];

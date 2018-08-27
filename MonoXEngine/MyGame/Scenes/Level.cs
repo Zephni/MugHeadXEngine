@@ -84,6 +84,8 @@ namespace MyGame.Scenes
             GameGlobal.Player = new Entity();
             GameGlobal.Player.AddComponent(new PlayerController(new PixelCollider()));
 
+            Global.AudioController.MusicSetThisFrame = false;
+
             // Load level
             LevelLoader levelLoader = new LevelLoader();
             levelLoader.Load(GameData.Get("Level"), (tileset, tiles, entities) => {
@@ -121,9 +123,17 @@ namespace MyGame.Scenes
             if(method != null)
                 method.Invoke(levelScripts, new object[0]);
 
-            CoroutineHelper.WaitRun(0.05f, () => {
-                GameGlobal.Fader.RunFunction("FadeIn");
-            });
+            if(!Global.AudioController.MusicSetThisFrame)
+            {
+                Global.AudioController.MusicFadeOut();
+            }
+
+            if (GameGlobal.Fader.Data["Cancel"] != "true")
+            {
+                CoroutineHelper.WaitRun(0.05f, () => {
+                    GameGlobal.Fader.RunFunction("FadeIn");
+                });
+            }
         }
         
         public override void Update()

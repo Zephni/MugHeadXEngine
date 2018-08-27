@@ -34,8 +34,9 @@ namespace MyGame
             else if (entityInfo.Name == "Music")
             {
                 ZInterpreter data = new ZInterpreter(entityInfo.Data);
-
-                Global.AudioController.PlayMusic(data.GetString("file"));
+                
+                float fadeTo = (data.HasKey("fadeTo")) ? data.GetFloat("fadeTo") : 1;
+                Global.AudioController.PlayMusic(data.GetString("file"), fadeTo);
             }
             else if (entityInfo.Name == "Chest")
             {

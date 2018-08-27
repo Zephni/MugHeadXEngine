@@ -26,8 +26,8 @@ namespace MyGame
             }
 
             // Initial fade
-            GameGlobal.Fader.RunFunction("Cancel");
             GameGlobal.Fader.RunFunction("BlackOut");
+            GameGlobal.Fader.RunFunction("Cancel");
             GameGlobal.Fader.Data["Time"] = "5";
             CoroutineHelper.WaitRun(2, () => {
                 GameGlobal.Fader.RunFunction("Resume");

@@ -1,1 +1,1 @@
-Level:!:TheTree;!;Player/Direction:!:1;!;Levels/TheTree/Intro:!:True;!;Player/Position:!:1885,902
+Level:!:TheTree;!;Levels/TheTree/Intro:!:True;!;Player/Direction:!:-1;!;Player/Position:!:83,1078
