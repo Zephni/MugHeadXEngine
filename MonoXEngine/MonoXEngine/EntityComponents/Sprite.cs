@@ -12,7 +12,7 @@ namespace MonoXEngine.EntityComponents
         protected Dictionary<string, Animation> Animations;
 
         public bool Looping = false;
-        private int CurrentAnimationFrame;
+        public int CurrentAnimationFrame;
 
         public string CurrentAnimation;
 

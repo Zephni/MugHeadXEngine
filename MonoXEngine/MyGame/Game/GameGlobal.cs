@@ -12,6 +12,8 @@ namespace MyGame
 {
     public static class GameGlobal
     {
+        public static string DebugString = "";
+
         public static Entity Fader;
         public static Entity Player;
         public static Entity PlayerGraphicEntity;

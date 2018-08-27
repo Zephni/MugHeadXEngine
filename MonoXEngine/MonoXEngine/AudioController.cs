@@ -134,6 +134,10 @@ namespace MonoXEngine
                 else if (CurrentMusicVolume > 1) CurrentMusicVolume = 1;
                 CurrentMusic.Volume = CurrentMusicVolume;
             }
+            else if (CurrentMusic != null && CurrentMusic.State == SoundState.Stopped)
+            {
+                CurrentMusic.Play();
+            }
         }
     }
 }

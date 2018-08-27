@@ -11,7 +11,6 @@
     <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Audio/SFX/Jump.wav</File>
     <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Audio/SFX/Thump.wav</File>
     <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Backgrounds/Blue_Sky.png</File>
-    <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Backgrounds/ForestBG_Rocks.png</File>
     <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Graphics/TheTree.png</File>
     <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Tilesets/Forest.png</File>
     <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Tilesets/FlatGrass.png</File>
@@ -29,5 +28,6 @@
     <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Entities/Chest_Majestic.png</File>
     <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Audio/Music/Overworld Happy.wav</File>
     <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Audio/Music/Cave.wav</File>
+    <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Backgrounds/ForestBG_Rocks.png</File>
   </SourceFiles>
 </SourceFileCollection>

@@ -102,6 +102,13 @@ namespace MyGame
                     float[] offset = data.GetFloatArr("offset");
 
                     entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/"+data.GetString("image")), Coefficient = new Vector2(coefficient[0], coefficient[1]), Offset = new Vector2(offset[0], offset[1]) });
+
+                    if(data.HasKey("animate"))
+                    {
+                        entity.GetComponent<CameraOffsetTexture>().Animate = true;
+                        entity.GetComponent<CameraOffsetTexture>().AnimStepTime = data.GetFloat("animate");
+                        entity.GetComponent<CameraOffsetTexture>().Size = data.GetPointArr("crop")[0];
+                    }
                 });
             }
             else if (entityInfo.Name == "AutoDoor")
