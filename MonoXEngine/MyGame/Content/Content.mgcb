@@ -57,12 +57,6 @@
 /processorParam:Quality=Best
 /build:Audio/SFX/Thump.wav
 
-#begin Audio/Music/Overworld1.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:Audio/Music/Overworld1.mp3
-
 #begin Backgrounds/Blue_Sky.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -266,4 +260,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Entities/Chest_Majestic.png
+
+#begin Audio/Music/Overworld Happy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Music/Overworld Happy.wav
+
+#begin Audio/Music/Cave.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/Music/Cave.wav
 

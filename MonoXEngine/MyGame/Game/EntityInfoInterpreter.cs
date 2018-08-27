@@ -31,6 +31,12 @@ namespace MyGame
             {
                 GameGlobal.Player.Position = new Vector2(entityInfo.Position.X * 16, entityInfo.Position.Y * 16);
             }
+            else if (entityInfo.Name == "Music")
+            {
+                ZInterpreter data = new ZInterpreter(entityInfo.Data);
+
+                Global.AudioController.PlayMusic(data.GetString("file"));
+            }
             else if (entityInfo.Name == "Chest")
             {
                 ZInterpreter data = new ZInterpreter(entityInfo.Data);
@@ -49,22 +55,6 @@ namespace MyGame
                         d.RunAnimation("Closed");
                     });
                 });
-
-                /*new Entity(entity => {
-                    entity.Name = "Chest";                    
-                    entity.LayerName = "Main";
-                    entity.Trigger = true;
-                    entity.Collider = Entity.CollisionType.Pixel;
-                    entity.SortingLayer = GameGlobal.Player.SortingLayer;
-                    entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
-                    
-                    entity.AddComponent(new Sprite()).Run<Sprite>(d => {
-                        d.LoadTexture("Entities/Chest_"+data.GetString("type"));
-                        d.AddAnimation(new Animation("Closed", 0, new Point(32, 32), new Point(0, 0)));
-                        d.AddAnimation(new Animation("Opening", 0.2f, new Point(32, 32), new Point(1, 0), new Point(2, 0), new Point(3, 0), new Point(4, 0)));
-                        d.RunAnimation("Closed");
-                    });
-                });*/
             }
             else if (entityInfo.Name == "NPC")
             {
@@ -159,12 +149,12 @@ namespace MyGame
                     entity.Name = "Graphic";
                     entity.LayerName = "Main";
                     entity.SortingLayer = 3;
+                    entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
 
                     ZInterpreter data = new ZInterpreter(entityInfo.Data);
 
-                    entity.AddComponent(new Drawable()).Run<Drawable>(d => {
+                    entity.AddComponent(new Sprite()).Run<Sprite>(d => {
                         d.LoadTexture("Graphics/" + data.GetString("image"));
-                        entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
                     });
                 });
             }

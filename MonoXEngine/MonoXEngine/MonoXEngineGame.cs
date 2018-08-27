@@ -112,12 +112,13 @@ namespace MonoXEngine
 
             Global.InputManager.Update();
 
+            Global.AudioController.Update();
+            Global.SceneManager.CurrentScene.Update();
+
             for (int I = 0; I < Global.Entities.Count; I++)
                 Global.Entities[I].Update();
 
             Coroutines.Update(Global.DeltaTime);
-
-            Global.SceneManager.CurrentScene.Update();
             base.Update(gameTime);
         }
 

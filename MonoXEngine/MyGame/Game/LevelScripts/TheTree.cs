@@ -18,12 +18,10 @@ namespace MyGame
     {
         public void TheTree()
         {
-            // Music
-            //if(!Global.AudioController.MusicIsPlaying("Overworld1"))
-            //    Global.AudioController.PlayMusic("Music/Overworld1");
-
             if (GameData.Get("Levels/TheTree/Intro") == "True")
             {
+                // Music
+                Global.AudioController.PlayMusic("Overworld Happy");
                 return;
             }
 
@@ -53,7 +51,7 @@ namespace MyGame
                     entity.LayerName = "Main";
                     entity.SortingLayer = 8;
                     entity.AddComponent(new Sprite() { Texture2D = Global.Content.Load<Texture2D>("Entities/Seagull") }).Run<Sprite>(s => {
-                        s.AddAnimation(new Animation("Default", 0.1f, new Point(16, 16), new Point(0, 0), new Point(1, 0), new Point(2, 0), new Point(3, 0)));
+                        s.AddAnimation(new Animation("Default", 0.1f, new Point(16, 16), new Point(0, 0), new Point(1, 0), new Point(2, 0), new Point(3, 0), new Point(3, 0), new Point(3, 0)));
                         s.RunAnimation("Default");
                     });
 
@@ -71,7 +69,7 @@ namespace MyGame
                     entity.LayerName = "Main";
                     entity.SortingLayer = 8;
                     entity.AddComponent(new Sprite() { Texture2D = Global.Content.Load<Texture2D>("Entities/Seagull") }).Run<Sprite>(s => {
-                        s.AddAnimation(new Animation("Default", 0.1f, new Point(16, 16), new Point(0, 0), new Point(1, 0), new Point(2, 0), new Point(3, 0)));
+                        s.AddAnimation(new Animation("Default", 0.1f, new Point(16, 16), new Point(0, 0), new Point(1, 0), new Point(2, 0), new Point(3, 0), new Point(3, 0), new Point(3, 0)));
                         s.RunAnimation("Default");
                     });
 
@@ -102,7 +100,7 @@ namespace MyGame
                         CoroutineHelper.WaitRun(3, () => {
                             GameGlobal.PlayerGraphic.Visible = true;
 
-                            MessageBox WoahMSG = new MessageBox("Pause", "woah!", camePos.Position, MessageBox.Type.ManualDestroy);
+                            MessageBox WoahMSG = new MessageBox("Pause", "Woah!", camePos.Position, MessageBox.Type.ManualDestroy);
                             WoahMSG.Build();
 
                             float temp = GameGlobal.Player.Position.Y;
@@ -129,6 +127,9 @@ namespace MyGame
                                 });
 
                                 CoroutineHelper.WaitRun(2, () => {
+                                    // Music
+                                    Global.AudioController.PlayMusic("Overworld Happy", 1);
+
                                     GameMethods.ShowMessages(new List<MessageBox>() {
                                         new MessageBox("Pause", "OUCH!", GameGlobal.Player.Position + new Vector2(0, -32)),
                                     }, null, () => {

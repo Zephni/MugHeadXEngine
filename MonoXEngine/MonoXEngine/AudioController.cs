@@ -13,7 +13,6 @@ namespace MonoXEngine
     {
         private string Path;
         private ContentManager Content;
-        private Song SongInstance;
 
         public float MasterVolume
         {
@@ -53,33 +52,74 @@ namespace MonoXEngine
             return instance;
         }
 
-        public void PlayMusic(string filename, bool Repeat = true)
+        public SoundEffectInstance CurrentMusic;
+        private SoundEffectInstance NextMusic;
+        public string CurrentMusicFile;
+        public float MusicFading = 0;
+        public float FadeInStep = 0;
+        public SoundEffectInstance PlayMusic(string filename, float fadeIn = 0.01f)
         {
-            MediaPlayer.Stop();
-            SongInstance = Content.Load<Song>(Path + filename);
-            MediaPlayer.Play(SongInstance);
-            MediaPlayer.IsRepeating = true;
-        }
-
-        public void StopMusic()
-        {
-            MediaPlayer.Stop();
-        }
-
-        public bool MusicIsPlaying(string SongName = "")
-        {
-            if (SongName != "" && SongInstance != null)
+            if(CurrentMusicFile != filename)
             {
-                Console.WriteLine(SongName);
-                Console.WriteLine(SongInstance.Name);
+                if (CurrentMusic != null && CurrentMusic.State == SoundState.Playing)
+                {
+                    MusicFading = -0.01f;
+                }
 
-                return SongName == SongInstance.Name;
+                FadeInStep = fadeIn;
+
+                NextMusic = Content.Load<SoundEffect>(Path + "Music/" + filename).CreateInstance();
             }
+            
+            return NextMusic;
+        }
 
-            if (SongName == "")
-                return MediaPlayer.State == MediaState.Playing;
+        public void Update()
+        {
+            if(CurrentMusic != null)
+            {
+                if (CurrentMusic.State == SoundState.Playing)
+                {
+                    if(MusicFading < 0)
+                    {
+                        float cv = CurrentMusic.Volume + MusicFading;
+                        if (cv < 0) cv = 0;
+                        CurrentMusic.Volume = cv;
+                    }
+                    else if (MusicFading > 0)
+                    {
+                        float cv = CurrentMusic.Volume + MusicFading;
+                        if (cv > 1) cv = 1;
+                        CurrentMusic.Volume = cv;
+                    }
 
-            return false;
+                    if (CurrentMusic.Volume == 0)
+                    {
+                        MusicFading = 0;
+                        CurrentMusic.Stop();
+                    }
+                }
+                else if (CurrentMusic.State == SoundState.Stopped)
+                {
+                    if(NextMusic != null)
+                    {
+                        CurrentMusic = NextMusic;
+                        CurrentMusic.Volume = 0;
+                        MusicFading = FadeInStep;
+                        CurrentMusic.Play();
+                    }
+                }
+            }
+            else
+            {
+                if (NextMusic != null)
+                {
+                    CurrentMusic = NextMusic;
+                    CurrentMusic.Volume = 0;
+                    MusicFading = FadeInStep;
+                    CurrentMusic.Play();
+                }
+            }
         }
     }
 }
