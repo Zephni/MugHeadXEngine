@@ -100,7 +100,7 @@ namespace MyGame.Scenes
                                 new MugHeadXEngine.MessageBox(null, "Your answer was.|.|.|| "+result+"!", player.Position + new Vector2(50, -100)),
                                 new MugHeadXEngine.MessageBox(null, "Who said that!?", player.Position + new Vector2(0, -42))
                                         },
-                                        player
+                                        true
                                     );
                                 });
                             },

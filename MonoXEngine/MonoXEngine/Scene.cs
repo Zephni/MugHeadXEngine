@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace MonoXEngine
@@ -6,6 +7,7 @@ namespace MonoXEngine
     public class Scene
     {
         public bool Active = false;
+        public Action OnExit = null;
 
         public Scene()
         {
@@ -18,6 +20,9 @@ namespace MonoXEngine
 
         public void Destroy()
         {
+            if (OnExit != null)
+                OnExit.Invoke();
+
             Global.Entities.Clear();
         }
     }

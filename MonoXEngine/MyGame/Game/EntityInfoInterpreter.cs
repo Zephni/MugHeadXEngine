@@ -38,6 +38,12 @@ namespace MyGame
                 float fadeTo = (data.HasKey("fadeTo")) ? data.GetFloat("fadeTo") : 1;
                 Global.AudioController.PlayMusic(data.GetString("file"), fadeTo);
             }
+            else if (entityInfo.Name == "NPCChest")
+            {
+                ZInterpreter data = new ZInterpreter(entityInfo.Data);
+
+                NPCChest.Create(entityInfo, data);
+            }
             else if (entityInfo.Name == "Chest")
             {
                 ZInterpreter data = new ZInterpreter(entityInfo.Data);

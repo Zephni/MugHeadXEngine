@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using MonoXEngine;
 using MonoXEngine.EntityComponents;
@@ -18,6 +19,21 @@ namespace MyGame
     {
         public void TheTree()
         {
+            SoundEffectInstance forestAmbienceSFX = Global.AudioController.Play("SFX/Forest_Ambience");
+            forestAmbienceSFX.Volume = 0.3f;
+            CoroutineHelper.Always(() => {
+                if (forestAmbienceSFX.State == SoundState.Stopped)
+                {
+                    forestAmbienceSFX = Global.AudioController.Play("SFX/Forest_Ambience");
+                    forestAmbienceSFX.Volume = 0.3f;
+                }
+            });
+
+            Global.SceneManager.CurrentScene.OnExit += () => {
+                Global.AudioController.SoundEffectInstances["SFX/Forest_Ambience"][0].Stop();
+            };
+            
+
             if (GameData.Get("Levels/TheTree/Intro") == "True")
             {
                 // Music
@@ -39,14 +55,14 @@ namespace MyGame
             GameGlobal.PlayerGraphic.Visible = false;
 
             // Camera pan down
-            Entity camePos = new Entity(e => { e.Position = GameGlobal.Player.Position + new Vector2(0, -400); });
+            Entity camePos = new Entity(e => { e.Position = GameGlobal.Player.Position + new Vector2(0, -800); });
             CameraController.Instance.Easing = 0.03f;
             CameraController.Instance.MaxStep = 1f;
             CameraController.Instance.Target = camePos;
             CameraController.Instance.SnapOnce();
 
             // Seagulls
-            CoroutineHelper.WaitRun(6, () => {
+            CoroutineHelper.WaitRun(11, () => {
                 new Entity(entity => {
                     entity.LayerName = "Main";
                     entity.SortingLayer = 8;
@@ -59,7 +75,7 @@ namespace MyGame
                     entity.Scale = new Vector2(2.1f, 2.1f);
 
                     CoroutineHelper.RunUntil(() => { return entity.Position.Y < -500; }, () => {
-                        entity.Position += new Vector2(0.3f, -0.4f * entity.Scale.Y);
+                        entity.Position += new Vector2(0.3f, -0.3f * entity.Scale.Y);
                         entity.Scale += new Vector2(-0.003f, -0.003f);
                         if (entity.Scale.X < 0.5f)
                             entity.Scale = new Vector2(0.5f, 0.5f);
@@ -77,7 +93,7 @@ namespace MyGame
                     entity.Scale = new Vector2(2, 2);
 
                     CoroutineHelper.RunUntil(() => { return entity.Position.Y < -500; }, () => {
-                        entity.Position += new Vector2(0.3f, -0.4f * entity.Scale.Y);
+                        entity.Position += new Vector2(0.3f, -0.3f * entity.Scale.Y);
                         entity.Scale += new Vector2(-0.003f, -0.003f);
                         if (entity.Scale.X < 0.5f)
                             entity.Scale = new Vector2(0.5f, 0.5f);
@@ -85,10 +101,10 @@ namespace MyGame
                 });
             });
 
-            CoroutineHelper.WaitRun(9, () => {
+            CoroutineHelper.WaitRun(7, () => {
                 camePos.Position = GameGlobal.Player.Position + new Vector2(0, -40);
 
-                CoroutineHelper.WaitRun(5, () => {
+                CoroutineHelper.WaitRun(12, () => {
 
                     GameGlobal.Player.Position = camePos.Position + new Vector2(0, -20);
                     GameGlobal.PlayerGraphic.RunAnimation("Jump");

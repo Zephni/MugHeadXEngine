@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -128,12 +129,19 @@ namespace MugHeadXEngine.EntityComponents
                 if (!MovementEnabled)
                     return;
 
+                if (obj.Name == "NPCChest")
+                {
+                    if (Global.InputManager.Pressed(InputManager.Input.Up))
+                    {
+                        Type type = typeof(NPCChest);
+                        MethodInfo mi = type.GetMethod("ID_"+obj.Data["id"]);
+                        mi.Invoke(null, new object[] { obj });
+                    }
+                }
+
                 if (obj.Name == "Chest")
                 {
-                    if (obj.GetComponent<Sprite>().CurrentAnimation == "Closed")
-                        ObstructCrouching = true;
-
-                    if (Global.InputManager.Pressed(InputManager.Input.Down))
+                    if (Global.InputManager.Pressed(InputManager.Input.Up))
                     {
                         if(obj.GetComponent<Sprite>().CurrentAnimation == "Closed")
                         {
@@ -144,8 +152,7 @@ namespace MugHeadXEngine.EntityComponents
 
                 if (obj.Name == "Door")
                 {
-                    ObstructCrouching = true;
-                    if (Global.InputManager.Pressed(InputManager.Input.Down))
+                    if (Global.InputManager.Pressed(InputManager.Input.Up))
                     {
                         MovementEnabled = false;
                         GameGlobal.Fader.RunFunction("FadeOut", e => {
@@ -195,7 +202,7 @@ namespace MugHeadXEngine.EntityComponents
                 if (obj.Name == "Water")
                     MovementMode = PlayerController.MovementModes.Normal;
 
-                if(obj.Name == "Door" || obj.Name == "Chest")
+                if(obj.Name == "Door" || obj.Name == "Chest" || obj.Name == "NPCChest")
                     ObstructCrouching = false;
             };
         }
@@ -241,8 +248,15 @@ namespace MugHeadXEngine.EntityComponents
             // Graphic position
             GameGlobal.PlayerGraphicEntity.Position = Entity.Position + new Vector2(0, -6);
 
+            // No movement
+            if (MovementMode == MovementModes.None)
+            {
+                MoveX = 0;
+                MoveY = 0;
+                GameGlobal.PlayerGraphic.RunAnimation("Stand");
+            }
             // Normal movement
-            if (MovementMode == MovementModes.Normal)
+            else if (MovementMode == MovementModes.Normal)
             {
                 if (MovementEnabled && CurrentJump < MaxJumps && IsGrounded && Global.InputManager.Pressed(InputManager.Input.Action1))
                 {

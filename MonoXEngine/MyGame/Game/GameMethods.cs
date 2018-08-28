@@ -38,23 +38,34 @@ namespace MyGame
             }, texture9Patch);
         }
 
-        public static void ShowMessages(List<MessageBox> Messages, Entity player = null, Action action = null)
+        public static void ShowMessages(List<MessageBox> Messages, bool? DisablePlayerMovement = null, Action action = null, bool overrideInteraction = false)
         {
+            if (!overrideInteraction && GameGlobal.DisableInteraction)
+                return;
+
+            GameGlobal.DisableInteraction = true;
             if (Messages.Count > 0)
             {
                 MessageBox CurrentMessage = Messages.First();
                 Messages.Remove(CurrentMessage);
 
+                if(DisablePlayerMovement != null)
+                {
+                    GameGlobal.Player.GetComponent<PlayerController>().MovementMode = (DisablePlayerMovement == true) ? PlayerController.MovementModes.None : PlayerController.MovementModes.Normal;
+                }
+
                 CurrentMessage.Build(() => {
-                    ShowMessages(Messages, player, action);
+                    ShowMessages(Messages, DisablePlayerMovement, action, true);
                 });
             }
             else
             {
+                GameGlobal.DisableInteraction = false;
+
                 action?.Invoke();
 
-                if(player != null)
-                    player.GetComponent<PlayerController>().MovementEnabled = true;
+                if (DisablePlayerMovement == true)
+                    GameGlobal.Player.GetComponent<PlayerController>().MovementMode = PlayerController.MovementModes.Normal;
             }
         }
     }

@@ -273,3 +273,9 @@
 /processorParam:TextureFormat=Color
 /build:Backgrounds/ForestBG_Rocks.png
 
+#begin Audio/SFX/Forest_Ambience.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SFX/Forest_Ambience.wav
+
