@@ -100,16 +100,37 @@ namespace MyGame
             else if (entityInfo.Name == "Background")
             {
                 ZInterpreter data = new ZInterpreter(entityInfo.Data);
-                
+
                 new Entity(entity => {
                     entity.LayerName = "Background";
                     entity.Position = new Vector2(0, 0);
                     float[] coefficient = data.GetFloatArr("coefficient");
                     float[] offset = data.GetFloatArr("offset");
 
-                    entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/"+data.GetString("image")), Coefficient = new Vector2(coefficient[0], coefficient[1]), Offset = new Vector2(offset[0], offset[1]) });
+                    entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Backgrounds/" + data.GetString("image")), Coefficient = new Vector2(coefficient[0], coefficient[1]), Offset = new Vector2(offset[0], offset[1]) });
 
-                    if(data.HasKey("animate"))
+                    if (data.HasKey("animate"))
+                    {
+                        entity.GetComponent<CameraOffsetTexture>().Animate = true;
+                        entity.GetComponent<CameraOffsetTexture>().AnimStepTime = data.GetFloat("animate");
+                        entity.GetComponent<CameraOffsetTexture>().Size = data.GetPointArr("crop")[0];
+                    }
+                });
+            }
+            else if (entityInfo.Name == "Foreground")
+            {
+                ZInterpreter data = new ZInterpreter(entityInfo.Data);
+
+                new Entity(entity => {
+                    entity.LayerName = "Foreground";
+                    entity.Position = Vector2.Zero;
+                    entity.SortingLayer = 8;
+                    float[] coefficient = data.GetFloatArr("coefficient");
+                    float[] offset = data.GetFloatArr("offset");
+
+                    entity.AddComponent(new CameraOffsetTexture() { Texture2D = Global.Content.Load<Texture2D>("Foregrounds/" + data.GetString("image")), Coefficient = new Vector2(coefficient[0], coefficient[1]), Offset = new Vector2(offset[0], offset[1]) });
+
+                    if (data.HasKey("animate"))
                     {
                         entity.GetComponent<CameraOffsetTexture>().Animate = true;
                         entity.GetComponent<CameraOffsetTexture>().AnimStepTime = data.GetFloat("animate");

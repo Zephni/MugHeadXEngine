@@ -110,3 +110,4 @@ C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoX
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\Music\Overworld Happy.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Entities\Chest_Majestic.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\Forest_Ambience.xnb
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Foregrounds\Foreground_DarkPillar.xnb

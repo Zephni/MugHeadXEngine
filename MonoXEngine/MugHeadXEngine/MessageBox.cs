@@ -34,7 +34,7 @@ namespace MugHeadXEngine
         private string PassedText;
         private Vector2 PassedPosition;
 
-        public static string DefaultLayerName = "Main";
+        public static string DefaultLayerName = "Overlay";
         public static int DefaultSortingLayer = 10;
 
         public enum Type
