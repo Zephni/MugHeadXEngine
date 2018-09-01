@@ -43,6 +43,7 @@ namespace MyGame
         {
             if(GameData.Get("NPCChest/" + obj.Data["id"] + "/" + "script") == null)
             {
+                Global.AudioController.Play("SFX/OpenChest");
                 obj.GetComponent<Sprite>().RunAnimation("Opening", false);
                 GameData.Set("NPCChest/" + obj.Data["id"] + "/" + "open", "true");
 
@@ -62,6 +63,7 @@ namespace MyGame
                                 GameData.Set("NPCChest/" + obj.Data["id"] + "/" + "open", "false");
                                 GameData.Set("NPCChest/" + obj.Data["id"] + "/" + "script", "2");
                                 obj.GetComponent<Sprite>().RunAnimation("Closing", false);
+                                Global.AudioController.Play("SFX/OpenChest");
                             });
                         });
                         });

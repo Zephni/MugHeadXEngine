@@ -291,3 +291,15 @@
 /processorParam:TextureFormat=Color
 /build:Foregrounds/Foreground_DarkPillar.png
 
+#begin Audio/SFX/BushRustle.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SFX/BushRustle.wav
+
+#begin Audio/SFX/OpenChest.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SFX/OpenChest.wav
+

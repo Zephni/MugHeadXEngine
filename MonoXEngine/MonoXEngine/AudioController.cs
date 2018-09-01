@@ -53,6 +53,14 @@ namespace MonoXEngine
             return instance;
         }
 
+        public void Stop(string Name)
+        {
+            for(int I = 0; I < SoundEffectInstances[Name].Count; I++)
+                SoundEffectInstances[Name][I].Stop();
+
+            SoundEffectInstances.Remove(Name);
+        }
+
         public SoundEffectInstance CurrentMusic;
         private SoundEffectInstance NextMusic;
         public string CurrentMusicFile;
@@ -105,6 +113,8 @@ namespace MonoXEngine
                     CurrentMusicFile = NextMusicFile;
                     CurrentMusic = NextMusic;
                     CurrentMusic.Play();
+                    FadeTo = 1;
+                    FadeTime = 0;
                 }
                 else
                 {

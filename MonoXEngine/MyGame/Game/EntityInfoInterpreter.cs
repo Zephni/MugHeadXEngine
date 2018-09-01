@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using MonoXEngine;
 using MonoXEngine.EntityComponents;
@@ -30,6 +31,24 @@ namespace MyGame
             if (entityInfo.Name == "StartPosition" && GameData.Get("Player/Position") == null)
             {
                 GameGlobal.Player.Position = new Vector2(entityInfo.Position.X * 16, entityInfo.Position.Y * 16);
+            }
+            else if (entityInfo.Name == "Ambience")
+            {
+                ZInterpreter data = new ZInterpreter(entityInfo.Data);
+                
+                SoundEffectInstance sfi = Global.AudioController.Play("SFX/"+data.GetString("file"));
+                sfi.Volume = (data.HasKey("volume")) ? data.GetFloat("volume") : 1;
+                StaticCoroutines.CoroutineHelper.Always(() => {
+                    if (sfi.State == SoundState.Stopped)
+                    {
+                        sfi = Global.AudioController.Play("SFX/Forest_Ambience");
+                        sfi.Volume = (data.HasKey("volume")) ? data.GetFloat("volume") : 1;
+                    }
+                });
+                
+                Global.SceneManager.CurrentScene.OnExit += () => {
+                    Global.AudioController.Stop("SFX/" + data.GetString("file"));
+                };
             }
             else if (entityInfo.Name == "Music")
             {
@@ -104,6 +123,13 @@ namespace MyGame
                 new Entity(entity => {
                     entity.LayerName = "Background";
                     entity.Position = new Vector2(0, 0);
+
+                    if (data.HasKey("sortinglayer"))
+                        entity.SortingLayer = data.GetInt("sortinglayer");
+
+                    if (data.HasKey("opacity"))
+                        entity.Opacity = data.GetFloat("opacity");
+
                     float[] coefficient = data.GetFloatArr("coefficient");
                     float[] offset = data.GetFloatArr("offset");
 

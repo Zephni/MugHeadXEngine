@@ -175,7 +175,7 @@ namespace MugHeadXEngine.EntityComponents
                         GameData.Set("Level", obj.Data["Level"]);
 
                         string[] pos = obj.Data["Position"].Split(',');
-                        Point pointPos = new Point(Convert.ToInt16(pos[0]) * 16, Convert.ToInt16(pos[1]) * 16);
+                        Point pointPos = new Point(Convert.ToInt16(Convert.ToDouble(pos[0]) * 16), Convert.ToInt16(Convert.ToDouble(pos[1]) * 16));
 
                         GameData.Set("Player/Position", pointPos.X.ToString() + "," + pointPos.Y.ToString());
                         Global.SceneManager.LoadScene("Level");
@@ -234,13 +234,13 @@ namespace MugHeadXEngine.EntityComponents
             }
             LastMovementMode = MovementMode;
 
-            // Direction
-            MyGame.Scenes.Level.CameraController.Offset = (Direction == -1) ? new Vector2(-16, 0) : new Vector2(16, 0);
-
             if (MovementMode != MovementModes.None)
             {
                 if (Global.InputManager.Held(InputManager.Input.Left)) Direction = -1;
                 else if (Global.InputManager.Held(InputManager.Input.Right)) Direction = 1;
+
+                // Direction
+                MyGame.Scenes.Level.CameraController.Offset = (Direction == -1) ? new Vector2(-16, 0) : new Vector2(16, 0);
             }
 
             GameGlobal.PlayerGraphic.SpriteEffect = (Direction == 1) ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
@@ -253,7 +253,7 @@ namespace MugHeadXEngine.EntityComponents
             {
                 MoveX = 0;
                 MoveY = 0;
-                GameGlobal.PlayerGraphic.RunAnimation("Stand");
+                //GameGlobal.PlayerGraphic.RunAnimation("Stand");
             }
             // Normal movement
             else if (MovementMode == MovementModes.Normal)

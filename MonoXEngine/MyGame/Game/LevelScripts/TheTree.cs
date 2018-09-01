@@ -30,7 +30,7 @@ namespace MyGame
             });
 
             Global.SceneManager.CurrentScene.OnExit += () => {
-                Global.AudioController.SoundEffectInstances["SFX/Forest_Ambience"][0].Stop();
+                Global.AudioController.Stop("SFX/Forest_Ambience");
             };
             
 
@@ -63,6 +63,9 @@ namespace MyGame
 
             // Seagulls
             CoroutineHelper.WaitRun(11, () => {
+                CoroutineHelper.WaitRun(1, () => {
+                    Global.AudioController.Play("SFX/BushRustle");
+                });
                 new Entity(entity => {
                     entity.LayerName = "Main";
                     entity.SortingLayer = 8;
@@ -75,7 +78,7 @@ namespace MyGame
                     entity.Scale = new Vector2(2.1f, 2.1f);
 
                     CoroutineHelper.RunUntil(() => { return entity.Position.Y < -500; }, () => {
-                        entity.Position += new Vector2(0.3f, -0.3f * entity.Scale.Y);
+                        entity.Position += new Vector2(0.3f, -0.2f * entity.Scale.Y);
                         entity.Scale += new Vector2(-0.003f, -0.003f);
                         if (entity.Scale.X < 0.5f)
                             entity.Scale = new Vector2(0.5f, 0.5f);
@@ -93,7 +96,7 @@ namespace MyGame
                     entity.Scale = new Vector2(2, 2);
 
                     CoroutineHelper.RunUntil(() => { return entity.Position.Y < -500; }, () => {
-                        entity.Position += new Vector2(0.3f, -0.3f * entity.Scale.Y);
+                        entity.Position += new Vector2(0.3f, -0.2f * entity.Scale.Y);
                         entity.Scale += new Vector2(-0.003f, -0.003f);
                         if (entity.Scale.X < 0.5f)
                             entity.Scale = new Vector2(0.5f, 0.5f);
