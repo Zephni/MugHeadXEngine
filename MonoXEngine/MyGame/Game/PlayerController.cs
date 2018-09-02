@@ -20,7 +20,7 @@ namespace MugHeadXEngine.EntityComponents
         {
             None,
             Normal,
-            Swimming
+            Paddleing
         }
 
         public float Acceleration;
@@ -46,7 +46,7 @@ namespace MugHeadXEngine.EntityComponents
             passThru = collider;
 
             GameGlobal.PlayerGraphicEntity = new Entity(e => {
-                e.SortingLayer = 4;
+                e.SortingLayer = 3;
                 e.CheckPixels = false;
                 e.AddComponent(new Sprite() { Texture2D = Global.Content.Load<Texture2D>("Entities/Pause") }).Run<Sprite>(s => {
                     s.Visible = true;
@@ -55,6 +55,8 @@ namespace MugHeadXEngine.EntityComponents
                     s.AddAnimation(new Animation("Jump", 0.2f, new Point(32, 32), new Point(0, 2), new Point(1, 2), new Point(2, 2), new Point(3, 2)));
                     s.AddAnimation(new Animation("Crawl", 0.15f, new Point(32, 32), new Point(0, 3), new Point(1, 3), new Point(2, 3), new Point(3, 3)));
                     s.AddAnimation(new Animation("Lay", 0.2f, new Point(32, 32), new Point(0, 3)));
+                    s.AddAnimation(new Animation("Paddleing", 0.3f, new Point(32, 32), new Point(0, 4), new Point(1, 4), new Point(2, 4), new Point(3, 4)));
+                    s.AddAnimation(new Animation("Falling", 0.2f, new Point(32, 32), "1,5 2,5 3,5".ToPointList()));
                 });
             });
         }
@@ -182,9 +184,10 @@ namespace MugHeadXEngine.EntityComponents
                     });
                 }
 
-                if (obj.Name == "Water" && MovementMode == PlayerController.MovementModes.Normal && Entity.Position.Y - 4 > obj.Position.Y - obj.Size.Y / 2)
+                if (obj.Name == "Water" && MovementMode == PlayerController.MovementModes.Normal && Entity.Position.Y + 2 > obj.Position.Y - obj.Size.Y / 2)
                 {
-                    MovementMode = PlayerController.MovementModes.Swimming;
+                    WaterLevel = obj.BoundingBox.Top;
+                    MovementMode = PlayerController.MovementModes.Paddleing;
                 }
             };
 
@@ -207,6 +210,7 @@ namespace MugHeadXEngine.EntityComponents
             };
         }
 
+        private float WaterLevel = 0;
         public override void Update()
         {
             // Movement mode change
@@ -214,6 +218,26 @@ namespace MugHeadXEngine.EntityComponents
             {
                 if(MovementMode == MovementModes.Normal)
                 {
+                    if(LastMovementMode == MovementModes.Paddleing)
+                    {
+                        Global.AudioController.Play("SFX/Splash").Volume = 0.5f;
+
+                        // Splash graphic
+                        new Entity(waterSplash => {
+                            waterSplash.LayerName = "Main";
+                            waterSplash.SortingLayer = GameGlobal.PlayerGraphicEntity.SortingLayer + 1;
+                            waterSplash.Position = new Vector2(GameGlobal.PlayerGraphicEntity.Position.X, WaterLevel - 16);
+                            waterSplash.Opacity = 0.8f;
+                            waterSplash.AddComponent(new Sprite()).Run<Sprite>(c => {
+                                c.LoadTexture("Graphics/Splash");
+                                c.AddAnimation(new Animation("Splash", 0.1f, new Point(32, 32), "0,0 1,0 2,0 3,0 4,0 5,0".ToPointList()));
+                                c.RunAnimation("Splash", false, () => {
+                                    waterSplash.Destroy();
+                                });
+                            });
+                        });
+                    }
+
                     Acceleration = 4f;
                     Deceleration = 8f;
                     Gravity = 8f;
@@ -221,20 +245,56 @@ namespace MugHeadXEngine.EntityComponents
                     MaxX = 1.7f;
                     MaxDown = 4f;
                 }
-                else if (MovementMode == MovementModes.Swimming)
+                else if (MovementMode == MovementModes.Paddleing)
                 {
+                    Global.AudioController.Play("SFX/Splash").Volume = 0.5f;
                     this.MoveX = 0;
-                    this.MoveY = 0;
-                    this.Gravity = 1f;
+                    Gravity = 1;
                     this.Acceleration = 1f;
-                    this.JumpStrength = 1f;
+                    this.JumpStrength = 2f;
                     MaxX = 1f;
-                    MaxDown = 0.5f;
+
+                    // Splash graphic
+                    new Entity(waterSplash => {
+                        waterSplash.LayerName = "Main";
+                        waterSplash.SortingLayer = GameGlobal.PlayerGraphicEntity.SortingLayer + 1;
+                        waterSplash.Position = new Vector2(GameGlobal.PlayerGraphicEntity.Position.X, WaterLevel-16);
+                        waterSplash.Opacity = 0.8f;
+                        waterSplash.AddComponent(new Sprite()).Run<Sprite>(c => {
+                            c.LoadTexture("Graphics/Splash");
+                            c.AddAnimation(new Animation("Splash", 0.1f, new Point(32, 32), "0,0 1,0 2,0 3,0 4,0 5,0".ToPointList()));
+                            c.RunAnimation("Splash", false, () => {
+                                waterSplash.Destroy();
+                            });
+                        });
+                    });
+
+                    if (this.MoveY < -3)
+                        this.MoveY = -3;
+
+                    StaticCoroutines.CoroutineHelper.RunUntil(() => { return this.MoveY < 0; }, () => {
+                        this.MoveY -= 0.4f;
+                    }, () => {
+                        Gravity = 0;
+                        MoveY = 0;
+                        GameGlobal.PlayerGraphic.RunAnimation("Jump");
+
+                        StaticCoroutines.CoroutineHelper.WaitRun(0.1f, () => {
+                            StaticCoroutines.CoroutineHelper.RunUntil(() => { return Entity.Position.Y <= WaterLevel; }, () => {
+                                Entity.Position.Y -= 0.8f;
+                            }, () => {
+                                Entity.Position.Y = WaterLevel + 1;
+                                Gravity = 0;
+                                MoveY = 0;
+                                GameGlobal.PlayerGraphic.RunAnimation("Paddleing");
+                            });
+                        });
+                    });
                 }
             }
             LastMovementMode = MovementMode;
 
-            if (MovementMode != MovementModes.None)
+            if (MovementMode != MovementModes.None && MovementEnabled)
             {
                 if (Global.InputManager.Held(InputManager.Input.Left)) Direction = -1;
                 else if (Global.InputManager.Held(InputManager.Input.Right)) Direction = 1;
@@ -268,28 +328,28 @@ namespace MugHeadXEngine.EntityComponents
                 if (!Crouching && MovementEnabled && Global.InputManager.Held(InputManager.Input.Left))
                 {
                     MoveX -= Acceleration * Global.DeltaTime;
-                    if (!Kinetic) GameGlobal.PlayerGraphic.RunAnimation("Walk");
+                    if (!Kinetic && IsGrounded) GameGlobal.PlayerGraphic.RunAnimation("Walk");
                 }
                 else if (!Crouching && MoveX < 0)
                 {
                     MoveX += Deceleration * Global.DeltaTime;
                     if (MoveX >= -Deceleration * Global.DeltaTime)
                     {
-                        if (!Kinetic) GameGlobal.PlayerGraphic.RunAnimation("Stand");
+                        if (!Kinetic && IsGrounded) GameGlobal.PlayerGraphic.RunAnimation("Stand");
                         MoveX = 0;
                     }
                 }
                 else if (!Crouching && MovementEnabled && Global.InputManager.Held(InputManager.Input.Right))
                 {
                     MoveX += Acceleration * Global.DeltaTime;
-                    if (!Kinetic) GameGlobal.PlayerGraphic.RunAnimation("Walk");
+                    if (!Kinetic && IsGrounded) GameGlobal.PlayerGraphic.RunAnimation("Walk");
                 }
                 else if (!Crouching && MoveX > 0)
                 {
                     MoveX -= Deceleration * Global.DeltaTime;
                     if (MoveX <= Deceleration * Global.DeltaTime)
                     {
-                        if (!Kinetic) GameGlobal.PlayerGraphic.RunAnimation("Stand");
+                        if (!Kinetic && IsGrounded) GameGlobal.PlayerGraphic.RunAnimation("Stand");
                         MoveX = 0;
                     }
                 }
@@ -330,46 +390,47 @@ namespace MugHeadXEngine.EntityComponents
                 }
                 else
                 {
-                    if (!Kinetic) GameGlobal.PlayerGraphic.RunAnimation("Jump");
+                    if (!Kinetic)
+                    {
+                        if (MovementEnabled && MoveY > -1)
+                        {
+                            GameGlobal.PlayerGraphic.RunAnimation("Falling");
+                        }
+                        else
+                        {
+                            GameGlobal.PlayerGraphic.RunAnimation("Jump");
+                        }
+                    }
                 }
             }
 
-            // Swimming movement
-            if(MovementMode == MovementModes.Swimming)
+            // Paddleing movement
+            if(MovementMode == MovementModes.Paddleing)
             {
-                if (MovementEnabled && Global.InputManager.Pressed(InputManager.Input.Action1))
+                if (MovementEnabled && GameGlobal.Player.Position.Y == WaterLevel + 1 && Global.InputManager.Pressed(InputManager.Input.Action1))
                 {
                     MoveY = -JumpStrength;
-                    Global.AudioController.Play("SFX/Jump");
                 }
 
                 if (!Crouching && MovementEnabled && Global.InputManager.Held(InputManager.Input.Left))
                 {
                     MoveX -= Acceleration * Global.DeltaTime;
-                    if (!Kinetic) GameGlobal.PlayerGraphic.RunAnimation("Walk");
                 }
                 else if (!Crouching && MoveX < 0)
                 {
                     MoveX += Deceleration * Global.DeltaTime;
                     if (MoveX >= -Deceleration * Global.DeltaTime)
-                    {
-                        if (!Kinetic) GameGlobal.PlayerGraphic.RunAnimation("Stand");
                         MoveX = 0;
-                    }
                 }
                 else if (!Crouching && MovementEnabled && Global.InputManager.Held(InputManager.Input.Right))
                 {
                     MoveX += Acceleration * Global.DeltaTime;
-                    if (!Kinetic) GameGlobal.PlayerGraphic.RunAnimation("Walk");
                 }
                 else if (!Crouching && MoveX > 0)
                 {
                     MoveX -= Deceleration * Global.DeltaTime;
                     if (MoveX <= Deceleration * Global.DeltaTime)
-                    {
-                        if (!Kinetic) GameGlobal.PlayerGraphic.RunAnimation("Stand");
                         MoveX = 0;
-                    }
                 }
             }
 

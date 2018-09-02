@@ -39,11 +39,16 @@ namespace MyGame.Scenes
                     text.String = temp;
 
                     CoroutineHelper.Always(() => {
-                        text.Visible = (OptionSelector.SelectedOption.ID == "debug");
+                        //text.Visible = (OptionSelector.SelectedOption.ID == "debug");
                     });
                 });
             });
 
+            MainMenu();
+        }
+
+        public void MainMenu()
+        {
             // Menu options
             GameMethods.ShowOptionSelector(
                 new Vector2(-66, -70),
@@ -55,7 +60,8 @@ namespace MyGame.Scenes
 
                     new Option("debug", "DEBUG", new Vector2(80, 0)),
                 },
-                result => {
+                result =>
+                {
                     if (result == "newGame")
                     {
                         GameData.Reset();
@@ -63,7 +69,8 @@ namespace MyGame.Scenes
                         // Initiate game data here
                         GameData.Set("Level", "TheTree");
 
-                        GameGlobal.Fader.RunFunction("FadeOut", e => {
+                        GameGlobal.Fader.RunFunction("FadeOut", e =>
+                        {
                             Global.SceneManager.LoadScene("Level");
                         });
                     }
@@ -71,7 +78,8 @@ namespace MyGame.Scenes
                     {
                         GameData.Load();
 
-                        GameGlobal.Fader.RunFunction("FadeOut", e => {
+                        GameGlobal.Fader.RunFunction("FadeOut", e =>
+                        {
                             Global.SceneManager.LoadScene("Level");
                         });
                     }
@@ -85,12 +93,35 @@ namespace MyGame.Scenes
                         foreach (var item in DebugData)
                             GameData.Set(item.Key, item.Value);
 
-                        GameGlobal.Fader.RunFunction("FadeOut", e => {
+                        GameGlobal.Fader.RunFunction("FadeOut", e =>
+                        {
                             Global.SceneManager.LoadScene("Level");
                         });
                     }
-                }
-            );
+                    else if (result == "options")
+                    {
+
+                        Option muteOption = new Option("mute", "Mute: "+((Global.AudioController.MasterVolume == 0) ? "Yes" : "No"), new Vector2(0, 0));
+
+                        GameMethods.ShowOptionSelector(
+                            new Vector2(-66, -70),
+                            new List<Option>() {
+                                muteOption,
+                                new Option("back", "Back", new Vector2(0, 16))
+                            },
+                            optResult =>
+                            {
+                                if (optResult == "mute")
+                                {
+                                    Global.AudioController.MasterVolume = ((Global.AudioController.MasterVolume == 0) ? 1 : 0);
+                                    MainMenu();
+                                }
+                                else if (optResult == "back")
+                                    MainMenu();
+                            }
+                        );
+                    }
+                });
         }
 
         public override void Update()

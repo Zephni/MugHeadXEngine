@@ -47,5 +47,20 @@ namespace MonoXEngine
                 )
             );
         }
+
+        public Animation(string name, float frameInterval, Point frameSize, List<Point> frames)
+        {
+            this.Name = name;
+            this.FrameInterval = frameInterval;
+            this.SourceRectangles = new List<Rectangle>();
+            foreach (Point point in frames)
+                this.SourceRectangles.Add(new Rectangle(
+                    point.X * frameSize.X,
+                    point.Y * frameSize.Y,
+                    frameSize.X,
+                    frameSize.Y
+                )
+            );
+        }
     }
 }

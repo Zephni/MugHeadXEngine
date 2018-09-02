@@ -33,5 +33,8 @@
     <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Foregrounds/Foreground_DarkPillar.png</File>
     <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Audio/SFX/BushRustle.wav</File>
     <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Audio/SFX/OpenChest.wav</File>
+    <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Audio/SFX/Waterfall.wav</File>
+    <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Audio/SFX/Splash.wav</File>
+    <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Graphics/Splash.png</File>
   </SourceFiles>
 </SourceFileCollection>

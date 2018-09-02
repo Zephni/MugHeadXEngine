@@ -30,7 +30,8 @@ namespace MyGame
             if(player != null)
                 player.GetComponent<PlayerController>().MovementEnabled = false;
 
-            OptionSelector.Build(position, optionList, result => {
+            OptionSelector os = new OptionSelector();
+            os.Build(position, optionList, result => {
                 action?.Invoke(result);
 
                 if (player != null)

@@ -116,3 +116,6 @@ C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Foregrounds\Foreground_DarkPillar.xnb
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\OpenChest.xnb
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\MyGame\Game\Levels\MiniCavePassage.lvl
+C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\Waterfall.xnb
+C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\Splash.xnb
+C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Graphics\Splash.xnb

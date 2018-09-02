@@ -41,6 +41,8 @@ namespace MyGame
                 return;
             }
 
+            MyGame.Scenes.Level.CameraController.Offset = new Vector2(16, 0);
+
             // Initial fade
             GameGlobal.Fader.RunFunction("BlackOut");
             GameGlobal.Fader.RunFunction("Cancel");

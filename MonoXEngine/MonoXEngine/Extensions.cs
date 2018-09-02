@@ -10,6 +10,20 @@ namespace MonoXEngine
 {
     public static class Extensions
     {
+        #region String
+        public static List<Point> ToPointList(this string value)
+        {
+            List<Point> pointList = new List<Point>();
+            foreach(var item in value.Split(' '))
+            {
+                var temp = item.Split(',');
+                pointList.Add(new Point(Convert.ToInt16(temp[0]), Convert.ToInt16(temp[1])));
+            }
+
+            return pointList;
+        }
+        #endregion
+
         #region Int
         public static int Wrap(this int value, int min, int max)
         {

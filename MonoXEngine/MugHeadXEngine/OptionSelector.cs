@@ -50,21 +50,21 @@ namespace MugHeadXEngine
         }
     }
 
-    public static class OptionSelector
+    public class OptionSelector
     {
-        public static Vector2 Position { get { return Container.Position; } set { Container.Position = value; } }
-        public static Point Padding = new Point(8, 8);
-        public static Point SelectorSize = new Point(12, 12);
+        public Vector2 Position { get { return Container.Position; } set { Container.Position = value; } }
+        public Point Padding = new Point(8, 8);
+        public Point SelectorSize = new Point(12, 12);
 
-        public static Entity Selector;
-        public static Entity Container;
-        public static bool Selecting = true;
+        public Entity Selector;
+        public Entity Container;
+        public bool Selecting = true;
 
         public static string DefaultLayerName = "Main";
         public static int DefaultSortingLayer = 10;
 
-        private static Option selectedOption;
-        public static Option SelectedOption
+        private Option selectedOption;
+        public Option SelectedOption
         {
             get { return selectedOption; }
             set
@@ -74,7 +74,7 @@ namespace MugHeadXEngine
             }
         }
 
-        public static void Build(Vector2 position, List<Option> optionList, Action<string> action = null, string texture9Patch = "Defaults/9Patch_8")
+        public void Build(Vector2 position, List<Option> optionList, Action<string> action = null, string texture9Patch = "Defaults/9Patch_8")
         {
             Selecting = true;
 
@@ -128,7 +128,7 @@ namespace MugHeadXEngine
             });
         }
 
-        private static void Finished(List<Option> optionList, Action<string> action)
+        private void Finished(List<Option> optionList, Action<string> action)
         {
             action?.Invoke(SelectedOption.ID);
 
@@ -141,7 +141,7 @@ namespace MugHeadXEngine
             Selecting = false;
         }
 
-        private static void FindOption(List<Option>optionList, string Direction)
+        private void FindOption(List<Option>optionList, string Direction)
         {
             Option newOption = SelectedOption;
             

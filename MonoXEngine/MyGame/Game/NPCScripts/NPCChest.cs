@@ -21,7 +21,7 @@ namespace MyGame
                 entity.LayerName = "Main";
                 entity.Trigger = true;
                 entity.Collider = Entity.CollisionType.Pixel;
-                entity.SortingLayer = GameGlobal.Player.SortingLayer - 1;
+                entity.SortingLayer = GameGlobal.PlayerGraphicEntity.SortingLayer - 1;
                 entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
                 entity.Data.Add("id", data.GetString("id"));
                 entity.AddComponent(new Sprite()).Run<Sprite>(d => {

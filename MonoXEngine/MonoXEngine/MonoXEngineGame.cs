@@ -131,8 +131,14 @@ namespace MonoXEngine
                 GraphicsDevice.Clear(Color.White);
                 foreach (KeyValuePair<string, SpriteBatchLayer> SpriteBatchLayer in Global.SpriteBatchLayers)
                 {
+                    // Unstable sort (unused)
+                    /*List<Entity> Entities = Global.Entities.FindAll(e => e.LayerName == SpriteBatchLayer.Key);
+                    Entities.Sort((v1, v2) => { return v1.SortingLayer - v2.SortingLayer; });*/
+
+                    // Stable sort (to prevent object changing "layer" within same sorting layer)
                     List<Entity> Entities = Global.Entities.FindAll(e => e.LayerName == SpriteBatchLayer.Key);
-                    Entities.Sort((v1, v2) => { return v1.SortingLayer - v2.SortingLayer; });
+                    Entities = Entities.OrderBy(x => x.SortingLayer).ToList();
+
                     SpriteBatchLayer.Value.Draw(Entities);
                 }
             });

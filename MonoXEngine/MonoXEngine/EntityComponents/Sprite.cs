@@ -31,15 +31,19 @@ namespace MonoXEngine.EntityComponents
             return this.Animations[name];
         }
 
+        private Action OnFinish;
+
         /// <summary>
         /// RunAnimation
         /// </summary>
         /// <param name="name">Name of an animation that has already been added to this sprite</param>
-        public void RunAnimation(string name, bool loop = true)
+        public void RunAnimation(string name, bool loop = true, Action onFinish = null)
         {
             if (CurrentAnimation != name)
             {
                 Looping = loop;
+
+                OnFinish = onFinish;
 
                 CurrentAnimation = name;
                 this.SourceRectangle = this.GetAnimation(CurrentAnimation).SourceRectangles[0];
@@ -65,6 +69,9 @@ namespace MonoXEngine.EntityComponents
 
                     if (Looping && CurrentAnimationFrame == this.GetAnimation(CurrentAnimation).SourceRectangles.Count)
                         CurrentAnimationFrame = 0;
+
+                    if (OnFinish != null && !Looping && CurrentAnimationFrame == this.GetAnimation(CurrentAnimation).SourceRectangles.Count)
+                        OnFinish.Invoke();
 
                     if (CurrentAnimationFrame >= this.GetAnimation(CurrentAnimation).SourceRectangles.Count)
                     {

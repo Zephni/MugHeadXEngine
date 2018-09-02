@@ -108,11 +108,11 @@ namespace MyGame
                     entity.LayerName = "Main";
                     entity.Trigger = true;
                     entity.Collider = Entity.CollisionType.Pixel;
-                    entity.SortingLayer = GameGlobal.Player.SortingLayer+1;
+                    entity.SortingLayer = 4;
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
-                    entity.Opacity = 0.75f;
+                    entity.Opacity = 0.8f;
                     entity.AddComponent(new Drawable()).Run<Drawable>(d => {
-                        d.BuildRectangle(new Point(Convert.ToInt16(entityInfo.Size.X) * 16, Convert.ToInt16(entityInfo.Size.Y) * 16), Color.Aqua);
+                        d.BuildRectangle(new Point(Convert.ToInt16(entityInfo.Size.X) * 16, Convert.ToInt16(entityInfo.Size.Y) * 16), new Color(66, 191, 227));
                     });
                 });
             }
@@ -209,7 +209,7 @@ namespace MyGame
                 new Entity(entity => {
                     entity.Name = "Graphic";
                     entity.LayerName = "Main";
-                    entity.SortingLayer = 3;
+                    entity.SortingLayer = 2;
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
 
                     ZInterpreter data = new ZInterpreter(entityInfo.Data);
