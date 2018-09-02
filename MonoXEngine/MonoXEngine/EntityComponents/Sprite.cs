@@ -11,6 +11,7 @@ namespace MonoXEngine.EntityComponents
     {
         protected Dictionary<string, Animation> Animations;
 
+        public bool Paused = false;
         public bool Looping = false;
         public int CurrentAnimationFrame;
 
@@ -56,7 +57,7 @@ namespace MonoXEngine.EntityComponents
 
         public override void Update()
         {
-            if(CurrentAnimation != null)
+            if(CurrentAnimation != null && !Paused)
             {
                 AnimTimer += Global.DeltaTime;
 

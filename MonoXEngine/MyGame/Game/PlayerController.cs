@@ -29,7 +29,6 @@ namespace MugHeadXEngine.EntityComponents
         public int CurrentJump = 0;
         public int MaxJumps = 2;
         public bool MovementEnabled = true;
-        public List<Entity> CollidingEntities = new List<Entity>();
         public int Direction = 1;
         public bool Crouching = false;
         public bool ObstructCrouching = true;
@@ -53,10 +52,10 @@ namespace MugHeadXEngine.EntityComponents
                     s.AddAnimation(new Animation("Stand", 0.2f, new Point(32, 32), new Point(0, 0)));
                     s.AddAnimation(new Animation("Walk", 0.2f, new Point(32, 32), new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1)));
                     s.AddAnimation(new Animation("Jump", 0.2f, new Point(32, 32), new Point(0, 2), new Point(1, 2), new Point(2, 2), new Point(3, 2)));
-                    s.AddAnimation(new Animation("Crawl", 0.15f, new Point(32, 32), new Point(0, 3), new Point(1, 3), new Point(2, 3), new Point(3, 3)));
-                    s.AddAnimation(new Animation("Lay", 0.2f, new Point(32, 32), new Point(0, 3)));
-                    s.AddAnimation(new Animation("Paddleing", 0.3f, new Point(32, 32), new Point(0, 4), new Point(1, 4), new Point(2, 4), new Point(3, 4)));
-                    s.AddAnimation(new Animation("Falling", 0.2f, new Point(32, 32), "1,5 2,5 3,5".ToPointList()));
+                    s.AddAnimation(new Animation("Crawl", 0.15f, new Point(32, 32), "0,3 1,3 2,3 3,3".ToPointList()));
+                    s.AddAnimation(new Animation("Lay", 0.2f, new Point(32, 32), "0,3".ToPointList()));
+                    s.AddAnimation(new Animation("Paddleing", 0.3f, new Point(32, 32), "0,4 1,4 2,4 3,4".ToPointList()));
+                    s.AddAnimation(new Animation("Falling", 0.15f, new Point(32, 32), "1,5 2,5 3,5".ToPointList()));
                 });
             });
         }
@@ -128,7 +127,7 @@ namespace MugHeadXEngine.EntityComponents
 
             // Current collides
             Entity.CollidingWithTrigger = obj => {
-                if (!MovementEnabled)
+                if (!MovementEnabled || MovementMode == MovementModes.None)
                     return;
 
                 if (obj.Name == "NPCChest")
@@ -218,7 +217,9 @@ namespace MugHeadXEngine.EntityComponents
             {
                 if(MovementMode == MovementModes.Normal)
                 {
-                    if(LastMovementMode == MovementModes.Paddleing)
+                    GameGlobal.PlayerGraphic.Paused = false;
+
+                    if (LastMovementMode == MovementModes.Paddleing)
                     {
                         Global.AudioController.Play("SFX/Splash").Volume = 0.5f;
 
@@ -247,6 +248,8 @@ namespace MugHeadXEngine.EntityComponents
                 }
                 else if (MovementMode == MovementModes.Paddleing)
                 {
+                    GameGlobal.PlayerGraphic.Paused = false;
+
                     Global.AudioController.Play("SFX/Splash").Volume = 0.5f;
                     this.MoveX = 0;
                     Gravity = 1;
@@ -269,8 +272,8 @@ namespace MugHeadXEngine.EntityComponents
                         });
                     });
 
-                    if (this.MoveY < -3)
-                        this.MoveY = -3;
+                    if (this.MoveY >  3)
+                        this.MoveY = 3;
 
                     StaticCoroutines.CoroutineHelper.RunUntil(() => { return this.MoveY < 0; }, () => {
                         this.MoveY -= 0.4f;
@@ -306,14 +309,14 @@ namespace MugHeadXEngine.EntityComponents
             GameGlobal.PlayerGraphic.SpriteEffect = (Direction == 1) ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
             // Graphic position
-            GameGlobal.PlayerGraphicEntity.Position = Entity.Position + new Vector2(0, -6);
+            GameGlobal.PlayerGraphicEntity.Position = Entity.Position + new Vector2(0, -5);
 
             // No movement
             if (MovementMode == MovementModes.None)
             {
                 MoveX = 0;
                 MoveY = 0;
-                //GameGlobal.PlayerGraphic.RunAnimation("Stand");
+                GameGlobal.PlayerGraphic.Paused = true;
             }
             // Normal movement
             else if (MovementMode == MovementModes.Normal)
@@ -394,7 +397,7 @@ namespace MugHeadXEngine.EntityComponents
                     {
                         if (MovementEnabled && MoveY > -1)
                         {
-                            GameGlobal.PlayerGraphic.RunAnimation("Falling");
+                            GameGlobal.PlayerGraphic.RunAnimation("Falling", false);
                         }
                         else
                         {

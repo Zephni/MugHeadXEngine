@@ -225,7 +225,7 @@ namespace MyGame
                     entity.Name = "Animation";
                     entity.LayerName = "Main";
                     entity.Origin = Vector2.Zero;
-                    entity.SortingLayer = 3;
+                    entity.SortingLayer = 2;
 
                     ZInterpreter data = new ZInterpreter(entityInfo.Data);
 
