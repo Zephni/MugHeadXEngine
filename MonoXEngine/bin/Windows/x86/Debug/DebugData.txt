@@ -1,1 +1,1 @@
-Level:!:UnderCave;!;Player/Direction:!:1;!;Levels/TheTree/Intro:!:True;!;Player/Position:!:296,230
+Level:!:MysticCave;!;Levels/TheTree/Intro:!:True;!;Player/Position:!:1022,774;!;Player/Direction:!:1

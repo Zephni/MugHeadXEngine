@@ -123,6 +123,9 @@
     <Content Include="MyGame\Game\Levels\MiniCavePassage.lvl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="MyGame\Game\Levels\MysticCave.lvl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

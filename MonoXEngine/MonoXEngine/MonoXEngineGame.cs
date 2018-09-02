@@ -128,7 +128,7 @@ namespace MonoXEngine
             GraphicsDevice.Clear(Color.Black);
 
             this.ViewportTexture.CaptureAndRender(this, () => {
-                GraphicsDevice.Clear(Color.White);
+                GraphicsDevice.Clear(Color.Black);
                 foreach (KeyValuePair<string, SpriteBatchLayer> SpriteBatchLayer in Global.SpriteBatchLayers)
                 {
                     // Unstable sort (unused)

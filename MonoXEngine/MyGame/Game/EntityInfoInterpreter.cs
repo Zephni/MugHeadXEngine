@@ -112,7 +112,7 @@ namespace MyGame
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
                     entity.Opacity = 0.8f;
                     entity.AddComponent(new Drawable()).Run<Drawable>(d => {
-                        d.BuildRectangle(new Point(Convert.ToInt16(entityInfo.Size.X) * 16, Convert.ToInt16(entityInfo.Size.Y) * 16), new Color(66, 191, 227));
+                        d.BuildRectangle(new Point(Convert.ToInt16(entityInfo.Size.X) * 16, Convert.ToInt16(entityInfo.Size.Y) * 16), new Color(84, 113, 207));
                     });
                 });
             }

@@ -45,7 +45,7 @@ namespace MugHeadXEngine.EntityComponents
             passThru = collider;
 
             GameGlobal.PlayerGraphicEntity = new Entity(e => {
-                e.SortingLayer = 3;
+                e.SortingLayer = 4;
                 e.CheckPixels = false;
                 e.AddComponent(new Sprite() { Texture2D = Global.Content.Load<Texture2D>("Entities/Pause") }).Run<Sprite>(s => {
                     s.Visible = true;
