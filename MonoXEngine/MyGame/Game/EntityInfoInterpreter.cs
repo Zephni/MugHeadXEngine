@@ -38,8 +38,9 @@ namespace MyGame
                 ZInterpreter data = new ZInterpreter(entityInfo.Data);
 
                 Vector2 position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
-                float distance = (!data.HasKey("distance")) ? 5 : data.GetFloat("distance");
-                distance = distance * 16;
+                float distance = ((data.HasKey("distance")) ? data.GetFloat("distance") : 5) * 16;
+                float minvolume = ((data.HasKey("minvolume")) ? data.GetFloat("minvolume") : 0);
+                float maxvolume = ((data.HasKey("maxvolume")) ? data.GetFloat("maxvolume") : 1);
 
                 SoundEffectInstance sfi = Global.AudioController.Play("SFX/"+ data.GetString("file"));
                 sfi.Volume = 0;
@@ -48,8 +49,7 @@ namespace MyGame
                         sfi = Global.AudioController.Play("SFX/" + data.GetString("file"));
                     
                     float difference = GameGlobal.Player.Position.GetDistance(position);
-                    sfi.Volume = ((1 - (difference - distance) / (distance) )).Between(0, 1);
-                    Console.WriteLine(((1 - (difference - distance) / (distance))));
+                    sfi.Volume = ((1 - (difference - distance) / (distance) )).Between(minvolume, maxvolume);
                 });
             }
             else if (entityInfo.Name == "InteractScript")

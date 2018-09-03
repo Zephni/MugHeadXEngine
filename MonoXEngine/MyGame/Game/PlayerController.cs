@@ -82,7 +82,18 @@ namespace MugHeadXEngine.EntityComponents
             if (GameData.Get("Player/Position") != null)
             {
                 string[] pPosData = GameData.Get("Player/Position").Split(',');
+
                 Entity.Position = new Vector2(pPosData[0].ToInt() + 8, pPosData[1].ToInt());
+
+                StaticCoroutines.CoroutineHelper.WaitRun(0.1f, () => {
+                    for (int i = 0; i < 17; i++)
+                    {
+                        if (Entity.GetComponent<PixelCollider>().Colliding(new Point(0, 1)))
+                            Entity.Position.Y -= 1;
+                        else
+                            break;
+                    }
+                });
             }
 
             if (GameData.Get("Player/Direction") != null)

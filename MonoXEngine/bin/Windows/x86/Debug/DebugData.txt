@@ -1,1 +1,1 @@
-Level:!:MiniCavePassage;!;Player/Direction:!:1;!;Levels/TheTree/Intro:!:True;!;Player/Position:!:558,454;!;TheTreeBear/First:!:True
+Level:!:TheTree;!;Player/Direction:!:-1;!;Levels/TheTree/Intro:!:True;!;Player/Position:!:960,924
