@@ -42,15 +42,21 @@ namespace MyGame
                 entity.RunFunction("SetDefault");
 
                 entity.AddFunction("FadeIn", (e, c) => {
+                    entity.RunFunction("BlackOut");
                     CoroutineHelper.RunFor((float)Convert.ToDecimal(entity.Data["Time"]), pcnt => { if(entity.Data["Cancel"] != "true") e.Opacity = 1 - pcnt; }, () => {
                         c?.Invoke(e);
                     });
                 });
 
                 entity.AddFunction("FadeOut", (e, c) => {
+                    entity.RunFunction("InstantIn");
                     CoroutineHelper.RunFor((float)Convert.ToDecimal(entity.Data["Time"]), pcnt => { if (entity.Data["Cancel"] != "true") e.Opacity = pcnt; }, () => {
                         c?.Invoke(e);
                     });
+                });
+
+                entity.AddFunction("InstantIn", (e) => {
+                    e.Opacity = 0;
                 });
 
                 entity.AddFunction("BlackOut", (e) => {

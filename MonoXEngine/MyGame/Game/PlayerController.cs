@@ -82,7 +82,7 @@ namespace MugHeadXEngine.EntityComponents
             if (GameData.Get("Player/Position") != null)
             {
                 string[] pPosData = GameData.Get("Player/Position").Split(',');
-                Entity.Position = new Vector2(Convert.ToInt16(pPosData[0]) + 8, Convert.ToInt16(pPosData[1]));
+                Entity.Position = new Vector2(pPosData[0].ToInt() + 8, pPosData[1].ToInt());
             }
 
             if (GameData.Get("Player/Direction") != null)
@@ -179,7 +179,7 @@ namespace MugHeadXEngine.EntityComponents
                             GameData.Set("Level", obj.Data["Level"]);
 
                             string[] pos = obj.Data["Position"].Split(',');
-                            Point pointPos = new Point(Convert.ToInt16(pos[0]) * 16, Convert.ToInt16(pos[1]) * 16);
+                            Point pointPos = new Point((pos[0].ToFloat() * 16).ToInt(), (pos[1].ToFloat() * 16).ToInt());
 
                             GameData.Set("Player/Position", pointPos.X.ToString() + "," + pointPos.Y.ToString());
                             Global.SceneManager.LoadScene("Level");
@@ -195,7 +195,7 @@ namespace MugHeadXEngine.EntityComponents
                         GameData.Set("Level", obj.Data["Level"]);
 
                         string[] pos = obj.Data["Position"].Split(',');
-                        Point pointPos = new Point(Convert.ToInt16(Convert.ToDouble(pos[0]) * 16), Convert.ToInt16(Convert.ToDouble(pos[1]) * 16));
+                        Point pointPos = new Point((pos[0].ToFloat() * 16).ToInt(), (pos[1].ToFloat() * 16).ToInt());
 
                         GameData.Set("Player/Position", pointPos.X.ToString() + "," + pointPos.Y.ToString());
                         Global.SceneManager.LoadScene("Level");

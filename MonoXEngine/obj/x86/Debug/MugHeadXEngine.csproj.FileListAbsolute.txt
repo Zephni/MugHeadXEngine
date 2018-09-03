@@ -131,3 +131,4 @@ C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoX
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Graphics\Splash.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\MyGame\Game\Levels\MiniCavePassage.lvl
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\MyGame\Game\Levels\MysticCave.lvl
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Backgrounds\RockyBG2.xnb

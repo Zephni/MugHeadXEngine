@@ -33,6 +33,25 @@ namespace MyGame
             {
                 GameGlobal.Player.Position = new Vector2(entityInfo.Position.X * 16, entityInfo.Position.Y * 16);
             }
+            if (entityInfo.Name == "Audio2D")
+            {
+                ZInterpreter data = new ZInterpreter(entityInfo.Data);
+
+                Vector2 position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
+                float distance = (!data.HasKey("distance")) ? 5 : data.GetFloat("distance");
+                distance = distance * 16;
+
+                SoundEffectInstance sfi = Global.AudioController.Play("SFX/"+ data.GetString("file"));
+                sfi.Volume = 0;
+                StaticCoroutines.CoroutineHelper.Always(() => {
+                    if (Global.RunWhenEventLoops("ReplaySFX_"+data.GetString("file"), sfi == null || sfi.State != SoundState.Playing))
+                        sfi = Global.AudioController.Play("SFX/" + data.GetString("file"));
+                    
+                    float difference = GameGlobal.Player.Position.GetDistance(position);
+                    sfi.Volume = ((1 - (difference - distance) / (distance) )).Between(0, 1);
+                    Console.WriteLine(((1 - (difference - distance) / (distance))));
+                });
+            }
             else if (entityInfo.Name == "InteractScript")
             {
                 ZInterpreter data = new ZInterpreter(entityInfo.Data);
@@ -146,7 +165,7 @@ namespace MyGame
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
                     entity.Origin = Vector2.Zero;
                     entity.AddComponent(new Drawable()).Run<Drawable>(d => {
-                        d.BuildRectangle(new Point(Convert.ToInt16(entityInfo.Size.X) * 16, Convert.ToInt16(entityInfo.Size.Y) * 16), Color.CornflowerBlue);
+                        d.BuildRectangle(new Point(entityInfo.Size.X * 16, entityInfo.Size.Y * 16), Color.CornflowerBlue);
                     });
                 });
             }
@@ -163,7 +182,7 @@ namespace MyGame
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
                     entity.Opacity = 0.8f;
                     entity.AddComponent(new Drawable()).Run<Drawable>(d => {
-                        d.BuildRectangle(new Point(Convert.ToInt16(entityInfo.Size.X) * 16, Convert.ToInt16(entityInfo.Size.Y) * 16), new Color(84, 113, 207));
+                        d.BuildRectangle(new Point(entityInfo.Size.X * 16, entityInfo.Size.Y * 16), new Color(84, 113, 207));
                     });
                 });
             }

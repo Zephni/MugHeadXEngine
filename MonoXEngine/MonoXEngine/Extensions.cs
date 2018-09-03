@@ -11,6 +11,16 @@ namespace MonoXEngine
     public static class Extensions
     {
         #region String
+        public static float ToFloat(this string value)
+        {
+            return (float)Convert.ToDouble(value);
+        }
+
+        public static float ToInt(this string value)
+        {
+            return Convert.ToInt16(value);
+        }
+
         public static List<Point> ToPointList(this string value)
         {
             List<Point> pointList = new List<Point>();
@@ -41,9 +51,28 @@ namespace MonoXEngine
         {
             return (((value - min) % (max - min)) + (max - min)) % (max - min) + min;
         }
+
+        public static float Between(this float value, float min, float max)
+        {
+            if (value < min) return min;
+            else if (value > max) return max;
+            else return value;
+        }
+        #endregion
+
+        #region Point
+        public static float GetDistance(this Point value, Point other)
+        {
+            return (float)Math.Sqrt(Math.Pow((other.X - value.X), 2) + Math.Pow((other.Y - value.Y), 2));
+        }
         #endregion
 
         #region Vector2
+        public static float GetDistance(this Vector2 value, Vector2 other)
+        {
+            return (float)Math.Sqrt(Math.Pow((other.X - value.X), 2) + Math.Pow((other.Y - value.Y), 2));
+        }
+
         public static Vector2 Copy(this Vector2 value, Vector2 source)
         {
             return new Vector2(source.X, source.Y);
