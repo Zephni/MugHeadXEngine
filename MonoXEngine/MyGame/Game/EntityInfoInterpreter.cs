@@ -8,6 +8,7 @@ using MyGame.Scenes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using XEditor;
@@ -31,6 +32,56 @@ namespace MyGame
             if (entityInfo.Name == "StartPosition" && GameData.Get("Player/Position") == null)
             {
                 GameGlobal.Player.Position = new Vector2(entityInfo.Position.X * 16, entityInfo.Position.Y * 16);
+            }
+            else if (entityInfo.Name == "InteractScript")
+            {
+                ZInterpreter data = new ZInterpreter(entityInfo.Data);
+
+                new Entity(entity => {
+                    entity.Name = "InteractScript";
+                    entity.LayerName = "Main";
+                    entity.Collider = Entity.CollisionType.Pixel;
+                    entity.Trigger = true;
+
+                    entity.Data.Add("Script", data.GetString("script"));
+
+                    entity.SortingLayer = GameGlobal.Player.SortingLayer;
+                    entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
+                    entity.AddComponent(new Drawable()).Run<Drawable>(d => {
+                        d.BuildRectangle(new Point(16, 16), Color.Blue);
+                        d.Visible = false;
+                    });
+
+                    if (data.HasKey("autoscript"))
+                    {
+                        StaticCoroutines.CoroutineHelper.WaitRun(0.1f, () => {
+                            string[] script = data.GetString("autoscript").Split('.');
+                            Type type = Type.GetType("MyGame." + script[0]);
+                            MethodInfo mi = type.GetMethod(script[1], BindingFlags.Static | BindingFlags.Public);
+                            mi.Invoke(null, new object[] { entity });
+                        });
+                    }
+                });
+            }
+            else if (entityInfo.Name == "TouchScript")
+            {
+                ZInterpreter data = new ZInterpreter(entityInfo.Data);
+
+                new Entity(entity => {
+                    entity.Name = "TouchScript";
+                    entity.LayerName = "Main";
+                    entity.Collider = Entity.CollisionType.Pixel;
+                    entity.Trigger = true;
+
+                    entity.Data.Add("Script", data.GetString("script"));
+
+                    entity.SortingLayer = GameGlobal.Player.SortingLayer;
+                    entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
+                    entity.AddComponent(new Drawable()).Run<Drawable>(d => {
+                        d.BuildRectangle(new Point(16, 16), Color.Blue);
+                        d.Visible = false;
+                    });
+                });
             }
             else if (entityInfo.Name == "Ambience")
             {
@@ -213,6 +264,9 @@ namespace MyGame
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
 
                     ZInterpreter data = new ZInterpreter(entityInfo.Data);
+
+                    if(data.HasKey("id"))
+                        entity.ID = data.GetString("id");
 
                     entity.AddComponent(new Sprite()).Run<Sprite>(d => {
                         d.LoadTexture("Graphics/" + data.GetString("image"));

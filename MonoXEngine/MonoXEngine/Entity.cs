@@ -19,6 +19,12 @@ namespace MonoXEngine
         public float Rotation;
         public Dictionary<string, string> Data = new Dictionary<string, string>();
         public bool CheckPixels = true;
+        public string ID = null;
+
+        public static Entity Find(string id)
+        {
+            return Global.Entities.Find(e => e.ID == id);
+        }
 
         private Dictionary<string, Action<Entity, Action<Entity>>> Functions = new Dictionary<string, Action<Entity, Action<Entity>>>();
 

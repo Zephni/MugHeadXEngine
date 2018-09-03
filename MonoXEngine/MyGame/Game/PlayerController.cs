@@ -123,6 +123,14 @@ namespace MugHeadXEngine.EntityComponents
                             MyGame.Scenes.Level.CameraController.MinX = obj.BoundingBox.Left;
                     }
                 }
+
+                if (obj.Name == "TouchScript")
+                {
+                    string[] script = obj.Data["Script"].Split('.');
+                    Type type = Type.GetType("MyGame."+script[0]);
+                    MethodInfo mi = type.GetMethod(script[1], BindingFlags.Static | BindingFlags.Public);
+                    mi.Invoke(null, new object[] { obj });
+                }
             };
 
             // Current collides
@@ -130,12 +138,23 @@ namespace MugHeadXEngine.EntityComponents
                 if (!MovementEnabled || MovementMode == MovementModes.None)
                     return;
 
+                if (obj.Name == "InteractScript")
+                {
+                    if (Global.InputManager.Pressed(InputManager.Input.Up))
+                    {
+                        string[] script = obj.Data["Script"].Split('.');
+                        Type type = Type.GetType("MyGame." + script[0]);
+                        MethodInfo mi = type.GetMethod(script[1], BindingFlags.Static | BindingFlags.Public);
+                        mi.Invoke(null, new object[] { obj });
+                    }
+                }
+
                 if (obj.Name == "NPCChest")
                 {
                     if (Global.InputManager.Pressed(InputManager.Input.Up))
                     {
                         Type type = typeof(NPCChest);
-                        MethodInfo mi = type.GetMethod("ID_"+obj.Data["id"]);
+                        MethodInfo mi = type.GetMethod("ID_" + obj.Data["id"]);
                         mi.Invoke(null, new object[] { obj });
                     }
                 }
