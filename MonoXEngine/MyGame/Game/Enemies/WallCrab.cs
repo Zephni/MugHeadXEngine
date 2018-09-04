@@ -28,7 +28,7 @@ namespace MyGame.Enemies
             if (data.HasKey("speed"))
                 Speed = data.GetFloat("speed");
 
-            RotateSpeed = RotateSpeed * Speed * 4;
+            RotateSpeed = RotateSpeed * Speed * 12;
 
             if (data.HasKey("damage"))
                 Damage = data.GetInt("damage");
@@ -36,11 +36,12 @@ namespace MyGame.Enemies
             // Build entity
             Entity = new Entity(entity => {
                 entity.LayerName = "Main";
-                entity.Position = (entityInfo.Position * 16) + new Vector2(8, 8);
+                entity.Position = (entityInfo.Position * 16) + new Vector2(8, 12);
                 entity.Origin = new Vector2(0.5f, 0.5f);
 
                 entity.AddComponent(new Sprite()).Run<Sprite>(sprite => {
                     Sprite = sprite;
+                    //sprite.BuildRectangle(new Point(16, 16), Color.White);
                     sprite.LoadTexture("Entities/Enemies/WallCrab");
                     sprite.AddAnimation(new Animation("walking", 0.2f, "16,16".ToPoint(), "0,0".ToPointList()));
                     sprite.RunAnimation("walking");
@@ -62,10 +63,10 @@ namespace MyGame.Enemies
         #region Properties
         PixelCollider Collider;
         Sprite Sprite;
-        string Direction = "left";
+        string Direction = "right";
         string Planted = "top";
         float Speed = 0.25f;
-        float RotateSpeed = 0.05f;
+        float RotateSpeed = 1;
         int Damage = 2;
         #endregion
 
@@ -75,17 +76,17 @@ namespace MyGame.Enemies
             // Check positioning and direction
             if (Direction == "left")
             {
-                if (Planted == "top" && !Collider.Colliding(new Point(-3, 1))) ChangePlanted("left");
-                else if (Planted == "left" && !Collider.Colliding(new Point(1, 3))) ChangePlanted("bottom");
-                else if (Planted == "bottom" && !Collider.Colliding(new Point(3, -1))) ChangePlanted("right");
-                else if (Planted == "right" && !Collider.Colliding(new Point(-1, -3))) ChangePlanted("top");
+                if (Planted == "top" && !Collider.Colliding(new Point(-4, 1))) ChangePlanted("left");
+                else if (Planted == "bottom" && !Collider.Colliding(new Point(4, -1))) ChangePlanted("right");
+                else if (Planted == "left" && !Collider.Colliding(new Point(1, 4))) ChangePlanted("bottom");
+                else if (Planted == "right" && !Collider.Colliding(new Point(-1, -4))) ChangePlanted("top");
             }
             else if (Direction == "right") // Needs copying from above in places
             {
-                if (Planted == "top" && !Collider.Colliding(new Point(3, 1))) ChangePlanted("right");
-                else if (Planted == "right" && !Collider.Colliding(new Point(-1, 3))) ChangePlanted("bottom");
-                else if (Planted == "bottom" && !Collider.Colliding(new Point(-3, -1))) ChangePlanted("left");
-                else if (Planted == "right" && !Collider.Colliding(new Point(1, -3))) ChangePlanted("top");
+                if (Planted == "top" && !Collider.Colliding(new Point(4, 1))) ChangePlanted("right");
+                else if (Planted == "bottom" && !Collider.Colliding(new Point(-4, -1))) ChangePlanted("left");
+                else if (Planted == "right" && !Collider.Colliding(new Point(1, 4))) ChangePlanted("bottom");
+                else if (Planted == "left" && !Collider.Colliding(new Point(-1, -4))) ChangePlanted("top");
             }
 
             // Move
@@ -110,9 +111,11 @@ namespace MyGame.Enemies
         public void ChangePlanted(string newPlanting)
         {
             float r = 0;
-            StaticCoroutines.CoroutineHelper.RunUntil(() => { return r >= Math.PI / 2; }, () => {
-                r += (Direction == "left") ? RotateSpeed : -RotateSpeed;
-                Entity.Rotation += (Direction == "left") ? -RotateSpeed : RotateSpeed;
+            float finish = (Direction == "left") ? Entity.Rotation -(float)(90 * Math.PI / 180) : Entity.Rotation + (float)(90 * Math.PI / 180);
+            StaticCoroutines.CoroutineHelper.RunUntil(() => { return (Direction == "left") ? Entity.Rotation <= finish : Entity.Rotation >= finish; }, () => {
+                Entity.Rotation += (Direction == "left") ? -(Global.DeltaTime * RotateSpeed) : (Global.DeltaTime * RotateSpeed);
+            }, () => {
+                Entity.Rotation = finish;
             });
 
             Planted = newPlanting;

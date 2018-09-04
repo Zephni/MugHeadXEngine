@@ -77,11 +77,12 @@ namespace MugHeadXEngine.EntityComponents
             {
                 HP -= amt;
 
+                // HURT
                 if(HP > 0)
                 {
                     HurtRespite = 2;
                     MoveX = (MoveX > 0) ? -MoveX * 1.5f : MoveX * 1.5f;
-                    MoveY = -1;
+                    MoveY = (MoveY > 0) ? -MoveY * 1.5f : MoveY * 1.5f;
 
                     StaticCoroutines.CoroutineHelper.RunFor(HurtRespite, t => {
                         GameGlobal.PlayerGraphicEntity.Opacity = 0.5f + (t.Wrap(0, 0.2f)) * 4;
@@ -90,6 +91,7 @@ namespace MugHeadXEngine.EntityComponents
                         HurtRespite = 0;
                     });
                 }
+                // DIE
                 else
                 {
                     // Cam shake

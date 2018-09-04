@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework.Content;
 using System.IO;
+using MyGame;
 
 namespace MugHeadXEngine
 {
@@ -47,6 +48,9 @@ namespace MugHeadXEngine
 
         public static void Save()
         {
+            // Specific to this game
+            GameData.Set("Player/Position", GameGlobal.Player.Position.X.ToString() + "," + GameGlobal.Player.Position.Y.ToString());
+
             string SaveString = "";
 
             foreach (KeyValuePair<string, string> item in Data)

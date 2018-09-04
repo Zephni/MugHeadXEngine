@@ -156,12 +156,13 @@ namespace MyGame.Scenes
 
             if (Global.RunOnce("Restart", Keyboard.GetState().IsKeyDown(Keys.F2)))
             {
+                CameraController.ResetMinMax();
+                Global.Camera.Position = Vector2.Zero;
                 Global.SceneManager.LoadScene("Menu");
             }
 
             if (Global.InputManager.Pressed(InputManager.Input.Special1))
             {
-                GameData.Set("Player/Position", GameGlobal.Player.Position.X.ToString() + "," + GameGlobal.Player.Position.Y.ToString());
                 GameData.Save();
             }
 

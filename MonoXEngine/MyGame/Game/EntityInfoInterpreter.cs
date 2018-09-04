@@ -33,6 +33,10 @@ namespace MyGame
             {
                 GameGlobal.Player.Position = new Vector2(entityInfo.Position.X * 16, entityInfo.Position.Y * 16);
             }
+            else if (entityInfo.Name == "SavePoint")
+            {
+                new SavePoint(entityInfo);
+            }
             else if (entityInfo.Name == "Enemy")
             {
                 ZInterpreter data = new ZInterpreter(entityInfo.Data);
