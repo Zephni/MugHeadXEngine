@@ -78,7 +78,7 @@ namespace MyGame
                     entity.SortingLayer = GameGlobal.Player.SortingLayer;
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
                     entity.AddComponent(new Drawable()).Run<Drawable>(d => {
-                        d.BuildRectangle(new Point(16, 16), Color.Blue);
+                        d.BuildRectangle(new Point(entityInfo.Size.X * 16, entityInfo.Size.Y * 16), Color.Blue);
                         d.Visible = false;
                     });
 
@@ -108,7 +108,7 @@ namespace MyGame
                     entity.SortingLayer = GameGlobal.Player.SortingLayer;
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
                     entity.AddComponent(new Drawable()).Run<Drawable>(d => {
-                        d.BuildRectangle(new Point(16, 16), Color.Blue);
+                        d.BuildRectangle(new Point(entityInfo.Size.X * 16, entityInfo.Size.Y * 16), Color.Blue);
                         d.Visible = false;
                     });
                 });
@@ -257,10 +257,10 @@ namespace MyGame
                     entity.Data.Add("Level", data.GetString("level"));
                     entity.Data.Add("Position", data.GetString("position"));
 
-                    entity.SortingLayer = GameGlobal.Player.SortingLayer;
+                    entity.SortingLayer = GameGlobal.Player.SortingLayer+5;
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
                     entity.AddComponent(new Drawable()).Run<Drawable>(d => {
-                        d.BuildRectangle(new Point(16, 16), Color.Blue);
+                        d.BuildRectangle(new Point(entityInfo.Size.X * 16, entityInfo.Size.Y * 16), Color.Blue);
                         d.Visible = false;
                     });
                 });
@@ -280,7 +280,7 @@ namespace MyGame
                     entity.SortingLayer = GameGlobal.Player.SortingLayer;
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
                     entity.AddComponent(new Drawable()).Run<Drawable>(d => {
-                        d.BuildRectangle(new Point(16, 16), Color.Blue);
+                        d.BuildRectangle(new Point(entityInfo.Size.X * 16, entityInfo.Size.Y * 16), Color.Blue);
                         d.Visible = false;
                     });
                 });

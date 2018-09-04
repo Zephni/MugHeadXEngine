@@ -18,8 +18,8 @@
     <ViewportArea>FIT_BEST</ViewportArea>
     <AllowResizing>True</AllowResizing>
     <FullScreen>False</FullScreen>
-    <WindowSizeX>150</WindowSizeX>
-    <WindowSizeY>150</WindowSizeY>
+    <WindowSizeX>320</WindowSizeX>
+    <WindowSizeY>240</WindowSizeY>
   </Viewport>
   
   <Initiation>

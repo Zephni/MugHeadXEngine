@@ -390,11 +390,15 @@ namespace MugHeadXEngine.EntityComponents
 
             if (MovementMode != MovementModes.None && MovementEnabled)
             {
-                if (Global.InputManager.Held(InputManager.Input.Left)) Direction = -1;
-                else if (Global.InputManager.Held(InputManager.Input.Right)) Direction = 1;
+                if (Global.InputManager.Held(InputManager.Input.Left) && !Global.InputManager.Held(InputManager.Input.Right)) Direction = -1;
+                else if (Global.InputManager.Held(InputManager.Input.Right) && !Global.InputManager.Held(InputManager.Input.Left)) Direction = 1;
 
                 // Direction
                 MyGame.Scenes.Level.CameraController.Offset = (Direction == -1) ? new Vector2(-16, 0) : new Vector2(16, 0);
+            }
+            else
+            {
+                MyGame.Scenes.Level.CameraController.Offset = new Vector2(0, 0);
             }
 
             GameGlobal.PlayerGraphic.SpriteEffect = (Direction == 1) ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
@@ -419,7 +423,7 @@ namespace MugHeadXEngine.EntityComponents
                     Global.AudioController.Play("SFX/Jump");
                 }
 
-                if (!Crouching && MovementEnabled && Global.InputManager.Held(InputManager.Input.Left))
+                if (!Crouching && MovementEnabled && Global.InputManager.Held(InputManager.Input.Left) && !Global.InputManager.Held(InputManager.Input.Right))
                 {
                     MoveX -= Acceleration * Global.DeltaTime;
                     if (!Kinetic && IsGrounded) GameGlobal.PlayerGraphic.RunAnimation("Walk");
@@ -433,7 +437,7 @@ namespace MugHeadXEngine.EntityComponents
                         MoveX = 0;
                     }
                 }
-                else if (!Crouching && MovementEnabled && Global.InputManager.Held(InputManager.Input.Right))
+                else if (!Crouching && MovementEnabled && Global.InputManager.Held(InputManager.Input.Right) && !Global.InputManager.Held(InputManager.Input.Left))
                 {
                     MoveX += Acceleration * Global.DeltaTime;
                     if (!Kinetic && IsGrounded) GameGlobal.PlayerGraphic.RunAnimation("Walk");
@@ -455,10 +459,15 @@ namespace MugHeadXEngine.EntityComponents
 
                 if (!Kinetic && Crouching)
                 {
-                    if (Global.InputManager.Held(InputManager.Input.Left) || Global.InputManager.Held(InputManager.Input.Right))
+                    if (Global.InputManager.Held(InputManager.Input.Left) && !Global.InputManager.Held(InputManager.Input.Right))
                     {
+                        MoveX = -1;
                         GameGlobal.PlayerGraphic.RunAnimation("Crawl");
-                        MoveX = (Direction == 1) ? 1 : -1;
+                    }
+                    else if (Global.InputManager.Held(InputManager.Input.Right) && !Global.InputManager.Held(InputManager.Input.Left))
+                    {
+                        MoveX = 1;
+                        GameGlobal.PlayerGraphic.RunAnimation("Crawl");
                     }
                     else
                     {
@@ -506,7 +515,7 @@ namespace MugHeadXEngine.EntityComponents
                     MoveY = -JumpStrength;
                 }
 
-                if (!Crouching && MovementEnabled && Global.InputManager.Held(InputManager.Input.Left))
+                if (!Crouching && MovementEnabled && Global.InputManager.Held(InputManager.Input.Left) && !Global.InputManager.Held(InputManager.Input.Right))
                 {
                     MoveX -= Acceleration * Global.DeltaTime;
                 }
@@ -516,7 +525,7 @@ namespace MugHeadXEngine.EntityComponents
                     if (MoveX >= -Deceleration * Global.DeltaTime)
                         MoveX = 0;
                 }
-                else if (!Crouching && MovementEnabled && Global.InputManager.Held(InputManager.Input.Right))
+                else if (!Crouching && MovementEnabled && Global.InputManager.Held(InputManager.Input.Right) && !Global.InputManager.Held(InputManager.Input.Left))
                 {
                     MoveX += Acceleration * Global.DeltaTime;
                 }
