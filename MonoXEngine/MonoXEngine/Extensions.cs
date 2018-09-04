@@ -21,6 +21,12 @@ namespace MonoXEngine
             return Convert.ToInt16(value);
         }
 
+        public static Point ToPoint(this string value)
+        {
+            var temp = value.Split(',');
+            return new Point(Convert.ToInt16(temp[0]), Convert.ToInt16(temp[1]));
+        }
+
         public static List<Point> ToPointList(this string value)
         {
             List<Point> pointList = new List<Point>();
@@ -38,6 +44,13 @@ namespace MonoXEngine
         public static int Wrap(this int value, int min, int max)
         {
             return (((value - min) % (max - min)) + (max - min)) % (max - min) + min;
+        }
+
+        public static int Between(this int value, int min, int max)
+        {
+            if (value < min) return min;
+            else if (value > max) return max;
+            else return value;
         }
         #endregion
 

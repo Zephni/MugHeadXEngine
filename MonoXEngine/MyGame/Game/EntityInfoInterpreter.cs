@@ -33,7 +33,14 @@ namespace MyGame
             {
                 GameGlobal.Player.Position = new Vector2(entityInfo.Position.X * 16, entityInfo.Position.Y * 16);
             }
-            if (entityInfo.Name == "Audio2D")
+            else if (entityInfo.Name == "Enemy")
+            {
+                ZInterpreter data = new ZInterpreter(entityInfo.Data);
+
+                Type type = Type.GetType("MyGame.Enemies." + data.GetString("type"));
+                Activator.CreateInstance(type, new object[] { entityInfo });
+            }
+            else if (entityInfo.Name == "Audio2D")
             {
                 ZInterpreter data = new ZInterpreter(entityInfo.Data);
 

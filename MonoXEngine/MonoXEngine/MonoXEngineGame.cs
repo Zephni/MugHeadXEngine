@@ -58,10 +58,18 @@ namespace MonoXEngine
                     this.ViewportTexture.WindowSizeUpdate();
                 };
             }
-
+            
             // Full screen
             if (Global.MainSettings.Get<string>("Viewport", "FullScreen").ToLower() == "true")
+            {
                 Graphics.IsFullScreen = true;
+            }
+            else
+            {
+                // PreferedBackBuffer
+                Graphics.PreferredBackBufferWidth = Global.MainSettings.Get<int>("Viewport", "WindowSizeX");
+                Graphics.PreferredBackBufferHeight = Global.MainSettings.Get<int>("Viewport", "WindowSizeY");
+            }
         }
 
         protected override void Initialize()

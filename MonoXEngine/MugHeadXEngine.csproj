@@ -72,6 +72,9 @@
     <Compile Include="MugHeadXEngine\MessageBox.cs" />
     <Compile Include="MugHeadXEngine\OptionSelector.cs" />
     <Compile Include="MyGame\Game\CameraController.cs" />
+    <Compile Include="MyGame\Game\Enemies\Template.cs" />
+    <Compile Include="MyGame\Game\Enemies\WallCrab.cs" />
+    <Compile Include="MyGame\Game\Enemy.cs" />
     <Compile Include="MyGame\Game\EntityInfoInterpreter.cs" />
     <Compile Include="MyGame\Game\GameGlobal.cs" />
     <Compile Include="MyGame\Game\GameMethods.cs" />

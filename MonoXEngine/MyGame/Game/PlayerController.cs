@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoXEngine;
 using MonoXEngine.EntityComponents;
 using MyGame;
+using MyGame.Scenes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,13 +17,17 @@ namespace MugHeadXEngine.EntityComponents
 {
     public class PlayerController : Physics
     {
+        public int MaxHP = 10;
+
+        public int HP { get => hp; set { hp = value.Between(0, MaxHP); } }
+        private int hp = 10;
+
         public enum MovementModes
         {
             None,
             Normal,
             Paddleing
         }
-
         public float Acceleration;
         public float Deceleration;
         public float JumpStrength;
@@ -65,8 +70,62 @@ namespace MugHeadXEngine.EntityComponents
             GameGlobal.PlayerGraphicEntity.GetComponent<Sprite>().RunAnimation(Alias);
         }
 
+        float HurtRespite = 0;
+        public void Hurt(int amt)
+        {
+            if(HP > 0 && HurtRespite == 0)
+            {
+                HP -= amt;
+
+                if(HP > 0)
+                {
+                    HurtRespite = 2;
+                    MoveX = (MoveX > 0) ? -MoveX * 1.5f : MoveX * 1.5f;
+                    MoveY = -1;
+
+                    StaticCoroutines.CoroutineHelper.RunFor(HurtRespite, t => {
+                        GameGlobal.PlayerGraphicEntity.Opacity = 0.5f + (t.Wrap(0, 0.2f)) * 4;
+                    }, () => {
+                        GameGlobal.PlayerGraphicEntity.Opacity = 1f;
+                        HurtRespite = 0;
+                    });
+                }
+                else
+                {
+                    // Cam shake
+                    Vector2 sPos = Global.Camera.Position;
+                    StaticCoroutines.CoroutineHelper.RunFor(0.7f, p => {
+                        Random r = new Random();
+                        Global.Camera.Rotation = (float)MathHelper.Lerp(-0.04f, 0.04f, (float)r.NextDouble()) * (1 - p);
+                        Global.Camera.Position = new Vector2(sPos.X + (r.Next(0, 2) - 2) * (1 - p), sPos.Y + (r.Next(0, 2) - 1) * (1 - p));
+                    }, () => {
+                        Global.Camera.Rotation = 0;
+                        Global.Camera.Position = sPos;
+                        Level.CameraController.Target = null;
+                    });
+
+
+                    // Dead
+                    GameGlobal.Player.Destroy();
+                    GameGlobal.PlayerGraphicEntity.Destroy();
+
+                    StaticCoroutines.CoroutineHelper.WaitRun(2, () => {
+                        GameData.Load();
+                        GameGlobal.Fader.RunFunction("FadeOut", e => {
+                            Global.SceneManager.LoadScene("Level");
+                        });
+                    });
+                }
+            }
+        }
+
         public override void Start()
         {
+            Entity.Name = "Player";
+            Entity.LayerName = "Main";
+            Entity.Trigger = true;
+            Entity.Collider = Entity.CollisionType.Pixel;
+
             this.Entity.AddComponent(passThru);
             this.Collider = passThru;
             passThru = null;
