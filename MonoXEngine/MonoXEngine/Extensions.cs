@@ -76,7 +76,8 @@ namespace MonoXEngine
         #region Point
         public static float GetDistance(this Point value, Point other)
         {
-            return (float)Math.Sqrt(Math.Pow((other.X - value.X), 2) + Math.Pow((other.Y - value.Y), 2));
+            float distance = (float)Math.Sqrt(Math.Pow((other.X - value.X), 2) + Math.Pow((other.Y - value.Y), 2));
+            return distance;
         }
         #endregion
 

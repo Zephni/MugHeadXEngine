@@ -79,7 +79,7 @@ namespace MyGame.Enemies
                 if (Planted == "top" && !Collider.Colliding(new Point(-4, 1))) ChangePlanted("left");
                 else if (Planted == "bottom" && !Collider.Colliding(new Point(4, -1))) ChangePlanted("right");
                 else if (Planted == "left" && !Collider.Colliding(new Point(1, 4))) ChangePlanted("bottom");
-                else if (Planted == "right" && !Collider.Colliding(new Point(-1, -4))) ChangePlanted("top");
+                else if (Planted == "right" && !Collider.Colliding(new Point(-1, -4)) || (Planted == "right" && !Collider.Colliding(new Point(0, 1)))) ChangePlanted("top");
             }
             else if (Direction == "right") // Needs copying from above in places
             {
@@ -110,13 +110,29 @@ namespace MyGame.Enemies
 
         public void ChangePlanted(string newPlanting)
         {
-            float r = 0;
-            float finish = (Direction == "left") ? Entity.Rotation -(float)(90 * Math.PI / 180) : Entity.Rotation + (float)(90 * Math.PI / 180);
-            StaticCoroutines.CoroutineHelper.RunUntil(() => { return (Direction == "left") ? Entity.Rotation <= finish : Entity.Rotation >= finish; }, () => {
-                Entity.Rotation += (Direction == "left") ? -(Global.DeltaTime * RotateSpeed) : (Global.DeltaTime * RotateSpeed);
-            }, () => {
-                Entity.Rotation = finish;
-            });
+            string rotateDir = "none";
+
+            if (Direction == "left")
+            {
+                if ((Planted == "top" && newPlanting == "right") || (Planted == "left" && newPlanting == "top")) rotateDir = "right";
+                else rotateDir = "left";
+            }
+            else if (Direction == "right")
+            {
+                if ((Planted == "top" && newPlanting == "left") || (Planted == "right" && newPlanting == "bottom")) rotateDir = "left";
+                else rotateDir = "right";
+            }
+
+
+            if (rotateDir != "none")
+            {
+                float finish = (rotateDir == "left") ? Entity.Rotation - (float)(90 * Math.PI / 180) : Entity.Rotation + (float)(90 * Math.PI / 180);
+                StaticCoroutines.CoroutineHelper.RunUntil(() => { return (rotateDir == "left") ? Entity.Rotation <= finish : Entity.Rotation >= finish; }, () => {
+                    Entity.Rotation += (rotateDir == "left") ? -(Global.DeltaTime * RotateSpeed) : (Global.DeltaTime * RotateSpeed);
+                }, () => {
+                    Entity.Rotation = finish;
+                });
+            }
 
             Planted = newPlanting;
         }

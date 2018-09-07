@@ -60,7 +60,8 @@ namespace MyGame
                         sfi = Global.AudioController.Play("SFX/" + data.GetString("file"));
                     
                     float difference = GameGlobal.Player.Position.GetDistance(position);
-                    sfi.Volume = ((1 - (difference - distance) / (distance) )).Between(minvolume, maxvolume);
+                    float percent = (((difference - distance) * 100) / ((maxvolume) - distance)).Between(minvolume, maxvolume);
+                    sfi.Volume = (percent / 100);
                 });
             }
             else if (entityInfo.Name == "InteractScript")

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoXEngine;
+using StaticCoroutines;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -128,6 +129,21 @@ namespace MyGame
             }
 
             Global.Camera.Position = camPos;
+        }
+
+        public void Shake(float Time, Action action = null)
+        {
+            Vector2 sPos = Global.Camera.Position;
+            CoroutineHelper.RunFor(Time, p => {
+                Random r = new Random();
+                Global.Camera.Rotation = (float)MathHelper.Lerp(-0.04f, 0.04f, (float)r.NextDouble()) * (1 - p);
+                Global.Camera.Position = new Vector2(sPos.X + (r.Next(0, 2) - 2) * (1 - p), sPos.Y + (r.Next(0, 2) - 1) * (1 - p));
+            }, () => {
+                Global.Camera.Rotation = 0;
+                Global.Camera.Position = sPos;
+
+                action?.Invoke();
+            });
         }
     }
 }

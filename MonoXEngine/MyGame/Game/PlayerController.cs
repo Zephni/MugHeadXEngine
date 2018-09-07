@@ -54,9 +54,9 @@ namespace MugHeadXEngine.EntityComponents
                 e.CheckPixels = false;
                 e.AddComponent(new Sprite() { Texture2D = Global.Content.Load<Texture2D>("Entities/Pause") }).Run<Sprite>(s => {
                     s.Visible = true;
-                    s.AddAnimation(new Animation("Stand", 0.2f, new Point(32, 32), new Point(0, 0)));
-                    s.AddAnimation(new Animation("Walk", 0.2f, new Point(32, 32), new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1)));
-                    s.AddAnimation(new Animation("Jump", 0.2f, new Point(32, 32), new Point(0, 2), new Point(1, 2), new Point(2, 2), new Point(3, 2)));
+                    s.AddAnimation(new Animation("Stand", 0.2f, new Point(32, 32), "0,0".ToPointList()));
+                    s.AddAnimation(new Animation("Walk", 0.2f, new Point(32, 32), "0,1 1,1 2,1 3,1".ToPointList()));
+                    s.AddAnimation(new Animation("Jump", 0.2f, new Point(32, 32), "0,2 1,2 2,2 3,2".ToPointList()));
                     s.AddAnimation(new Animation("Crawl", 0.15f, new Point(32, 32), "0,3 1,3 2,3 3,3".ToPointList()));
                     s.AddAnimation(new Animation("Lay", 0.2f, new Point(32, 32), "0,3".ToPointList()));
                     s.AddAnimation(new Animation("Paddleing", 0.3f, new Point(32, 32), "0,4 1,4 2,4 3,4".ToPointList()));
@@ -81,8 +81,8 @@ namespace MugHeadXEngine.EntityComponents
                 if(HP > 0)
                 {
                     HurtRespite = 2;
-                    MoveX = (MoveX > 0) ? -MoveX * 1.5f : MoveX * 1.5f;
-                    MoveY = (MoveY > 0) ? -MoveY * 1.5f : MoveY * 1.5f;
+                    MoveX = (MoveX > 0) ? -MoveX * 1.25f : MoveX * 1.25f;
+                    MoveY = (MoveY > 0) ? -MoveY * 1.25f : MoveY * 1.25f;
 
                     StaticCoroutines.CoroutineHelper.RunFor(HurtRespite, t => {
                         GameGlobal.PlayerGraphicEntity.Opacity = 0.5f + (t.Wrap(0, 0.2f)) * 4;
@@ -95,23 +95,15 @@ namespace MugHeadXEngine.EntityComponents
                 else
                 {
                     // Cam shake
-                    Vector2 sPos = Global.Camera.Position;
-                    StaticCoroutines.CoroutineHelper.RunFor(0.7f, p => {
-                        Random r = new Random();
-                        Global.Camera.Rotation = (float)MathHelper.Lerp(-0.04f, 0.04f, (float)r.NextDouble()) * (1 - p);
-                        Global.Camera.Position = new Vector2(sPos.X + (r.Next(0, 2) - 2) * (1 - p), sPos.Y + (r.Next(0, 2) - 1) * (1 - p));
-                    }, () => {
-                        Global.Camera.Rotation = 0;
-                        Global.Camera.Position = sPos;
+                    Level.CameraController.Shake(1f, () => {
                         Level.CameraController.Target = null;
                     });
-
-
+                    
                     // Dead
                     GameGlobal.Player.Destroy();
                     GameGlobal.PlayerGraphicEntity.Destroy();
 
-                    StaticCoroutines.CoroutineHelper.WaitRun(2, () => {
+                    StaticCoroutines.CoroutineHelper.WaitRun(2.2f, () => {
                         GameData.Load();
                         GameGlobal.Fader.RunFunction("FadeOut", e => {
                             Global.SceneManager.LoadScene("Level");
@@ -170,29 +162,29 @@ namespace MugHeadXEngine.EntityComponents
                     {
                         if (item == "LockXY")
                         {
-                            MyGame.Scenes.Level.CameraController.MinX = obj.BoundingBox.Left;
-                            MyGame.Scenes.Level.CameraController.MaxX = obj.BoundingBox.Right;
-                            MyGame.Scenes.Level.CameraController.MinY = obj.BoundingBox.Top;
-                            MyGame.Scenes.Level.CameraController.MaxY = obj.BoundingBox.Bottom;
+                            Level.CameraController.MinX = obj.BoundingBox.Left;
+                            Level.CameraController.MaxX = obj.BoundingBox.Right;
+                            Level.CameraController.MinY = obj.BoundingBox.Top;
+                            Level.CameraController.MaxY = obj.BoundingBox.Bottom;
                         }
                         else if (item == "LockX")
                         {
-                            MyGame.Scenes.Level.CameraController.MinX = obj.BoundingBox.Left;
-                            MyGame.Scenes.Level.CameraController.MaxX = obj.BoundingBox.Right;
+                            Level.CameraController.MinX = obj.BoundingBox.Left;
+                            Level.CameraController.MaxX = obj.BoundingBox.Right;
                         }
                         else if (item == "LockY")
                         {
-                            MyGame.Scenes.Level.CameraController.MinY = obj.BoundingBox.Top;
-                            MyGame.Scenes.Level.CameraController.MaxY = obj.BoundingBox.Bottom;
+                            Level.CameraController.MinY = obj.BoundingBox.Top;
+                            Level.CameraController.MaxY = obj.BoundingBox.Bottom;
                         }
                         else if (item == "LockTop")
-                            MyGame.Scenes.Level.CameraController.MinY = obj.BoundingBox.Top;
+                            Level.CameraController.MinY = obj.BoundingBox.Top;
                         else if (item == "LockBottom")
-                            MyGame.Scenes.Level.CameraController.MaxY = obj.BoundingBox.Bottom;
+                            Level.CameraController.MaxY = obj.BoundingBox.Bottom;
                         else if (item == "LockRight")
-                            MyGame.Scenes.Level.CameraController.MaxX = obj.BoundingBox.Right;
+                            Level.CameraController.MaxX = obj.BoundingBox.Right;
                         else if (item == "LockLeft")
-                            MyGame.Scenes.Level.CameraController.MinX = obj.BoundingBox.Left;
+                            Level.CameraController.MinX = obj.BoundingBox.Left;
                     }
                 }
 

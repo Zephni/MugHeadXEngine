@@ -14,7 +14,7 @@ namespace MyGame
 {
     public static class GameMethods
     {
-        public static void PhysicsActive(bool active)
+        /*public static void PhysicsActive(bool active)
         {
             Global.Entities.FindAll(entity => entity.HasComponent<Physics>()).ForEach(entity => {
                 entity.GetComponent<Physics>().Disabled = !active;
@@ -23,7 +23,7 @@ namespace MyGame
             Global.Entities.FindAll(entity => entity.HasComponent<PlayerController>()).ForEach(entity => {
                 entity.GetComponent<PlayerController>().Disabled = !active;
             });
-        }
+        }*/
 
         public static void ShowOptionSelector(Vector2 position, List<Option> optionList, Action<string> action = null, Entity player = null, string texture9Patch = "Defaults/9Patch_8")
         {
@@ -67,6 +67,50 @@ namespace MyGame
 
                 if (DisablePlayerMovement == true)
                     GameGlobal.Player.GetComponent<PlayerController>().MovementMode = PlayerController.MovementModes.Normal;
+            }
+        }
+
+        private static Random random = new Random();
+        public static float Random(float min, float max)
+        {
+            return (float)random.NextDouble() * (max - min) + min;
+        }
+
+        public static void SmokePuffs(int count, Vector2 areaPos, Point areaSize, float speed = 10)
+        {
+            for(int i = 0; i < count; i++)
+            {
+                new Entity(entity => {
+                    entity.LayerName = "Main";
+                    entity.SortingLayer = 8;
+                    entity.Opacity = 0.9f;
+                    entity.Position = new Vector2(Random(areaPos.X - areaSize.X / 2, areaPos.X + areaSize.X), Random(areaPos.Y - areaSize.Y / 2, areaPos.Y + areaSize.Y));
+                    entity.AddComponent(new Sprite()).Run<Sprite>(s => {
+                        s.LoadTexture("Entities/SmokePuff");
+                        s.AddAnimation(new Animation("Default", 0.1f, "16,16".ToPoint(), "0,0".ToPointList()));
+
+                        s.RunAnimation("Default");
+                        
+                        float angleDegrees = Random(0, 359).ToInt();
+                        float initialScale = Random(0.6f, 1);
+                        float scaleRate = Random(1f, 3f);
+                        float speedRnd = Random(speed - (speed / 2), speed + (speed / 2));
+                        entity.Scale = new Vector2(initialScale, initialScale);
+                        speed = speedRnd;
+
+                        StaticCoroutines.CoroutineHelper.RunUntil(() => { return entity == null || entity.Scale.X <= 0.05f; }, () => {
+                            entity.Scale -= new Vector2(scaleRate, scaleRate) * Global.DeltaTime;
+                            float new_x = entity.Position.X + (speed * (float)Math.Cos(angleDegrees * Math.PI / 180) * Global.DeltaTime);
+                            float new_y = entity.Position.Y + (speed * (float)Math.Sin(angleDegrees * Math.PI / 180) * Global.DeltaTime);
+                            entity.Position = new Vector2(new_x, new_y);
+                        }, () => {
+                            if (entity != null)
+                                entity.Destroy();
+                        });
+                    });
+                });
+
+                
             }
         }
     }

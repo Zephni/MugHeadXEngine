@@ -137,15 +137,9 @@ namespace MyGame
                                 Global.AudioController.Play("SFX/Thump");
                                 WoahMSG.Destroy();
 
-                                Vector2 sPos = Global.Camera.Position;
-                                CoroutineHelper.RunFor(0.7f, p => {
-                                    Random r = new Random();
-                                    Global.Camera.Rotation = (float)MathHelper.Lerp(-0.04f, 0.04f, (float)r.NextDouble()) * (1 - p);
-                                    Global.Camera.Position = new Vector2(sPos.X + (r.Next(0, 2) - 2) * (1 - p), sPos.Y + (r.Next(0, 2) - 1) * (1 - p));
-                                }, () => {
-                                    Global.Camera.Rotation = 0;
-                                    Global.Camera.Position = sPos;
-                                });
+                                GameMethods.SmokePuffs(8, GameGlobal.PlayerGraphicEntity.Position, new Point(8, 8));
+
+                                CameraController.Instance.Shake(0.7f);
 
                                 CoroutineHelper.WaitRun(2, () => {
                                     // Music

@@ -1,1 +1,1 @@
-Level:!:MysticCave;!;Levels/TheTree/Intro:!:True;!;Player/Position:!:266,774;!;Player/Direction:!:1;!;SavePoint/First:!:1
+Level:!:TheTree;!;Player/Direction:!:1;!;Levels/TheTree/Intro:!:True;!;Player/Position:!:1830,902;!;EarthRock/First:!:True
