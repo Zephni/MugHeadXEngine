@@ -40,7 +40,8 @@ namespace MonoXEngine
             None,
             BoundingBox,
             Pixel,
-            Platform
+            Platform,
+            Trigger
         }
         public CollisionType Collider = CollisionType.None;
 

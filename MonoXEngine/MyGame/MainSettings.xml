@@ -17,9 +17,9 @@
     <ResolutionY>240</ResolutionY>
     <ViewportArea>FIT_BEST</ViewportArea>
     <AllowResizing>True</AllowResizing>
-    <FullScreen>False</FullScreen>
-    <WindowSizeX>320</WindowSizeX>
-    <WindowSizeY>240</WindowSizeY>
+    <FullScreen>True</FullScreen>
+    <WindowSizeX>640</WindowSizeX>
+    <WindowSizeY>480</WindowSizeY>
   </Viewport>
   
   <Initiation>

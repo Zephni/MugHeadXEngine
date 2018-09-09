@@ -96,7 +96,7 @@ namespace MonoXEngine.EntityComponents
                 }
 
                 // Always check if colliding in center (This was added for trigger detection)
-                Collider.Colliding(new Point(0, 0));
+                Collider.Colliding(new Point(0, 0), Entity.CollisionType.Trigger);
 
                 // Check if grounded or too deep in ground
                 this.IsGrounded = false;

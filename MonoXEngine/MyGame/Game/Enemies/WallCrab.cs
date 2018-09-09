@@ -25,6 +25,8 @@ namespace MyGame.Enemies
             if (data.HasKey("direction"))
                 Direction = data.GetString("direction");
 
+            Planted = (data.HasKey("planted")) ? data.GetString("planted") : "top";
+
             if (data.HasKey("speed"))
                 Speed = data.GetFloat("speed");
 
@@ -36,14 +38,24 @@ namespace MyGame.Enemies
             // Build entity
             Entity = new Entity(entity => {
                 entity.LayerName = "Main";
-                entity.Position = (entityInfo.Position * 16) + new Vector2(8, 12);
-                entity.Origin = new Vector2(0.5f, 0.5f);
+                entity.Position = (entityInfo.Position * 16);
+                entity.Origin = new Vector2(0.5f, 1f);
+
+                if (Planted == "top")
+                {
+                    entity.Position += new Vector2(12, 16);
+                }
+                else if (Planted == "right")
+                {
+                    entity.Position += new Vector2(0, 16);
+                    entity.Rotation += (float)Math.PI / 2;
+                }
 
                 entity.AddComponent(new Sprite()).Run<Sprite>(sprite => {
                     Sprite = sprite;
-                    //sprite.BuildRectangle(new Point(16, 16), Color.White);
+                    //sprite.BuildRectangle(new Point(24, 24), Color.White);
                     sprite.LoadTexture("Entities/Enemies/WallCrab");
-                    sprite.AddAnimation(new Animation("walking", 0.2f, "16,16".ToPoint(), "0,0".ToPointList()));
+                    sprite.AddAnimation(new Animation("walking", 0.2f, "24,16".ToPoint(), "0,0 1,0 2,0 3,0 4,0 5,0".ToPointList()));
                     sprite.RunAnimation("walking");
                 });
 
@@ -63,7 +75,7 @@ namespace MyGame.Enemies
         #region Properties
         PixelCollider Collider;
         Sprite Sprite;
-        string Direction = "right";
+        string Direction = "none";
         string Planted = "top";
         float Speed = 0.25f;
         float RotateSpeed = 1;
@@ -76,33 +88,36 @@ namespace MyGame.Enemies
             // Check positioning and direction
             if (Direction == "left")
             {
-                if (Planted == "top" && !Collider.Colliding(new Point(-4, 1))) ChangePlanted("left");
-                else if (Planted == "bottom" && !Collider.Colliding(new Point(4, -1))) ChangePlanted("right");
-                else if (Planted == "left" && !Collider.Colliding(new Point(1, 4))) ChangePlanted("bottom");
-                else if (Planted == "right" && !Collider.Colliding(new Point(-1, -4)) || (Planted == "right" && !Collider.Colliding(new Point(0, 1)))) ChangePlanted("top");
+                if (Planted == "top" && !Collider.Colliding(new Point(-12, 1))) ChangePlanted("left");
+                else if (Planted == "bottom" && !Collider.Colliding(new Point(12, -1))) ChangePlanted("right");
+                else if (Planted == "left" && !Collider.Colliding(new Point(1, 8))) ChangePlanted("bottom");
+                else if ((Planted == "right" && !Collider.Colliding(new Point(-1, -8)))) ChangePlanted("top");
             }
             else if (Direction == "right") // Needs copying from above in places
             {
-                if (Planted == "top" && !Collider.Colliding(new Point(4, 1))) ChangePlanted("right");
-                else if (Planted == "bottom" && !Collider.Colliding(new Point(-4, -1))) ChangePlanted("left");
-                else if (Planted == "right" && !Collider.Colliding(new Point(1, 4))) ChangePlanted("bottom");
-                else if (Planted == "left" && !Collider.Colliding(new Point(-1, -4))) ChangePlanted("top");
+                if (Planted == "top" && !Collider.Colliding(new Point(12, 1))) ChangePlanted("right");
+                else if (Planted == "bottom" && !Collider.Colliding(new Point(-12, -1))) ChangePlanted("left");
+                else if (Planted == "right" && !Collider.Colliding(new Point(-1, 8))) ChangePlanted("bottom");
+                else if (Planted == "left" && !Collider.Colliding(new Point(1, -8))) ChangePlanted("top");
             }
 
             // Move
-            if (Direction == "left")
+            if (Planted != "none")
             {
-                if (Planted == "top") Entity.Position.X -= Speed;
-                else if (Planted == "left") Entity.Position.Y += Speed;
-                else if (Planted == "bottom") Entity.Position.X += Speed;
-                else if (Planted == "right") Entity.Position.Y -= Speed;
-            }
-            else if (Direction == "right")
-            {
-                if (Planted == "top") Entity.Position.X += Speed;
-                else if (Planted == "right") Entity.Position.Y += Speed;
-                else if (Planted == "bottom") Entity.Position.X -= Speed;
-                else if (Planted == "left") Entity.Position.Y -= Speed;
+                if (Direction == "left")
+                {
+                    if (Planted == "top") Entity.Position.X -= Speed;
+                    else if (Planted == "left") Entity.Position.Y += Speed;
+                    else if (Planted == "bottom") Entity.Position.X += Speed;
+                    else if (Planted == "right") Entity.Position.Y -= Speed;
+                }
+                else if (Direction == "right")
+                {
+                    if (Planted == "top") Entity.Position.X += Speed;
+                    else if (Planted == "right") Entity.Position.Y += Speed;
+                    else if (Planted == "bottom") Entity.Position.X -= Speed;
+                    else if (Planted == "left") Entity.Position.Y -= Speed;
+                }
             }
 
             base.Update();
@@ -114,27 +129,32 @@ namespace MyGame.Enemies
 
             if (Direction == "left")
             {
-                if ((Planted == "top" && newPlanting == "right") || (Planted == "left" && newPlanting == "top")) rotateDir = "right";
+                if (Planted == "left" && newPlanting == "top") rotateDir = "right";
                 else rotateDir = "left";
             }
             else if (Direction == "right")
             {
-                if ((Planted == "top" && newPlanting == "left") || (Planted == "right" && newPlanting == "bottom")) rotateDir = "left";
+                
+                if (Planted == "right" && newPlanting == "top") rotateDir = "left";
                 else rotateDir = "right";
             }
 
+            Planted = "none";
 
             if (rotateDir != "none")
             {
-                float finish = (rotateDir == "left") ? Entity.Rotation - (float)(90 * Math.PI / 180) : Entity.Rotation + (float)(90 * Math.PI / 180);
-                StaticCoroutines.CoroutineHelper.RunUntil(() => { return (rotateDir == "left") ? Entity.Rotation <= finish : Entity.Rotation >= finish; }, () => {
-                    Entity.Rotation += (rotateDir == "left") ? -(Global.DeltaTime * RotateSpeed) : (Global.DeltaTime * RotateSpeed);
+                float start = Entity.Rotation;
+                float finish = start + ((rotateDir== "left") ? -(float)(Math.PI / 2) : (float)(Math.PI / 2));
+
+                StaticCoroutines.CoroutineHelper.RunOverX(0.6f, 10, t => {
+                    Entity.Rotation = start - (start - finish) * (t+1) / 10;
                 }, () => {
                     Entity.Rotation = finish;
+                    Planted = newPlanting;
                 });
-            }
 
-            Planted = newPlanting;
+                
+            }
         }
         #endregion
     }
