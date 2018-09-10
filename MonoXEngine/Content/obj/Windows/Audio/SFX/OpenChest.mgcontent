@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Audio/SFX/OpenChest.wav</SourceFile>
-  <SourceTime>2018-09-07T20:20:22.9672603+01:00</SourceTime>
-  <DestFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Content/bin/Windows/Audio/SFX/OpenChest.xnb</DestFile>
-  <DestTime>2018-09-07T20:22:39.4237225+01:00</DestTime>
+  <SourceFile>C:/Users/craig.dennis/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Audio/SFX/OpenChest.wav</SourceFile>
+  <SourceTime>2018-09-10T09:03:35.0633008+01:00</SourceTime>
+  <DestFile>C:/Users/craig.dennis/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Content/bin/Windows/Audio/SFX/OpenChest.xnb</DestFile>
+  <DestTime>2018-09-10T09:10:16.8098938+01:00</DestTime>
   <Importer>WavImporter</Importer>
   <ImporterTime>2017-03-01T15:05:36+00:00</ImporterTime>
   <Processor>SoundEffectProcessor</Processor>

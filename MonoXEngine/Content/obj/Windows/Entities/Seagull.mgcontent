@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Entities/Seagull.png</SourceFile>
-  <SourceTime>2018-09-07T20:20:22.9962867+01:00</SourceTime>
-  <DestFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Content/bin/Windows/Entities/Seagull.xnb</DestFile>
-  <DestTime>2018-09-07T20:22:38.2556528+01:00</DestTime>
+  <SourceFile>C:/Users/craig.dennis/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Entities/Seagull.png</SourceFile>
+  <SourceTime>2018-09-10T09:03:35.152299+01:00</SourceTime>
+  <DestFile>C:/Users/craig.dennis/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Content/bin/Windows/Entities/Seagull.xnb</DestFile>
+  <DestTime>2018-09-10T09:10:14.1430653+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T15:05:36+00:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

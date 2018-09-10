@@ -5,8 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
+using MonoXEngine;
+using MonoXEngine.EntityComponents;
 
-namespace MonoXEngine.EntityComponents
+namespace MyGame
 {
     public class Physics : EntityComponent
     {
@@ -95,16 +97,11 @@ namespace MonoXEngine.EntityComponents
                         this.Entity.Position.Y += (this.MoveY > 0) ? 1 : -1;
                 }
 
-                // Always check if colliding in center (This was added for trigger detection)
-                Collider.Colliding(new Point(0, 0), Entity.CollisionType.Trigger);
-
                 // Check if grounded or too deep in ground
                 this.IsGrounded = false;
                 if (Collider.Colliding(new Point(0, 1)) || (UsePlatforms && Collider.Colliding(new Point(0, 1), Entity.CollisionType.Platform) && !Collider.Colliding(new Point(0, 0), Entity.CollisionType.Platform)))
                     this.IsGrounded = true;
             }
         }
-
-
     }
 }

@@ -42,8 +42,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="MonoXEngine\EntityComponents\BaseCollider.cs" />
-    <Compile Include="MonoXEngine\EntityComponents\Physics.cs" />
-    <Compile Include="MonoXEngine\EntityComponents\PixelCollider.cs" />
+    <Compile Include="MyGame\Game\Physics.cs" />
+    <Compile Include="MyGame\Game\PixelCollider.cs" />
     <Compile Include="MonoXEngine\AudioController.cs" />
     <Compile Include="MonoXEngine\Camera.cs" />
     <Compile Include="MonoXEngine\DataSet.cs" />

@@ -202,6 +202,11 @@ namespace MugHeadXEngine.EntityComponents
                 if (!MovementEnabled || MovementMode == MovementModes.None)
                     return;
 
+                if (obj.Name == "Enemy")
+                {
+                    GameGlobal.Player.GetComponent<PlayerController>().Hurt(Convert.ToInt16(obj.Data["damage"]));
+                }
+
                 if (obj.Name == "InteractScript")
                 {
                     if (Global.InputManager.Pressed(InputManager.Input.Up))
@@ -266,10 +271,17 @@ namespace MugHeadXEngine.EntityComponents
                     });
                 }
 
+                // Entering water
                 if (obj.Name == "Water" && MovementMode == PlayerController.MovementModes.Normal && Entity.Position.Y + 2 > obj.Position.Y - obj.Size.Y / 2)
                 {
                     WaterLevel = obj.BoundingBox.Top;
                     MovementMode = PlayerController.MovementModes.Paddleing;
+                }
+
+                // Leaving water
+                if (obj.Name == "Water" && MovementMode == PlayerController.MovementModes.Paddleing && Entity.Position.Y + 2 < obj.Position.Y - obj.Size.Y / 2)
+                {
+                    MovementMode = PlayerController.MovementModes.Normal;
                 }
             };
 
@@ -284,7 +296,7 @@ namespace MugHeadXEngine.EntityComponents
                     MyGame.Scenes.Level.CameraController.ResetMinMax();
                 }
 
-                if (obj.Name == "Water")
+                if (obj.Name == "Water" && MovementMode == PlayerController.MovementModes.Paddleing)
                     MovementMode = PlayerController.MovementModes.Normal;
 
                 if(obj.Name == "Door" || obj.Name == "Chest" || obj.Name == "NPCChest")

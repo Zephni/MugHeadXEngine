@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MonoXEngine;
+using MonoXEngine.EntityComponents;
 
-namespace MonoXEngine.EntityComponents
+namespace MyGame
 {
     public class PixelCollider : BaseCollider 
     {
@@ -45,6 +46,34 @@ namespace MonoXEngine.EntityComponents
                 PrevCollidingTriggers.Add(item);
 
             CollidingTriggers = new List<Entity>();
+        }
+
+        public List<Entity> CollidingWith(Rectangle rect, Predicate<Entity> predicate)
+        {
+            List<Entity> collidingEntities = new List<Entity>();
+
+            Rectangle checkArea = new Rectangle(
+                (this.Entity.Position.ToPoint() + rect.Location),
+                rect.Size
+            );
+
+            List<Entity> possibleCollidingEntities = new List<Entity>();
+            foreach (Entity entity in Global.Entities.FindAll(e => e.LayerName == this.Entity.LayerName).FindAll(predicate))
+            {
+                if (entity == Entity || !entity.CheckPixels)
+                    continue;
+
+                if (checkArea.Intersects(entity.BoundingBox))
+                    possibleCollidingEntities.Add(entity);
+            }
+            
+            foreach(var item in possibleCollidingEntities)
+            {
+                if (IsOverlappingPixel(checkArea, new List<Entity>() { item }))
+                    collidingEntities.Add(item);
+            }                
+
+            return collidingEntities;
         }
 
         public override bool Colliding(Point offset, Entity.CollisionType CollisionType = Entity.CollisionType.Pixel)

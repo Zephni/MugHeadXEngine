@@ -37,9 +37,14 @@ namespace MyGame.Enemies
 
             // Build entity
             Entity = new Entity(entity => {
+                entity.Name = "Enemy";
                 entity.LayerName = "Main";
                 entity.Position = (entityInfo.Position * 16);
                 entity.Origin = new Vector2(0.5f, 1f);
+                entity.Collider = Entity.CollisionType.Pixel;
+                entity.Trigger = true;
+
+                entity.Data.Add("damage", Damage.ToString());
 
                 if (Planted == "top")
                 {
@@ -61,14 +66,6 @@ namespace MyGame.Enemies
 
                 entity.AddComponent(new PixelCollider()).Run<PixelCollider>(collider => { Collider = collider; });
             });
-
-            // Collides
-            Entity.CollidedWithTrigger = obj => {
-                if (obj.Name == "Player")
-                {
-                    GameGlobal.Player.GetComponent<PlayerController>().Hurt(Damage);
-                }
-            };
         }
         #endregion
 
