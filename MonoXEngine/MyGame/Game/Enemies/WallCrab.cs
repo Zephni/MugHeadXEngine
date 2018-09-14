@@ -13,6 +13,8 @@ namespace MyGame.Enemies
 {
     public class WallCrab : Enemy
     {
+        Entity TriggerCollider;
+
         #region Constructor
         public WallCrab(EntityInfo entityInfo) : base(entityInfo)
         {
@@ -35,16 +37,38 @@ namespace MyGame.Enemies
             if (data.HasKey("damage"))
                 Damage = data.GetInt("damage");
 
+            // Collider 
+            TriggerCollider = new Entity(entity => {
+                entity.Name = "Enemy";
+                entity.LayerName = "Main";
+                entity.Collider = Entity.CollisionType.Pixel;
+                entity.Trigger = true;
+                entity.Data.Add("damage", Damage.ToString());
+
+                entity.AddComponent(new Sprite()).Run<Sprite>(sprite => {
+                    sprite.BuildRectangle(new Point(10, 10), Color.Blue);
+                    sprite.Visible = false;
+                });
+
+                StaticCoroutines.CoroutineHelper.Always(() => {
+                    if(Planted == "top")
+                        entity.Position = Entity.Position + new Vector2(0, -8);
+                    else if (Planted == "left")
+                        entity.Position = Entity.Position + new Vector2(-8, 0);
+                    else if (Planted == "bottom")
+                        entity.Position = Entity.Position + new Vector2(0, 8);
+                    else if (Planted == "right")
+                        entity.Position = Entity.Position + new Vector2(8, 0);
+                });
+            });
+
             // Build entity
             Entity = new Entity(entity => {
-                entity.Name = "Enemy";
                 entity.LayerName = "Main";
                 entity.Position = (entityInfo.Position * 16);
                 entity.Origin = new Vector2(0.5f, 1f);
                 entity.Collider = Entity.CollisionType.Pixel;
                 entity.Trigger = true;
-
-                entity.Data.Add("damage", Damage.ToString());
 
                 if (Planted == "top")
                 {
@@ -58,13 +82,13 @@ namespace MyGame.Enemies
 
                 entity.AddComponent(new Sprite()).Run<Sprite>(sprite => {
                     Sprite = sprite;
-                    //sprite.BuildRectangle(new Point(24, 24), Color.White);
+
                     sprite.LoadTexture("Entities/Enemies/WallCrab");
                     sprite.AddAnimation(new Animation("walking", 0.2f, "24,16".ToPoint(), "0,0 1,0 2,0 3,0 4,0 5,0".ToPointList()));
                     sprite.RunAnimation("walking");
                 });
 
-                entity.AddComponent(new PixelCollider()).Run<PixelCollider>(collider => { Collider = collider; });
+                entity.AddComponent(new PixelCollider()).Run<PixelCollider>(pc => { Collider = pc; });
             });
         }
         #endregion

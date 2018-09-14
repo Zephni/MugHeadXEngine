@@ -63,6 +63,10 @@ namespace MyGame
                     float percent = (((difference - distance) * 100) / ((maxvolume) - distance)).Between(minvolume, maxvolume);
                     sfi.Volume = (percent / 100);
                 });
+
+                Global.SceneManager.CurrentScene.OnExit += () => {
+                    Global.AudioController.Stop("SFX/" + data.GetString("file"));
+                };
             }
             else if (entityInfo.Name == "InteractScript")
             {
