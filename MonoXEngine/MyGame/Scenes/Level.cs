@@ -20,6 +20,8 @@ namespace MyGame.Scenes
         // Objects
         public static CameraController CameraController;
 
+        public static RenderBlender RenderBlender;
+
         public float LevelTime = 0;
 
         // Debugging
@@ -86,6 +88,12 @@ namespace MyGame.Scenes
             GameGlobal.Player.AddComponent(new PlayerController(new PixelCollider()));
 
             Global.AudioController.MusicSetThisFrame = false;
+
+            // Temp
+            RenderBlender = new RenderBlender(
+                Color.Black * 0f,
+                new List<RenderBlender.DrawableTexture>(){}
+            );
 
             // Load level
             LevelLoader levelLoader = new LevelLoader();

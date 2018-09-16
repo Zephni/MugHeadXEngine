@@ -402,7 +402,7 @@ namespace MugHeadXEngine.EntityComponents
             }
             else
             {
-                MyGame.Scenes.Level.CameraController.Offset = new Vector2(0, 0);
+                //MyGame.Scenes.Level.CameraController.Offset = new Vector2(0, 0);
             }
 
             GameGlobal.PlayerGraphic.SpriteEffect = (Direction == 1) ? SpriteEffects.None : SpriteEffects.FlipHorizontally;

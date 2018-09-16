@@ -143,6 +143,11 @@ namespace MonoXEngine
             texture = new Texture2D(texture.GraphicsDevice, texture.Width, texture.Height);
         }
 
+        public static Vector2 Size(this Texture2D texture)
+        {
+            return new Vector2(texture.Width, texture.Height);
+        }
+
         public static Color[] To1DArray(this Texture2D texture)
         {
             Color[] colorsOne = new Color[texture.Width * texture.Height]; //The hard to read,1D array

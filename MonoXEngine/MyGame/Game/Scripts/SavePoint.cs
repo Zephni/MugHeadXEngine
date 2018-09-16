@@ -1,14 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoXEngine;
 using MonoXEngine.EntityComponents;
 using MugHeadXEngine;
 using MugHeadXEngine.EntityComponents;
+using MyGame.Scenes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XEditor;
+using static MyGame.RenderBlender;
 
 namespace MyGame
 {
@@ -46,6 +49,30 @@ namespace MyGame
                 if (obj.Name == "Player" && Global.InputManager.Pressed(InputManager.Input.Up))
                     Save(Entity.Position + new Vector2(0, -32));
             };
+
+            Level.RenderBlender.DrawableTextures.AddRange(new List<DrawableTexture>(){
+                new RenderBlender.DrawableTexture()
+                {
+                    Blend = RenderBlender.Multiply,
+                    Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
+                    Position = Entity.Position + new Vector2(16, -16),
+                    Color = Color.DeepSkyBlue * 0.6f,
+                    Update = item => {
+                        item.Scale = 0.6f + 0.04f * (float)Math.Sin(Global.GameTime.TotalGameTime.TotalMilliseconds / 300);
+                    }
+                },
+                new RenderBlender.DrawableTexture()
+                {
+                    Blend = RenderBlender.Subtract,
+                    Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
+                    Position = Entity.Position + new Vector2(16, -16),
+                    Color = Color.White * 0.8f,
+                    Update = item =>
+                    {
+                        item.Scale = 0.8f + 0.05f * (float)Math.Sin(Global.GameTime.TotalGameTime.TotalMilliseconds / 400);
+                    }
+                }
+            });
         }
 
         public void Save(Vector2 pos)

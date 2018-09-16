@@ -68,7 +68,7 @@ namespace MonoXEngine
 
             this.SpriteBatch.Begin(
                 SpriteSortMode.Deferred,
-                BlendState.NonPremultiplied,
+                BlendState.AlphaBlend,
                 this.SamplerState,
                 null,
                 null,

@@ -33,6 +33,38 @@ namespace MyGame
             {
                 GameGlobal.Player.Position = new Vector2(entityInfo.Position.X * 16, entityInfo.Position.Y * 16);
             }
+            else if (entityInfo.Name == "LightSource")
+            {
+                ZInterpreter data = new ZInterpreter(entityInfo.Data);
+
+                Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture()
+                {
+                    Position = (entityInfo.Position * 16) + new Vector2(22, -16),
+                    Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
+                    Blend = RenderBlender.Multiply,
+                    Color = Color.Orange * 0.13f,
+                    Update = item => {
+                        item.Scale = 0.6f + 0.05f * (float)Math.Sin(Global.GameTime.TotalGameTime.TotalMilliseconds / 30);
+                    }
+                });
+            }
+            else if (entityInfo.Name == "Lighting")
+            {
+                ZInterpreter data = new ZInterpreter(entityInfo.Data);
+
+                Level.RenderBlender.ClearColor = Color.Black * data.GetFloat("darkness");
+
+                Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture() {
+                    Blend = RenderBlender.Subtract,
+                    Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
+                    Color = Color.White * 0.5f,
+                    Scale = 1.1f,
+                    Update = item =>
+                    {
+                        item.Position = Global.Camera.Position;
+                    }
+                });
+            }
             else if (entityInfo.Name == "SavePoint")
             {
                 new SavePoint(entityInfo);
