@@ -9,6 +9,8 @@ namespace MonoXEngine.EntityComponents
     {
         public bool Visible = true;
 
+        public Color Color = Color.White;
+
         public SpriteEffects SpriteEffect = SpriteEffects.None;
 
         private Texture2D texture2D;
@@ -87,7 +89,7 @@ namespace MonoXEngine.EntityComponents
                     this.Texture2D,
                     new Rectangle(this.Entity.Position.ToPoint(), this.Entity.Size.ToPoint()),
                     this.SourceRectangle,
-                    Color.White * this.Entity.Opacity,
+                    Color * this.Entity.Opacity,
                     this.Entity.Rotation,
                     this.Entity.Origin * this.Entity.Size,
                     SpriteEffect,

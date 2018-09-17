@@ -159,7 +159,7 @@ namespace MyGame
                 StaticCoroutines.CoroutineHelper.Always(() => {
                     if (sfi.State == SoundState.Stopped)
                     {
-                        sfi = Global.AudioController.Play("SFX/Forest_Ambience");
+                        sfi = Global.AudioController.Play("SFX/"+ data.GetString("file"));
                         sfi.Volume = (data.HasKey("volume")) ? data.GetFloat("volume") : 1;
                     }
                 });
@@ -173,7 +173,16 @@ namespace MyGame
                 ZInterpreter data = new ZInterpreter(entityInfo.Data);
                 
                 float fadeTo = (data.HasKey("fadeTo")) ? data.GetFloat("fadeTo") : 1;
-                Global.AudioController.PlayMusic(data.GetString("file"), fadeTo);
+
+                if(Global.AudioController.CurrentMusicFile == null || Global.AudioController.CurrentMusicFile == "")
+                {
+                    Global.AudioController.PlayMusic(data.GetString("file"));
+                    Global.AudioController.CurrentMusicVolume = fadeTo;
+                }
+                else
+                {
+                    Global.AudioController.PlayMusic(data.GetString("file"), fadeTo);
+                }
             }
             else if (entityInfo.Name == "NPCChest")
             {
@@ -228,9 +237,9 @@ namespace MyGame
                     entity.Collider = Entity.CollisionType.Pixel;
                     entity.SortingLayer = 4;
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
-                    entity.Opacity = 0.8f;
+                    entity.Opacity = 0.2f;
                     entity.AddComponent(new Drawable()).Run<Drawable>(d => {
-                        d.BuildRectangle(new Point(entityInfo.Size.X * 16, entityInfo.Size.Y * 16), new Color(84, 113, 207));
+                        d.BuildRectangle(new Point(entityInfo.Size.X * 16, entityInfo.Size.Y * 16), new Color(0, 0, 0));
                     });
                 });
             }

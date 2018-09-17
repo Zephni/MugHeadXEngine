@@ -1,1 +1,1 @@
-Level:!:UnderCave;!;Player/Direction:!:-1;!;Levels/TheTree/Intro:!:True;!;EarthRock/First:!:2;!;Player/Position:!:765,246;!;SavePoint/First:!:1
+Level:!:UnderCave;!;Player/Direction:!:-1;!;Levels/TheTree/Intro:!:True;!;EarthRock/First:!:2;!;Player/Position:!:503,246;!;SavePoint/First:!:1

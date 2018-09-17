@@ -411,3 +411,15 @@
 /processorParam:TextureFormat=Color
 /build:Graphics/Effects/alphamask.png
 
+#begin Audio/SFX/FearWave.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SFX/FearWave.wav
+
+#begin Audio/SFX/EarthRockRumble.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SFX/EarthRockRumble.wav
+

@@ -47,6 +47,8 @@ namespace MonoXEngine
 
             StaticCoroutines.CoroutineHelper.RunWhen(() => instance.State == SoundState.Stopped, () => {
                 SoundEffectInstances[filename].Remove(instance);
+                if (SoundEffectInstances[filename].Count == 0)
+                    SoundEffectInstances.Remove(filename);
                 instance.Dispose();
             });
 

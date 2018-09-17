@@ -84,7 +84,7 @@
     <Compile Include="MyGame\Game\LevelLoader\LevelLoader.cs" />
     <Compile Include="MyGame\Game\LevelScripts\TheTree.cs" />
     <Compile Include="MyGame\Game\NPCScripts\NPCChest.cs" />
-    <Compile Include="MyGame\Game\NPCScripts\InfoRock.cs" />
+    <Compile Include="MyGame\Game\NPCScripts\EarthRock.cs" />
     <Compile Include="MyGame\Game\PlayerController.cs" />
     <Compile Include="MyGame\Game\Scripts\SavePoint.cs" />
     <Compile Include="MyGame\Game\ZInterpreter.cs" />
