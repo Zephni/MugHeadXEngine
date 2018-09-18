@@ -53,7 +53,7 @@ namespace MyGame
             Level.RenderBlender.DrawableTextures.AddRange(new List<DrawableTexture>(){
                 new RenderBlender.DrawableTexture()
                 {
-                    Blend = RenderBlender.Multiply,
+                    Blend = RenderBlender.Lighting,
                     Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
                     Position = Entity.Position + new Vector2(16, -16),
                     Color = Color.DeepSkyBlue * 0.6f,

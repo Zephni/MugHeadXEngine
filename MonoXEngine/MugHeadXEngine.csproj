@@ -88,7 +88,6 @@
     <Compile Include="MyGame\Game\PlayerController.cs" />
     <Compile Include="MyGame\Game\Scripts\SavePoint.cs" />
     <Compile Include="MyGame\Game\ZInterpreter.cs" />
-    <Compile Include="MyGame\Scenes\DebugScene.cs" />
     <Compile Include="MyGame\Scenes\Level.cs" />
     <Compile Include="MyGame\Scenes\Menu.cs" />
     <Compile Include="Program.cs" />

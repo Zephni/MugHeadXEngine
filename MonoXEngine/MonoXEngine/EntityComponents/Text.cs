@@ -23,7 +23,6 @@ namespace MonoXEngine.EntityComponents
             set { _text = value; this.Entity.TextureSize = this.SpriteFont.MeasureString(_text); }
         }
 
-        public Color Color = Color.GhostWhite;
         public float Opacity = 1;
         private SpriteFont SpriteFont = null;
 
@@ -35,6 +34,7 @@ namespace MonoXEngine.EntityComponents
 
         public Text()
         {
+            Color = Color.GhostWhite;
             this.SetSpriteFont();
         }
 

@@ -164,5 +164,31 @@ namespace MonoXEngine
 
             return (XIf(alias, 1, condition));
         }
+
+        public static T[,] Make2DArray<T>(T[] input, int height, int width)
+        {
+            T[,] output = new T[height, width];
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    output[i, j] = input[i * width + j];
+                }
+            }
+            return output;
+        }
+
+        public static T[] Make1DArray<T>(T[,] input)
+        {
+            int width = input.GetLength(0);
+
+            T[] output = new T[width * input.GetLength(1)];
+
+            for (int x = 0; x < input.GetLength(0); x++)
+                for (int y = 0; y < input.GetLength(1); y++)
+                    output[y * width + x] = input[x, y];
+
+            return output;
+        }
     }
 }

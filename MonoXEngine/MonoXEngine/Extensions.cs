@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MyGame;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -148,26 +149,10 @@ namespace MonoXEngine
             return new Vector2(texture.Width, texture.Height);
         }
 
-        public static Color[] To1DArray(this Texture2D texture)
-        {
-            Color[] colorsOne = new Color[texture.Width * texture.Height]; //The hard to read,1D array
-            texture.GetData(colorsOne); //Get the colors and add them to the array
-            return colorsOne;
-        }
-
-        public static void From1DArray(this Texture2D texture, Color[] colors1D)
-        {
-            texture.SetData(colors1D);
-        }
-
-        public static void ManipulateColors1D(this Texture2D texture, Func<Color[], Color[]> action)
-        {
-            texture.From1DArray(action(texture.To1DArray()));
-        }
-
         public static Color[,] To2DArray(this Texture2D texture)
         {
-            Color[] colorsOne = texture.To1DArray();
+            Color[] colorsOne = new Color[texture.Width * texture.Height];
+            texture.GetData(colorsOne);
 
             Color[,] colorsTwo = new Color[texture.Width, texture.Height]; //The new, easy to read 2D array
             for (int x = 0; x < texture.Width; x++) //Convert!
@@ -177,6 +162,7 @@ namespace MonoXEngine
             return colorsTwo; //Done!
         }
 
+        
         public static void From2DArray(this Texture2D texture, Color[,] colors2D)
         {
             Color[] colors1D = new Color[colors2D.Length];
@@ -187,9 +173,12 @@ namespace MonoXEngine
             texture.SetData(colors1D);
         }
 
-        public static void ManipulateColors2D(this Texture2D texture, Func<Color[,], Color[,]> action)
+        public static void ManipulateColorsRect1D(this Texture2D texture, Rectangle rectangle, Func<Color[], Color[]> action)
         {
-            texture.From2DArray(action(texture.To2DArray()));
+            Color[] array1D = new Color[rectangle.Width * rectangle.Height];
+            texture.GetData(0, rectangle, array1D, 0, array1D.Length);
+            Color[] newData = action(array1D);
+            texture.SetData(0, rectangle, newData, 0, newData.Length);
         }
         #endregion
     }

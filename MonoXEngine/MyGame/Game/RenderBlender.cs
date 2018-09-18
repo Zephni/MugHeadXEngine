@@ -12,11 +12,12 @@ namespace MyGame
 {
     public class RenderBlender
     {
-        public static BlendState Multiply = new BlendState
+        public static BlendState Lighting = new BlendState
         {
-            AlphaBlendFunction = BlendFunction.ReverseSubtract,
-            AlphaSourceBlend = Blend.One,
-            AlphaDestinationBlend = Blend.One,
+            ColorSourceBlend = Blend.One,
+            ColorDestinationBlend = Blend.One,
+            AlphaSourceBlend = Blend.Zero,
+            AlphaDestinationBlend = Blend.InverseSourceColor
         };
 
         public static BlendState Subtract = new BlendState
@@ -34,7 +35,7 @@ namespace MyGame
             public float Scale = 1;
             public Vector2 Size { get { return Texture.Size() * Scale; } }
             public Color Color = Color.White;
-            public BlendState Blend = Multiply;
+            public BlendState Blend = Lighting;
             public Action<DrawableTexture> Update = null;
         }
 
@@ -77,14 +78,17 @@ namespace MyGame
             Global.GraphicsDevice.SetRenderTarget(RenderTarget2D);
             Global.GraphicsDevice.Clear(ClearColor);
 
-            Global.GraphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
-
             // Draw textures
-            foreach(DrawableTexture item in DrawableTextures)
+            float i = 0;
+            foreach (DrawableTexture item in DrawableTextures)
             {
+                i += 0.1f;
                 item.Update?.Invoke(item);
 
-                SpriteBatch.Begin(blendState: item.Blend);
+                SpriteBatch.Begin(SpriteSortMode.Immediate, item.Blend,
+               SamplerState.PointClamp, DepthStencilState.Default,
+               RasterizerState.CullNone);
+
                 SpriteBatch.Draw(
                     item.Texture,
                     (item.Position - Position) + (item.Texture.Size() / 2 * (1 - item.Scale)),
@@ -94,7 +98,7 @@ namespace MyGame
                     Vector2.Zero,
                     item.Scale,
                     SpriteEffects.None,
-                    0
+                    i
                 );
                 SpriteBatch.End();
             }

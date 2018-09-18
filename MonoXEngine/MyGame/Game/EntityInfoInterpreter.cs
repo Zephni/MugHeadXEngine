@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using XEditor;
+using StaticCoroutines;
 
 namespace MyGame
 {
@@ -37,16 +38,32 @@ namespace MyGame
             {
                 ZInterpreter data = new ZInterpreter(entityInfo.Data);
 
-                Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture()
+                if (!data.HasKey("type") || data.GetInt("type") == 1)
                 {
-                    Position = (entityInfo.Position * 16) + new Vector2(22, -16),
-                    Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
-                    Blend = RenderBlender.Multiply,
-                    Color = Color.Orange * 0.13f,
-                    Update = item => {
-                        item.Scale = 0.6f + 0.05f * (float)Math.Sin(Global.GameTime.TotalGameTime.TotalMilliseconds / 30);
-                    }
-                });
+                    Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture()
+                    {
+                        Position = (entityInfo.Position * 16) + new Vector2(22, -16),
+                        Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
+                        Blend = RenderBlender.Lighting,
+                        Color = Color.Orange * 0.13f,
+                        Update = item => {
+                            item.Scale = 0.6f + 0.05f * (float)Math.Sin(Global.GameTime.TotalGameTime.TotalMilliseconds / 30);
+                        }
+                    });
+                }
+                else if (data.GetInt("type") == 2)
+                {
+                    Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture()
+                    {
+                        Position = (entityInfo.Position * 16) + new Vector2(12, -24),
+                        Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
+                        Blend = RenderBlender.Lighting,
+                        Color = Color.Blue * 0.13f,
+                        Update = item => {
+                            item.Scale = 0.4f + 0.03f * (float)Math.Sin(Global.GameTime.TotalGameTime.TotalMilliseconds / 600);
+                        }
+                    });
+                }
             }
             else if (entityInfo.Name == "Lighting")
             {
@@ -54,7 +71,7 @@ namespace MyGame
 
                 Level.RenderBlender.ClearColor = Color.Black * data.GetFloat("darkness");
 
-                Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture() {
+                /*Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture() {
                     Blend = RenderBlender.Subtract,
                     Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
                     Color = Color.White * 0.5f,
@@ -63,7 +80,7 @@ namespace MyGame
                     {
                         item.Position = Global.Camera.Position;
                     }
-                });
+                });*/
             }
             else if (entityInfo.Name == "SavePoint")
             {
@@ -87,7 +104,7 @@ namespace MyGame
 
                 SoundEffectInstance sfi = Global.AudioController.Play("SFX/"+ data.GetString("file"));
                 sfi.Volume = 0;
-                StaticCoroutines.CoroutineHelper.Always(() => {
+                CoroutineHelper.Always(() => {
                     if (Global.RunWhenEventLoops("ReplaySFX_"+data.GetString("file"), sfi == null || sfi.State != SoundState.Playing))
                         sfi = Global.AudioController.Play("SFX/" + data.GetString("file"));
                     
@@ -121,7 +138,7 @@ namespace MyGame
 
                     if (data.HasKey("autoscript"))
                     {
-                        StaticCoroutines.CoroutineHelper.WaitRun(0.1f, () => {
+                        CoroutineHelper.WaitRun(0.1f, () => {
                             string[] script = data.GetString("autoscript").Split('.');
                             Type type = Type.GetType("MyGame." + script[0]);
                             MethodInfo mi = type.GetMethod(script[1], BindingFlags.Static | BindingFlags.Public);
@@ -156,7 +173,7 @@ namespace MyGame
                 
                 SoundEffectInstance sfi = Global.AudioController.Play("SFX/"+data.GetString("file"));
                 sfi.Volume = (data.HasKey("volume")) ? data.GetFloat("volume") : 1;
-                StaticCoroutines.CoroutineHelper.Always(() => {
+                CoroutineHelper.Always(() => {
                     if (sfi.State == SoundState.Stopped)
                     {
                         sfi = Global.AudioController.Play("SFX/"+ data.GetString("file"));
@@ -240,6 +257,33 @@ namespace MyGame
                     entity.Opacity = 0.2f;
                     entity.AddComponent(new Drawable()).Run<Drawable>(d => {
                         d.BuildRectangle(new Point(entityInfo.Size.X * 16, entityInfo.Size.Y * 16), new Color(0, 0, 0));
+
+                        /* Animate water */
+                        int offset = 0;
+                        Color[] colors = new Color[6];
+                        for(int i = 0; i < colors.Length; i++)
+                            colors[i] = (i % 6 >= 3) ? Color.GhostWhite : Color.GhostWhite * 0.4f;
+
+                        int offsetPrev = 0;
+                        CoroutineHelper.Always(() => {
+                            offset = 6 + (int)(Math.Sin(Global.GameTime.TotalGameTime.TotalMilliseconds / 330) * 3);
+
+                            if(offset != offsetPrev)
+                            {
+                                offsetPrev = offset;
+                                d.Texture2D.ManipulateColorsRect1D(new Rectangle(0, 0, d.Texture2D.Width, 2), colors1D => {
+                                    int width = d.Texture2D.Width;
+                                    for (int x = 0; x < width; x++)
+                                    {
+                                        colors1D[0 * width + x] = colors[(x + offset).Wrap(0, colors.Length - 1)];
+                                        colors1D[1 * width + x] = colors[(-x + offset / 2).Wrap(0, colors.Length - 1)] * 0.6f;
+                                    }
+
+                                    return colors1D;
+                                });
+                            }
+                        });
+                        /* /Animate water */
                     });
                 });
             }
