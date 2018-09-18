@@ -26,7 +26,7 @@ namespace MyGame
         public static void InitialiseAssets()
         {
             CoroutineHelper.Always(() => {
-                TimeLoop = MathHelper.WrapAngle(TimeLoop + Global.DeltaTime);
+                TimeLoop = (TimeLoop + Global.DeltaTime).Between(0, (float)Math.PI * 360);
             });
 
             // Fader

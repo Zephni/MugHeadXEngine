@@ -3,13 +3,14 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoXEngine;
 using MonoXEngine.EntityComponents;
+using MyGame;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MugHeadXEngine
+namespace MyGame
 {
     public class MessageBox
     {
@@ -81,7 +82,7 @@ namespace MugHeadXEngine
                 entity.Origin = Vector2.Zero;
                 entity.Position = new Vector2(TextObject.Position.X - Padding.X, (TextObject.Position.Y - Padding.Y) + 1);
                 entity.AddComponent(new Drawable() {
-                    Texture2D = MugHeadXEngine.Engine.RoundedRect(Global.Content.Load<Texture2D>("Defaults/9Patch_8"),
+                    Texture2D = GameMethods.RoundedRect(Global.Content.Load<Texture2D>("Defaults/9Patch_8"),
                     new Point(TextObject.BoundingBox.Width + (Padding.X * 2) + ((ThisType == Type.PressToProgress) ? 8 : 0), TextObject.BoundingBox.Height + Padding.Y * 2))
                 });
             });

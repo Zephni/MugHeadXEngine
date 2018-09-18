@@ -38,41 +38,48 @@ namespace MyGame
             {
                 ZInterpreter data = new ZInterpreter(entityInfo.Data);
 
-                if (!data.HasKey("type") || data.GetInt("type") == 1)
+                // Pre set light sources
+                if(data.HasKey("type"))
                 {
-                    Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture()
+                    if (data.GetString("type") == "OrangeTorch")
                     {
-                        Position = (entityInfo.Position * 16),
-                        Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask2"),
-                        Blend = RenderBlender.Subtract,
-                        Color = Color.White,
-                        Update = item => {
-                            item.Scale = 1.8f;
-                        }
-                    });
-                    Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture()
+                        Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture("alphamask2")
+                        {
+                            Position = (entityInfo.Position * 16),
+                            Blend = RenderBlender.Subtract,
+                            Update = item => { item.Scale = 1.8f; }
+                        });
+                        Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture("alphamask")
+                        {
+                            Position = (entityInfo.Position * 16),
+                            Color = Color.Orange * 0.2f,
+                            Update = item => { item.Scale = 0.6f + 0.05f * (float)Math.Sin(GameGlobal.TimeLoop * 5); }
+                        });
+                    }
+                    else if (data.GetString("type") == "BlueMushroom")
                     {
-                        Position = (entityInfo.Position * 16),
-                        Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
-                        Blend = RenderBlender.Lighting,
-                        Color = Color.Orange * 0.2f,
-                        Update = item => {
-                            item.Scale = 0.6f + 0.05f * (float)Math.Sin(GameGlobal.TimeLoop * 5);
-                        }
-                    });
+                        Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture("alphamask2"){
+                            Position = (entityInfo.Position * 16),
+                            Blend = RenderBlender.Subtract,
+                            Update = item => { item.Scale = 1f; }
+                        });
+                        Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture("alphamask"){
+                            Position = (entityInfo.Position * 16),
+                            Color = Color.Blue * 0.4f,
+                            Layer = 1,
+                            Update = item => { item.Scale = 0.4f + 0.03f * (float)Math.Sin(GameGlobal.TimeLoop * 5); }
+                        });
+                    }
                 }
-                else if (data.GetInt("type") == 2)
+                // Custom light sources
+                else
                 {
-                    Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture()
-                    {
-                        Position = (entityInfo.Position * 16),
-                        Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
-                        Blend = RenderBlender.Lighting,
-                        Color = Color.Blue * 0.2f,
-                        Layer = 1,
-                        Update = item => {
-                            item.Scale = 0.4f + 0.03f * (float)Math.Sin(GameGlobal.TimeLoop * 5);
-                        }
+                    Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture(data.GetString("texture") != "" ? data.GetString("texture"): "White"){
+                        Position = (entityInfo.Position * 16) + data.GetPointArr("offset")[0].ToVector2(),
+                        Blend = (data.GetString("blendstate") == "Subtract") ? RenderBlender.Subtract : RenderBlender.Lighting,
+                        Color = GameMethods.GetProperty<Color>(data.GetString("color")),
+                        Scale = data.GetFloat("scale"),
+                        Layer = data.GetInt("layer")
                     });
                 }
             }
@@ -81,17 +88,6 @@ namespace MyGame
                 ZInterpreter data = new ZInterpreter(entityInfo.Data);
 
                 Level.RenderBlender.ClearColor = Color.Black * data.GetFloat("darkness");
-
-                /*Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture() {
-                    Blend = RenderBlender.Subtract,
-                    Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
-                    Color = Color.White * 0.5f,
-                    Scale = 1.1f,
-                    Update = item =>
-                    {
-                        item.Position = Global.Camera.Position;
-                    }
-                });*/
             }
             else if (entityInfo.Name == "SavePoint")
             {

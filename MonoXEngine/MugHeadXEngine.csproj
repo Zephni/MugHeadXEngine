@@ -57,7 +57,7 @@
     <Compile Include="MonoXEngine\Extensions.cs" />
     <Compile Include="MonoXEngine\Global.cs" />
     <Compile Include="MonoXEngine\MonoXEngineGame.cs" />
-    <Compile Include="MugHeadXEngine\Components\PlatformerController.cs" />
+    <Compile Include="MyGame\Game\Components\PlatformerController.cs" />
     <Compile Include="MonoXEngine\Cloner.cs" />
     <Compile Include="MonoXEngine\Structs\Animation.cs" />
     <Compile Include="MonoXEngine\ViewportTexture.cs" />
@@ -68,10 +68,9 @@
     <Compile Include="MonoXEngine\Structs\Tile.cs" />
     <Compile Include="MonoXEngine\TileMap.cs" />
     <Compile Include="MonoXEngine\InputManager.cs" />
-    <Compile Include="MugHeadXEngine\Engine.cs" />
-    <Compile Include="MugHeadXEngine\GameData.cs" />
-    <Compile Include="MugHeadXEngine\MessageBox.cs" />
-    <Compile Include="MugHeadXEngine\OptionSelector.cs" />
+    <Compile Include="MyGame\Game\GameData.cs" />
+    <Compile Include="MyGame\Game\MessageBox.cs" />
+    <Compile Include="MyGame\Game\OptionSelector.cs" />
     <Compile Include="MyGame\Game\CameraController.cs" />
     <Compile Include="MyGame\Game\Enemies\Template.cs" />
     <Compile Include="MyGame\Game\Enemies\WallCrab.cs" />

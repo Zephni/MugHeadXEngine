@@ -30,6 +30,12 @@ namespace MyGame
 
         public class DrawableTexture
         {
+            public DrawableTexture(string effect = null)
+            {
+                if (effect != null)
+                    Texture = Global.Content.Load<Texture2D>("Graphics/Effects/"+effect);
+            }
+
             public Texture2D Texture;
             public Vector2 Position = Vector2.Zero;
             public int Layer = 0;
@@ -86,7 +92,7 @@ namespace MyGame
             {
                 item.Update?.Invoke(item);
 
-                SpriteBatch.Begin(SpriteSortMode.Immediate, item.Blend);
+                SpriteBatch.Begin(blendState: item.Blend);
 
                 SpriteBatch.Draw(
                     item.Texture,

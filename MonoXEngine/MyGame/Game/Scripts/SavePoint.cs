@@ -51,56 +51,38 @@ namespace MyGame
             };
 
             Level.RenderBlender.DrawableTextures.AddRange(new List<DrawableTexture>(){
-                new RenderBlender.DrawableTexture()
-                {
+                new RenderBlender.DrawableTexture("alphamask2"){
                     Blend = RenderBlender.Subtract,
-                    Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
                     Position = Entity.Position + new Vector2(8),
                     Color = Color.White,
-                    Update = item => {
-                        item.Scale = 2f + 0.06f * (float)Math.Sin(GameGlobal.TimeLoop * 2);
-                    }
+                    Update = item => {item.Scale = 2f + 0.06f * (float)Math.Sin(GameGlobal.TimeLoop * 2);}
                 }
             });
 
             Level.RenderBlender.DrawableTextures.AddRange(new List<DrawableTexture>(){
-                new RenderBlender.DrawableTexture()
-                {
-                    Blend = RenderBlender.Lighting,
-                    Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
+                new RenderBlender.DrawableTexture("alphamask"){
                     Position = Entity.Position + new Vector2(8),
                     Color = Color.DeepSkyBlue * 0.6f,
-                    Update = item => {
-                        item.Scale = 1.2f + 0.06f * (float)Math.Sin(GameGlobal.TimeLoop * 2);
-                    }
+                    Update = item => {item.Scale = 1.2f + 0.06f * (float)Math.Sin(GameGlobal.TimeLoop * 2);}
                 }
             });
 
             // Circle bits
             Vector2 origin = (entityInfo.Position * 16) + new Vector2(8);
-            Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture()
-            {
-                Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask2"),
-                Blend = RenderBlender.Lighting,
-                Color = Color.AliceBlue * 0.8f,
-                Update = item => {
-                    item.Scale = 0.05f + 0.02f * (float)Math.Sin(GameGlobal.TimeLoop * 3);
-                    item.Position.X = origin.X + (float)Math.Cos(MathHelper.WrapAngle(GameGlobal.TimeLoop * 5)) * 18;
-                    item.Position.Y = origin.Y + (float)Math.Sin(GameGlobal.TimeLoop * 5) * 18;
-                }
-            });
 
-            Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture()
+            for(int I = 0; I < 7; I++)
             {
-                Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask2"),
-                Blend = RenderBlender.Lighting,
-                Color = Color.AliceBlue * 0.8f,
-                Update = item => {
-                    item.Scale = 0.05f + 0.02f * (float)Math.Sin(-GameGlobal.TimeLoop * 1);
-                    item.Position.X = origin.X - (float)Math.Cos(-GameGlobal.TimeLoop * 4) * 18;
-                    item.Position.Y = origin.Y - (float)Math.Sin(-GameGlobal.TimeLoop * 4) * 18;
-                }
-            });
+                float rand = GameMethods.Random(1, 2);
+                if (rand >= 1.5f) rand = -rand;
+                Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture("alphamask2") {
+                    Color = Color.AliceBlue * 0.6f,
+                    Update = item => {
+                        item.Scale = 0.03f * rand + 0.02f * (float)Math.Sin(GameGlobal.TimeLoop * rand);
+                        item.Position.X = origin.X + (float)Math.Cos(MathHelper.WrapAngle(GameGlobal.TimeLoop * 0.4f * rand)) * 12 * rand;
+                        item.Position.Y = origin.Y + (float)Math.Sin(GameGlobal.TimeLoop * 0.7f * rand) * 12 * rand;
+                    }
+                });
+            }
         }
 
         public void Save(Vector2 pos)

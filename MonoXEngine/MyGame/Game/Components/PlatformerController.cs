@@ -1,15 +1,7 @@
-﻿using Microsoft.Xna.Framework.Input;
-using MonoXEngine;
+﻿using MonoXEngine;
 using MonoXEngine.EntityComponents;
-using MyGame;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MugHeadXEngine.EntityComponents
+namespace MyGame
 {
     public class PlatformerController : Physics
     {

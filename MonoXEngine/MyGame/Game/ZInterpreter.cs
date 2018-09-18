@@ -30,16 +30,25 @@ namespace MyGame
 
         public string GetString(string key)
         {
+            if (!HasKey(key))
+                return default(string);
+
             return Data[key];
         }
 
         public int GetInt(string key)
         {
+            if (!HasKey(key))
+                return default(int);
+
             return Convert.ToInt16(Data[key]);
         }
 
         public float GetFloat(string key)
         {
+            if (!HasKey(key))
+                return default(float);
+
             return (float)Convert.ToDouble(Data[key]);
         }
 

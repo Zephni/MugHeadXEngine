@@ -3,13 +3,14 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoXEngine;
 using MonoXEngine.EntityComponents;
 using MugHeadXEngine.EntityComponents;
+using MyGame;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MugHeadXEngine
+namespace MyGame
 {
     public class Option
     {
@@ -106,7 +107,7 @@ namespace MugHeadXEngine
                 if (texture9Patch != null)
                 {
                     entity.AddComponent(new Drawable() {
-                        Texture2D = Engine.RoundedRect(Global.Content.Load<Texture2D>(texture9Patch),
+                        Texture2D = GameMethods.RoundedRect(Global.Content.Load<Texture2D>(texture9Patch),
                         new Point((int)w + (int)(Padding.X *1.5f) + (int)SelectorSize.X, (int)h + Padding.Y))
                     });
                 }
