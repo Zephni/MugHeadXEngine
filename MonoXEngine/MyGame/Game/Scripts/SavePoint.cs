@@ -55,22 +55,37 @@ namespace MyGame
                 {
                     Blend = RenderBlender.Lighting,
                     Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
-                    Position = Entity.Position + new Vector2(16, -16),
+                    Position = Entity.Position + new Vector2(8),
                     Color = Color.DeepSkyBlue * 0.6f,
                     Update = item => {
-                        item.Scale = 0.6f + 0.04f * (float)Math.Sin(Global.GameTime.TotalGameTime.TotalMilliseconds / 300);
+                        item.Scale = 1.2f + 0.04f * (float)Math.Sin(Global.GameTime.TotalGameTime.TotalMilliseconds / 300);
                     }
-                },
-                new RenderBlender.DrawableTexture()
-                {
-                    Blend = RenderBlender.Subtract,
-                    Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
-                    Position = Entity.Position + new Vector2(16, -16),
-                    Color = Color.White * 0.8f,
-                    Update = item =>
-                    {
-                        item.Scale = 0.8f + 0.05f * (float)Math.Sin(Global.GameTime.TotalGameTime.TotalMilliseconds / 400);
-                    }
+                }
+            });
+
+            // Circle bits
+            Vector2 origin = (entityInfo.Position * 16) + new Vector2(8);
+            Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture()
+            {
+                Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask2"),
+                Blend = RenderBlender.Lighting,
+                Color = Color.AliceBlue * 0.8f,
+                Update = item => {
+                    item.Scale = 0.05f + 0.02f * (float)Math.Sin(Global.GameTime.TotalGameTime.TotalMilliseconds / 500);
+                    item.Position.X = origin.X + (float)Math.Cos(MathHelper.WrapAngle((float)Global.GameTime.TotalGameTime.TotalMilliseconds / 500)) * 18;
+                    item.Position.Y = origin.Y + (float)Math.Sin((float)Global.GameTime.TotalGameTime.TotalMilliseconds / 500) * 18;
+                }
+            });
+
+            Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture()
+            {
+                Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask2"),
+                Blend = RenderBlender.Lighting,
+                Color = Color.AliceBlue * 0.8f,
+                Update = item => {
+                    item.Scale = 0.05f + 0.02f * (float)Math.Sin(-Global.GameTime.TotalGameTime.TotalMilliseconds / 500);
+                    item.Position.X = origin.X - (float)Math.Cos(-MathHelper.WrapAngle((float)Global.GameTime.TotalGameTime.TotalMilliseconds / 300)) * 18;
+                    item.Position.Y = origin.Y - (float)Math.Sin(-Global.GameTime.TotalGameTime.TotalMilliseconds / 300) * 18;
                 }
             });
         }

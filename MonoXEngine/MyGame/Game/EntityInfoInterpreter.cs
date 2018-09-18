@@ -42,10 +42,20 @@ namespace MyGame
                 {
                     Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture()
                     {
-                        Position = (entityInfo.Position * 16) + new Vector2(22, -16),
+                        Position = (entityInfo.Position * 16),
+                        Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask2"),
+                        Blend = RenderBlender.Subtract,
+                        Color = Color.White,
+                        Update = item => {
+                            item.Scale = 1.8f;
+                        }
+                    });
+                    Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture()
+                    {
+                        Position = (entityInfo.Position * 16),
                         Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
                         Blend = RenderBlender.Lighting,
-                        Color = Color.Orange * 0.13f,
+                        Color = Color.Orange * 0.2f,
                         Update = item => {
                             item.Scale = 0.6f + 0.05f * (float)Math.Sin(Global.GameTime.TotalGameTime.TotalMilliseconds / 30);
                         }
@@ -55,10 +65,11 @@ namespace MyGame
                 {
                     Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture()
                     {
-                        Position = (entityInfo.Position * 16) + new Vector2(12, -24),
+                        Position = (entityInfo.Position * 16),
                         Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
                         Blend = RenderBlender.Lighting,
-                        Color = Color.Blue * 0.13f,
+                        Color = Color.Blue * 0.2f,
+                        Layer = 1,
                         Update = item => {
                             item.Scale = 0.4f + 0.03f * (float)Math.Sin(Global.GameTime.TotalGameTime.TotalMilliseconds / 600);
                         }
@@ -253,20 +264,20 @@ namespace MyGame
                     entity.Trigger = true;
                     entity.Collider = Entity.CollisionType.Pixel;
                     entity.SortingLayer = 4;
+                    entity.Opacity = 0.5f;
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
-                    entity.Opacity = 0.2f;
                     entity.AddComponent(new Drawable()).Run<Drawable>(d => {
-                        d.BuildRectangle(new Point(entityInfo.Size.X * 16, entityInfo.Size.Y * 16), new Color(0, 0, 0));
+                        d.BuildRectangle(new Point(entityInfo.Size.X * 16, entityInfo.Size.Y * 16), new Color(0, 0, 0, 0.4f));
 
                         /* Animate water */
                         int offset = 0;
                         Color[] colors = new Color[6];
-                        for(int i = 0; i < colors.Length; i++)
-                            colors[i] = (i % 6 >= 3) ? Color.GhostWhite : Color.GhostWhite * 0.4f;
+                        for (int i = 0; i < colors.Length; i++)
+                            colors[i] = (i % 6 >= 3) ? Color.AliceBlue * 0.6f : Color.AliceBlue * 0.1f;
 
                         int offsetPrev = 0;
                         CoroutineHelper.Always(() => {
-                            offset = 6 + (int)(Math.Sin(Global.GameTime.TotalGameTime.TotalMilliseconds / 330) * 3);
+                            offset = 6 + (int)(Math.Sin(Global.GameTime.TotalGameTime.TotalMilliseconds / 500) * 3);
 
                             if(offset != offsetPrev)
                             {
@@ -276,7 +287,7 @@ namespace MyGame
                                     for (int x = 0; x < width; x++)
                                     {
                                         colors1D[0 * width + x] = colors[(x + offset).Wrap(0, colors.Length - 1)];
-                                        colors1D[1 * width + x] = colors[(-x + offset / 2).Wrap(0, colors.Length - 1)] * 0.6f;
+                                        colors1D[1 * width + x] = colors[(2 - x + offset / 2).Wrap(0, colors.Length - 1)] * 0.4f;
                                     }
 
                                     return colors1D;

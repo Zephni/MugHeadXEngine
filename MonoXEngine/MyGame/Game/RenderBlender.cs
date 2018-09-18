@@ -32,7 +32,9 @@ namespace MyGame
         {
             public Texture2D Texture;
             public Vector2 Position = Vector2.Zero;
-            public float Scale = 1;
+            public int Layer = 0;
+            private Vector2 scale = Vector2.One;
+            public float Scale { get => scale.X; set => scale = new Vector2(value, value); }
             public Vector2 Size { get { return Texture.Size() * Scale; } }
             public Color Color = Color.White;
             public BlendState Blend = Lighting;
@@ -63,9 +65,10 @@ namespace MyGame
             Entity = new Entity(entity => {
                 entity.LayerName = "Main";
                 entity.SortingLayer = 10;
+                entity.Origin = Vector2.Zero;
                 entity.AddComponent(new Sprite()).Run<Sprite>(sprite => {
                     StaticCoroutines.CoroutineHelper.Always(() => {
-                        Position = Global.Camera.Position;
+                        Position = Global.Camera.Position - (RenderTarget2D.Size() / 2) - new Vector2(2, 2);
                         UpdateRenderTarget();
                         sprite.Texture2D = RenderTarget2D;
                     });
@@ -79,27 +82,24 @@ namespace MyGame
             Global.GraphicsDevice.Clear(ClearColor);
 
             // Draw textures
-            float i = 0;
             foreach (DrawableTexture item in DrawableTextures)
             {
-                i += 0.1f;
                 item.Update?.Invoke(item);
 
-                SpriteBatch.Begin(SpriteSortMode.Immediate, item.Blend,
-               SamplerState.PointClamp, DepthStencilState.Default,
-               RasterizerState.CullNone);
+                SpriteBatch.Begin(SpriteSortMode.Immediate, item.Blend);
 
                 SpriteBatch.Draw(
                     item.Texture,
-                    (item.Position - Position) + (item.Texture.Size() / 2 * (1 - item.Scale)),
+                    // Add 8 to center tile, and 2 for added rendertexture size (which is +4), this gets a total of 10
+                    new Rectangle((item.Position.ToPoint()) - Position.ToPoint() + new Point(10, 10), item.Size.ToPoint()),
                     null,
                     item.Color,
                     0,
-                    Vector2.Zero,
-                    item.Scale,
+                    item.Texture.Size() / 2,
                     SpriteEffects.None,
-                    i
+                    item.Layer
                 );
+
                 SpriteBatch.End();
             }
 

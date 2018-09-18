@@ -323,9 +323,9 @@ namespace MugHeadXEngine.EntityComponents
                             waterSplash.LayerName = "Main";
                             waterSplash.SortingLayer = GameGlobal.PlayerGraphicEntity.SortingLayer + 1;
                             waterSplash.Position = new Vector2(GameGlobal.PlayerGraphicEntity.Position.X, WaterLevel - 16);
-                            waterSplash.Opacity = 0.2f;
+                            waterSplash.Opacity = 0.4f;
                             waterSplash.AddComponent(new Sprite()).Run<Sprite>(c => {
-                                c.Color = Color.DarkGray;
+                                c.Color = Color.AliceBlue;
                                 c.LoadTexture("Graphics/Splash");
                                 c.AddAnimation(new Animation("Splash", 0.1f, new Point(32, 32), "0,0 1,0 2,0 3,0 4,0 5,0".ToPointList()));
                                 c.RunAnimation("Splash", false, () => {
@@ -358,10 +358,10 @@ namespace MugHeadXEngine.EntityComponents
                         waterSplash.LayerName = "Main";
                         waterSplash.SortingLayer = GameGlobal.PlayerGraphicEntity.SortingLayer + 1;
                         waterSplash.Position = new Vector2(GameGlobal.PlayerGraphicEntity.Position.X, WaterLevel-16);
-                        waterSplash.Opacity = 0.2f;
+                        waterSplash.Opacity = 0.4f;
                         waterSplash.AddComponent(new Sprite()).Run<Sprite>(c => {
                             c.LoadTexture("Graphics/Splash");
-                            c.Color = Color.DarkGray;
+                            c.Color = Color.AliceBlue;
                             c.AddAnimation(new Animation("Splash", 0.1f, new Point(32, 32), "0,0 1,0 2,0 3,0 4,0 5,0".ToPointList()));
                             c.RunAnimation("Splash", false, () => {
                                 waterSplash.Destroy();

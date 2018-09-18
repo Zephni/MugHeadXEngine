@@ -40,9 +40,6 @@
     <Foreground>
       <SamplerState>LinearWrap</SamplerState>
     </Foreground>
-    <Overlay>
-      <Matrix>Camera</Matrix>
-    </Overlay>
     <Fade></Fade>
   </Layers>
 
