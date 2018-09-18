@@ -65,9 +65,9 @@ namespace MyGame
                         });
                         Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture("alphamask"){
                             Position = (entityInfo.Position * 16),
-                            Color = Color.Blue * 0.4f,
+                            Color = Color.DeepSkyBlue * 0.2f,
                             Layer = 1,
-                            Update = item => { item.Scale = 0.4f + 0.03f * (float)Math.Sin(GameGlobal.TimeLoop * 5); }
+                            Update = item => { item.Scale = 0.6f + 0.03f * (float)Math.Sin(GameGlobal.TimeLoop * 3); }
                         });
                     }
                 }
@@ -384,14 +384,14 @@ namespace MyGame
             }
             else if (entityInfo.Name == "Graphic")
             {
+                ZInterpreter data = new ZInterpreter(entityInfo.Data);
+
                 new Entity(entity => {
                     entity.Name = "Graphic";
                     entity.LayerName = "Main";
-                    entity.SortingLayer = 2;
+                    entity.SortingLayer = (data.HasKey("sortinglayer")) ? data.GetInt("sortinglayer") : 2;
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
-
-                    ZInterpreter data = new ZInterpreter(entityInfo.Data);
-
+                    
                     if(data.HasKey("id"))
                         entity.ID = data.GetString("id");
 

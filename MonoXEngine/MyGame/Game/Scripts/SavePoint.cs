@@ -62,8 +62,8 @@ namespace MyGame
             Level.RenderBlender.DrawableTextures.AddRange(new List<DrawableTexture>(){
                 new RenderBlender.DrawableTexture("alphamask"){
                     Position = Entity.Position + new Vector2(8),
-                    Color = Color.DeepSkyBlue * 0.6f,
-                    Update = item => {item.Scale = 1.2f + 0.06f * (float)Math.Sin(GameGlobal.TimeLoop * 2);}
+                    Color = Color.DeepSkyBlue * 0.4f,
+                    Update = item => {item.Scale = 1.2f + 0.1f * (float)Math.Sin(GameGlobal.TimeLoop * 2);}
                 }
             });
 
