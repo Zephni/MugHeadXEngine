@@ -19,10 +19,16 @@ namespace MyGame
         public static Entity PlayerGraphicEntity;
         public static Sprite PlayerGraphic { get { return GameGlobal.PlayerGraphicEntity.GetComponent<Sprite>(); } }
 
+        public static float TimeLoop = 0;
+
         public static bool DisableInteraction = false;
 
         public static void InitialiseAssets()
         {
+            CoroutineHelper.Always(() => {
+                TimeLoop = MathHelper.WrapAngle(TimeLoop + Global.DeltaTime);
+            });
+
             // Fader
             Fader = new Entity(entity => {
                 entity.LayerName = "Fade";

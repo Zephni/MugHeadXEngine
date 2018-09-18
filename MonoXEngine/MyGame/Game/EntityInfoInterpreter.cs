@@ -57,7 +57,7 @@ namespace MyGame
                         Blend = RenderBlender.Lighting,
                         Color = Color.Orange * 0.2f,
                         Update = item => {
-                            item.Scale = 0.6f + 0.05f * (float)Math.Sin(Global.GameTime.TotalGameTime.TotalMilliseconds / 30);
+                            item.Scale = 0.6f + 0.05f * (float)Math.Sin(GameGlobal.TimeLoop * 5);
                         }
                     });
                 }
@@ -71,7 +71,7 @@ namespace MyGame
                         Color = Color.Blue * 0.2f,
                         Layer = 1,
                         Update = item => {
-                            item.Scale = 0.4f + 0.03f * (float)Math.Sin(Global.GameTime.TotalGameTime.TotalMilliseconds / 600);
+                            item.Scale = 0.4f + 0.03f * (float)Math.Sin(GameGlobal.TimeLoop * 5);
                         }
                     });
                 }

@@ -53,12 +53,25 @@ namespace MyGame
             Level.RenderBlender.DrawableTextures.AddRange(new List<DrawableTexture>(){
                 new RenderBlender.DrawableTexture()
                 {
+                    Blend = RenderBlender.Subtract,
+                    Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
+                    Position = Entity.Position + new Vector2(8),
+                    Color = Color.White,
+                    Update = item => {
+                        item.Scale = 2f + 0.06f * (float)Math.Sin(GameGlobal.TimeLoop * 2);
+                    }
+                }
+            });
+
+            Level.RenderBlender.DrawableTextures.AddRange(new List<DrawableTexture>(){
+                new RenderBlender.DrawableTexture()
+                {
                     Blend = RenderBlender.Lighting,
                     Texture = Global.Content.Load<Texture2D>("Graphics/Effects/alphamask"),
                     Position = Entity.Position + new Vector2(8),
                     Color = Color.DeepSkyBlue * 0.6f,
                     Update = item => {
-                        item.Scale = 1.2f + 0.04f * (float)Math.Sin(Global.GameTime.TotalGameTime.TotalMilliseconds / 300);
+                        item.Scale = 1.2f + 0.06f * (float)Math.Sin(GameGlobal.TimeLoop * 2);
                     }
                 }
             });
@@ -71,9 +84,9 @@ namespace MyGame
                 Blend = RenderBlender.Lighting,
                 Color = Color.AliceBlue * 0.8f,
                 Update = item => {
-                    item.Scale = 0.05f + 0.02f * (float)Math.Sin(Global.GameTime.TotalGameTime.TotalMilliseconds / 500);
-                    item.Position.X = origin.X + (float)Math.Cos(MathHelper.WrapAngle((float)Global.GameTime.TotalGameTime.TotalMilliseconds / 500)) * 18;
-                    item.Position.Y = origin.Y + (float)Math.Sin((float)Global.GameTime.TotalGameTime.TotalMilliseconds / 500) * 18;
+                    item.Scale = 0.05f + 0.02f * (float)Math.Sin(GameGlobal.TimeLoop * 3);
+                    item.Position.X = origin.X + (float)Math.Cos(MathHelper.WrapAngle(GameGlobal.TimeLoop * 5)) * 18;
+                    item.Position.Y = origin.Y + (float)Math.Sin(GameGlobal.TimeLoop * 5) * 18;
                 }
             });
 
@@ -83,9 +96,9 @@ namespace MyGame
                 Blend = RenderBlender.Lighting,
                 Color = Color.AliceBlue * 0.8f,
                 Update = item => {
-                    item.Scale = 0.05f + 0.02f * (float)Math.Sin(-Global.GameTime.TotalGameTime.TotalMilliseconds / 500);
-                    item.Position.X = origin.X - (float)Math.Cos(-MathHelper.WrapAngle((float)Global.GameTime.TotalGameTime.TotalMilliseconds / 300)) * 18;
-                    item.Position.Y = origin.Y - (float)Math.Sin(-Global.GameTime.TotalGameTime.TotalMilliseconds / 300) * 18;
+                    item.Scale = 0.05f + 0.02f * (float)Math.Sin(-GameGlobal.TimeLoop * 1);
+                    item.Position.X = origin.X - (float)Math.Cos(-GameGlobal.TimeLoop * 4) * 18;
+                    item.Position.Y = origin.Y - (float)Math.Sin(-GameGlobal.TimeLoop * 4) * 18;
                 }
             });
         }
