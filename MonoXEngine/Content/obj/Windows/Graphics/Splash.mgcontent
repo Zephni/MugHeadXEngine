@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Graphics/Splash.png</SourceFile>
+  <SourceFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Pause/Content/Graphics/Splash.png</SourceFile>
   <SourceTime>2018-09-18T18:25:22.1865429+01:00</SourceTime>
   <DestFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Content/bin/Windows/Graphics/Splash.xnb</DestFile>
-  <DestTime>2018-09-18T18:25:53.7670238+01:00</DestTime>
+  <DestTime>2018-09-21T14:40:32.7651524+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T15:05:36+00:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

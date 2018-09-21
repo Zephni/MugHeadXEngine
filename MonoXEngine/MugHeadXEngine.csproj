@@ -42,9 +42,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="MonoXEngine\EntityComponents\BaseCollider.cs" />
-    <Compile Include="MyGame\Game\RenderBlender.cs" />
-    <Compile Include="MyGame\Game\Physics.cs" />
-    <Compile Include="MyGame\Game\PixelCollider.cs" />
+    <Compile Include="Pause\Game\RenderBlender.cs" />
+    <Compile Include="Pause\Game\Physics.cs" />
+    <Compile Include="Pause\Game\PixelCollider.cs" />
     <Compile Include="MonoXEngine\AudioController.cs" />
     <Compile Include="MonoXEngine\Camera.cs" />
     <Compile Include="MonoXEngine\DataSet.cs" />
@@ -57,7 +57,7 @@
     <Compile Include="MonoXEngine\Extensions.cs" />
     <Compile Include="MonoXEngine\Global.cs" />
     <Compile Include="MonoXEngine\MonoXEngineGame.cs" />
-    <Compile Include="MyGame\Game\Components\PlatformerController.cs" />
+    <Compile Include="Pause\Game\Components\PlatformerController.cs" />
     <Compile Include="MonoXEngine\Cloner.cs" />
     <Compile Include="MonoXEngine\Structs\Animation.cs" />
     <Compile Include="MonoXEngine\ViewportTexture.cs" />
@@ -68,28 +68,28 @@
     <Compile Include="MonoXEngine\Structs\Tile.cs" />
     <Compile Include="MonoXEngine\TileMap.cs" />
     <Compile Include="MonoXEngine\InputManager.cs" />
-    <Compile Include="MyGame\Game\GameData.cs" />
-    <Compile Include="MyGame\Game\MessageBox.cs" />
-    <Compile Include="MyGame\Game\OptionSelector.cs" />
-    <Compile Include="MyGame\Game\CameraController.cs" />
-    <Compile Include="MyGame\Game\Enemies\Template.cs" />
-    <Compile Include="MyGame\Game\Enemies\WallCrab.cs" />
-    <Compile Include="MyGame\Game\Enemy.cs" />
-    <Compile Include="MyGame\Game\EntityInfoInterpreter.cs" />
-    <Compile Include="MyGame\Game\GameGlobal.cs" />
-    <Compile Include="MyGame\Game\GameMethods.cs" />
-    <Compile Include="MyGame\Game\LevelLoader\Compressor.cs" />
-    <Compile Include="MyGame\Game\LevelLoader\EntityInfo.cs" />
-    <Compile Include="MyGame\Game\LevelLoader\LevelLoader.cs" />
-    <Compile Include="MyGame\Game\LevelScripts\TheTree.cs" />
-    <Compile Include="MyGame\Game\NPCScripts\NPCChest.cs" />
-    <Compile Include="MyGame\Game\NPCScripts\EarthRock.cs" />
-    <Compile Include="MyGame\Game\PlayerController.cs" />
-    <Compile Include="MyGame\Game\Scripts\Debug.cs" />
-    <Compile Include="MyGame\Game\Scripts\SavePoint.cs" />
-    <Compile Include="MyGame\Game\ZInterpreter.cs" />
-    <Compile Include="MyGame\Scenes\Level.cs" />
-    <Compile Include="MyGame\Scenes\Menu.cs" />
+    <Compile Include="Pause\Game\GameData.cs" />
+    <Compile Include="Pause\Game\MessageBox.cs" />
+    <Compile Include="Pause\Game\OptionSelector.cs" />
+    <Compile Include="Pause\Game\CameraController.cs" />
+    <Compile Include="Pause\Game\Enemies\Template.cs" />
+    <Compile Include="Pause\Game\Enemies\WallCrab.cs" />
+    <Compile Include="Pause\Game\Enemy.cs" />
+    <Compile Include="Pause\Game\EntityInfoInterpreter.cs" />
+    <Compile Include="Pause\Game\GameGlobal.cs" />
+    <Compile Include="Pause\Game\GameMethods.cs" />
+    <Compile Include="Pause\Game\LevelLoader\Compressor.cs" />
+    <Compile Include="Pause\Game\LevelLoader\EntityInfo.cs" />
+    <Compile Include="Pause\Game\LevelLoader\LevelLoader.cs" />
+    <Compile Include="Pause\Game\LevelScripts\TheTree.cs" />
+    <Compile Include="Pause\Game\NPCScripts\NPCChest.cs" />
+    <Compile Include="Pause\Game\NPCScripts\EarthRock.cs" />
+    <Compile Include="Pause\Game\PlayerController.cs" />
+    <Compile Include="Pause\Game\Scripts\Debug.cs" />
+    <Compile Include="Pause\Game\Scripts\SavePoint.cs" />
+    <Compile Include="Pause\Game\ZInterpreter.cs" />
+    <Compile Include="Pause\Scenes\Level.cs" />
+    <Compile Include="Pause\Scenes\Menu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -106,29 +106,29 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
-    <EmbeddedResource Include="MyGame\MainSettings.xml">
+    <EmbeddedResource Include="Pause\MainSettings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <MonoGameContentReference Include="MyGame\Content\Content.mgcb">
+    <MonoGameContentReference Include="Pause\Content\Content.mgcb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </MonoGameContentReference>
     <None Include="app.manifest" />
-    <Content Include="MyGame\Game\Levels\UnderCave.lvl">
+    <Content Include="Pause\Game\Levels\UnderCave.lvl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="MyGame\Game\Levels\TheTree.lvl">
+    <Content Include="Pause\Game\Levels\TheTree.lvl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="MyGame\Game\Levels\TheTreeCave.lvl">
+    <Content Include="Pause\Game\Levels\TheTreeCave.lvl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="MyGame\Game\Levels\MiniCavePassage.lvl">
+    <Content Include="Pause\Game\Levels\MiniCavePassage.lvl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="MyGame\Game\Levels\MysticCave.lvl">
+    <Content Include="Pause\Game\Levels\MysticCave.lvl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -16,7 +16,7 @@ namespace XEditor
     {
         public void Load(string file, Action<string, List<Tile>, List<EntityInfo>> action)
         {
-            string b64CompressedData = File.ReadAllText("MyGame/Game/Levels/" + file + ".lvl");
+            string b64CompressedData = File.ReadAllText("Pause/Game/Levels/" + file + ".lvl");
             XDocument loadedDoc = XDocument.Parse(Compressor.Unzip(Convert.FromBase64String(b64CompressedData)));
             DataFromDocument(loadedDoc, action);
             MyGame.GameData.Set("Level", file);

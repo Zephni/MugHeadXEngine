@@ -14,7 +14,7 @@ namespace MonoXEngine
         [STAThread]
         static void Main()
         {
-            using (var game = new MonoXEngineGame("MyGame/MainSettings.xml"))
+            using (var game = new MonoXEngineGame("Pause/MainSettings.xml"))
                 game.Run();
         }
     }
