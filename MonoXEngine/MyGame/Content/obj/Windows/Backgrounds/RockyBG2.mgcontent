@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Backgrounds/RockyBG2.png</SourceFile>
-  <SourceTime>2018-09-15T14:42:55.196848+01:00</SourceTime>
+  <SourceTime>2018-09-18T18:25:22.1709167+01:00</SourceTime>
   <DestFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/bin/Windows/Backgrounds/RockyBG2.xnb</DestFile>
-  <DestTime>2018-09-16T16:19:48.6482853+01:00</DestTime>
+  <DestTime>2018-09-21T09:28:11.9350759+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T15:05:36+00:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

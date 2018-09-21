@@ -120,7 +120,6 @@ C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\Splash.xnb
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Graphics\Splash.xnb
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\MyGame\Game\Levels\MysticCave.lvl
-C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Graphics\CaveRockWaterFall.xnb
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Tilesets\MysticCave.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\BushRustle.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\OpenChest.xnb
@@ -144,3 +143,10 @@ C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoX
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\EarthRockRumble.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\FearWave.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Graphics\Effects\alphamask2.xnb
+C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\EarthRockRumble.xnb
+C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\FearWave.xnb
+C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Graphics\Effects\alphamask2.xnb
+C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Graphics\WaterFall.xnb
+C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Graphics\EarthRock.xnb
+C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\Hurt.xnb
+C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\Died.xnb

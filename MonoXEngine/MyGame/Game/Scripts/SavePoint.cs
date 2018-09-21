@@ -62,8 +62,8 @@ namespace MyGame
             Level.RenderBlender.DrawableTextures.AddRange(new List<DrawableTexture>(){
                 new RenderBlender.DrawableTexture("alphamask"){
                     Position = Entity.Position + new Vector2(8),
-                    Color = Color.DeepSkyBlue * 0.4f,
-                    Update = item => {item.Scale = 1.2f + 0.1f * (float)Math.Sin(GameGlobal.TimeLoop * 2);}
+                    Color = Color.DeepSkyBlue * 0.3f,
+                    Update = item => {item.Scale = 1.2f + 0.2f * (float)Math.Sin(GameGlobal.TimeLoop * 2);}
                 }
             });
 
@@ -77,7 +77,7 @@ namespace MyGame
                 Level.RenderBlender.DrawableTextures.Add(new RenderBlender.DrawableTexture("alphamask2") {
                     Color = Color.AliceBlue * 0.6f,
                     Update = item => {
-                        item.Scale = 0.03f * rand + 0.02f * (float)Math.Sin(GameGlobal.TimeLoop * rand);
+                        item.Scale = 0.02f * rand + 0.02f * (float)Math.Sin(GameGlobal.TimeLoop * rand);
                         item.Position.X = origin.X + (float)Math.Cos(MathHelper.WrapAngle(GameGlobal.TimeLoop * 0.4f * rand)) * 12 * rand;
                         item.Position.Y = origin.Y + (float)Math.Sin(GameGlobal.TimeLoop * 0.7f * rand) * 12 * rand;
                     }
@@ -105,20 +105,20 @@ namespace MyGame
             else
             {
                 MessageBox messageBox = new MessageBox(null, "Would you like to save?", pos);
-                messageBox.Build();
+                messageBox.Build(null, () => {
+                    GameMethods.ShowOptionSelector(pos + new Vector2(-16, 16), new List<Option>() {
+                        new Option("yes", "Yes", new Vector2(0, 0)),
+                        new Option("no", "No", new Vector2(0, 16))
+                    }, option => {
+                        if (option == "yes")
+                        {
+                            GameData.Save();
+                        }
 
-                GameMethods.ShowOptionSelector(pos + new Vector2(-16, 16), new List<Option>() {
-                    new Option("yes", "Yes", new Vector2(0, 0)),
-                    new Option("no", "No", new Vector2(0, 16))
-                }, option => {
-                    if(option == "yes")
-                    {
-                        GameData.Save();
-                    }
-
-                    messageBox.Destroy();
-                    GameGlobal.Player.GetComponent<PlayerController>().MovementEnabled = true;
-                    Saving = false;
+                        messageBox.Destroy();
+                        GameGlobal.Player.GetComponent<PlayerController>().MovementEnabled = true;
+                        Saving = false;
+                    });
                 });
             }
         }

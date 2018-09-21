@@ -70,7 +70,7 @@ namespace MyGame
 
             Entity = new Entity(entity => {
                 entity.LayerName = "Main";
-                entity.SortingLayer = 10;
+                entity.SortingLayer = 8;
                 entity.Origin = Vector2.Zero;
                 entity.AddComponent(new Sprite()).Run<Sprite>(sprite => {
                     StaticCoroutines.CoroutineHelper.Always(() => {

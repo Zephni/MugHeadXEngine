@@ -23,11 +23,11 @@ namespace MyGame
 
             GameData.Set("EarthRock/First", "1");
             GameMethods.ShowMessages(new List<MessageBox>() {
-                    new MessageBox("", "!", obj.Position + new Vector2(16, -32)),
-                    new MessageBox("Earth Rock", "Hi :) .|.|.", obj.Position + new Vector2(16, -32)),
-                    new MessageBox("Earth Rock", "I didn't think you'd survived.|.|.\nYou fell into that tree almost 3 days ago...", obj.Position + new Vector2(16, -32)),
-                    new MessageBox("Earth Rock", "I'm not sure what this means but I feel implelled\nto tell you that if you want to interact with\nsomething you can press UP!", obj.Position + new Vector2(8, -32)),
-                    new MessageBox("Earth Rock", "Why don't you try it!", obj.Position + new Vector2(16, -32))
+                    new MessageBox("", "!", obj.Position + new Vector2(0, -64)),
+                    new MessageBox("Earth Rock", "Hi.|.|.", obj.Position + new Vector2(0, -64)),
+                    new MessageBox("Earth Rock", "I didn't think you'd survived.|.|.\nYou fell into that tree almost 3 days ago...", obj.Position + new Vector2(0, -64)),
+                    new MessageBox("Earth Rock", "I'm not sure what this means but I feel implelled\nto tell you that if you want to interact with\nsomething you can press UP!", obj.Position + new Vector2(0, -64)),
+                    new MessageBox("Earth Rock", "Why don't you try it on me!", obj.Position + new Vector2(16, -32))
                 }, true, () =>
                 {
 
@@ -38,17 +38,17 @@ namespace MyGame
         public static void Talk(Entity obj)
         {
             GameMethods.ShowMessages(new List<MessageBox>() {
-                    new MessageBox("EarthRock", "I can't believe you figured it out!", obj.Position + new Vector2(32, -32)),
-                    new MessageBox("EarthRock", ".|.|. Well done!", obj.Position + new Vector2(32, -32))
+                    new MessageBox("EarthRock", "I can't believe you figured it out!", obj.Position + new Vector2(0, -84)),
+                    new MessageBox("EarthRock", ".|.|. Well done!", obj.Position + new Vector2(0, -84))
                 }, true, () =>
                 {
                     GameGlobal.Player.GetComponent<PlayerController>().MovementEnabled = false;
                     Entity temp = Entity.Find("EarthRock");
 
-                    CameraController.Instance.Shake(2);
+                    CameraController.Instance.Shake(3);
                     Global.AudioController.Play("SFX/EarthRockRumble");
 
-                    StaticCoroutines.CoroutineHelper.RunOverX(2, 32, t => {
+                    StaticCoroutines.CoroutineHelper.RunOverX(3, 64, t => {
                         temp.Position += new Vector2(0, 1f);
                     }, () => {
                         GameData.Set("EarthRock/First", "2");

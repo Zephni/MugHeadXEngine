@@ -75,14 +75,15 @@ namespace MugHeadXEngine.EntityComponents
         {
             if(HP > 0 && HurtRespite == 0)
             {
+                Global.AudioController.Play("SFX/Hurt");
                 HP -= amt;
 
                 // HURT
                 if(HP > 0)
                 {
                     HurtRespite = 2;
-                    MoveX = (MoveX > 0) ? -MoveX * 1.25f : MoveX * 1.25f;
-                    MoveY = (MoveY > 0) ? -MoveY * 1.25f : MoveY * 1.25f;
+                    MoveX = 0;
+                    MoveY = -1;
 
                     StaticCoroutines.CoroutineHelper.RunFor(HurtRespite, t => {
                         GameGlobal.PlayerGraphicEntity.Opacity = 0.5f + (t.Wrap(0, 0.2f)) * 4;
@@ -94,6 +95,8 @@ namespace MugHeadXEngine.EntityComponents
                 // DIE
                 else
                 {
+                    Global.AudioController.Play("SFX/Died");
+
                     // Cam shake
                     Level.CameraController.Shake(1f, () => {
                         Level.CameraController.Target = null;

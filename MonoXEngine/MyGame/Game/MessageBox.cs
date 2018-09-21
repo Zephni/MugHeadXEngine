@@ -21,6 +21,7 @@ namespace MyGame
         private Text TextString;
         private string TestString;
         private string Speaker;
+        private Action FinishedWriting;
 
         public Vector2 Position
         {
@@ -54,8 +55,10 @@ namespace MyGame
             ThisType = type;
         }
 
-        public void Build(Action action = null)
+        public void Build(Action action = null, Action finishedWriting = null)
         {
+            FinishedWriting = finishedWriting;
+
             if (Speaker != null && Speaker != "")
                 PassedText = Speaker + "\n" + PassedText;
 
@@ -123,12 +126,12 @@ namespace MyGame
                 TestString = PassedText.Substring(0, TestString.Length + 1);
                 TextString.String = TestString.Replace("|", "");
 
-                float stepTime = 0.02f;
+                float stepTime = 0.05f;
 
                 // Skip
                 if (Global.InputManager.Held(InputManager.Input.Action1))
                 {
-                    stepTime = 0.0f;
+                    stepTime = 0.01f;
                 }
                 
                 if (TestString.Length > 0 && TestString[TestString.Length-1] == '|')
@@ -145,7 +148,8 @@ namespace MyGame
             }
             else
             {
-                if(ThisType == Type.PressToProgress)
+                FinishedWriting?.Invoke();
+                if (ThisType == Type.PressToProgress)
                 {
                     ArrowFlash.GetComponent<Sprite>().Visible = true;
 
