@@ -295,8 +295,11 @@ namespace MugHeadXEngine.EntityComponents
 
                 if (obj.Name == "CameraLock")
                 {
-                    MyGame.Scenes.Level.CameraController.Target = GameGlobal.PlayerGraphicEntity;
-                    MyGame.Scenes.Level.CameraController.ResetMinMax();
+                    if(!Crouching) // This is because of bug
+                    {
+                        MyGame.Scenes.Level.CameraController.Target = GameGlobal.PlayerGraphicEntity;
+                        MyGame.Scenes.Level.CameraController.ResetMinMax();
+                    }
                 }
 
                 if (obj.Name == "Water" && MovementMode == PlayerController.MovementModes.Paddleing)

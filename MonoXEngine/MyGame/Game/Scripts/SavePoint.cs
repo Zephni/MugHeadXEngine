@@ -112,6 +112,7 @@ namespace MyGame
                     }, option => {
                         if (option == "yes")
                         {
+                            Global.AudioController.Play("SFX/Save");
                             GameData.Save();
                         }
 

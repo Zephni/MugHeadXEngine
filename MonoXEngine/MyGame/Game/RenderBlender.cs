@@ -62,7 +62,7 @@ namespace MyGame
 
         public RenderBlender(Color clearColor, List<DrawableTexture> drawableTextures)
         {
-            RenderTarget2D = new RenderTarget2D(Global.GraphicsDevice, Global.Resolution.X+4, Global.Resolution.Y+4);
+            RenderTarget2D = new RenderTarget2D(Global.GraphicsDevice, Global.Resolution.X+8, Global.Resolution.Y+8);
             SpriteBatch = new SpriteBatch(Global.GraphicsDevice);
 
             ClearColor = clearColor;
@@ -96,8 +96,8 @@ namespace MyGame
 
                 SpriteBatch.Draw(
                     item.Texture,
-                    // Add 8 to center tile, and 2 for added rendertexture size (which is +4), this gets a total of 10
-                    new Rectangle((item.Position.ToPoint()) - Position.ToPoint() + new Point(10, 10), item.Size.ToPoint()),
+                    
+                    new Rectangle((item.Position.ToPoint()) - Position.ToPoint() + new Point(8, 8), item.Size.ToPoint()),
                     null,
                     item.Color,
                     0,

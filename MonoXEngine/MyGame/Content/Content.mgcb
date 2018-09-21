@@ -459,3 +459,9 @@
 /processorParam:Quality=Best
 /build:Audio/SFX/Died.wav
 
+#begin Audio/SFX/Save.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/SFX/Save.wav
+

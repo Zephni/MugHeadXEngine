@@ -65,6 +65,7 @@ namespace MyGame.Enemies
             // Build entity
             Entity = new Entity(entity => {
                 entity.LayerName = "Main";
+                entity.SortingLayer = 6;
                 entity.Position = (entityInfo.Position * 16);
                 entity.Origin = new Vector2(0.5f, 1f);
                 entity.Collider = Entity.CollisionType.Pixel;

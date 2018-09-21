@@ -49,5 +49,6 @@
     <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Graphics/EarthRock.png</File>
     <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Audio/SFX/Hurt.wav</File>
     <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Audio/SFX/Died.wav</File>
+    <File>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Audio/SFX/Save.wav</File>
   </SourceFiles>
 </SourceFileCollection>
