@@ -23,7 +23,7 @@ namespace MonoXEngine.EntityComponents
             set { _text = value; this.Entity.TextureSize = this.SpriteFont.MeasureString(_text); }
         }
 
-        public float Opacity = 1;
+        //public float Opacity = 1;
         private SpriteFont SpriteFont = null;
 
         public Text SetSpriteFont(string FontAlias = "HeartbitXX")
@@ -48,7 +48,7 @@ namespace MonoXEngine.EntityComponents
                     this.SpriteFont,
                     this.String,
                     this.Entity.Position,
-                    this.Color,
+                    this.Color * Entity.Opacity,
                     this.Entity.Rotation,
                     this.Entity.Origin * this.Entity.Size,
                     this.Entity.Scale,

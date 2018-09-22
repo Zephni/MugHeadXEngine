@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/Entities/Chest_Majestic.png</SourceFile>
+  <SourceFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Pause/Content/Entities/Chest_Majestic.png</SourceFile>
   <SourceTime>2018-09-18T18:25:22.1709167+01:00</SourceTime>
-  <DestFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/MyGame/Content/bin/Windows/Entities/Chest_Majestic.xnb</DestFile>
-  <DestTime>2018-09-21T09:28:10.4236981+01:00</DestTime>
+  <DestFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Pause/Content/bin/Windows/Entities/Chest_Majestic.xnb</DestFile>
+  <DestTime>2018-09-22T11:50:31.0430061+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T15:05:36+00:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

@@ -20,7 +20,7 @@ namespace MyGame
         public static bool Saving = false;
 
         Entity Entity;
-        PixelCollider Collider;
+        MainCollider Collider;
 
         public SavePoint(EntityInfo entityInfo)
         {
@@ -35,7 +35,7 @@ namespace MyGame
                     sprite.LoadTexture("Entities/SavePoint");
                 });
 
-                entity.AddComponent(new PixelCollider()).Run<PixelCollider>(collider => { Collider = collider;});
+                entity.AddComponent(new MainCollider()).Run<MainCollider>(collider => { Collider = collider;});
 
                 StaticCoroutines.CoroutineHelper.Always(() => {
                     Collider.Colliding(new Point(0, 0));

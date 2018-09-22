@@ -45,8 +45,8 @@ namespace MyGame.Scenes
 
                     entity.UpdateAction = e => {
                         //component.String = "Entities: " + Global.CountEntities().ToString() + ", Coroutines: " + Coroutines.Count.ToString() + ", FPS: " + Global.FPS.ToString();
-                        //component.String = String.Join(", ", GameGlobal.Player.GetComponent<PixelCollider>().PrevCollidingTriggers.Select(x => x.Name).ToArray());
-                        //component.String += (GameGlobal.DebugString.Length > 0 ) ? " | " +GameGlobal.DebugString : "";
+                        //component.String = String.Join(", ", GameGlobal.Player.GetComponent<MainCollider>().PrevCollidingTriggers.Select(x => x.Name).ToArray());
+                        component.String += (GameGlobal.DebugString.Length > 0 ) ? " | " +GameGlobal.DebugString : "";
                     };
                 });
             });
@@ -85,7 +85,7 @@ namespace MyGame.Scenes
 
             // Player entity
             GameGlobal.Player = new Entity();
-            GameGlobal.Player.AddComponent(new PlayerController(new PixelCollider()));
+            GameGlobal.Player.AddComponent(new PlayerController(new MainCollider()));
 
             Global.AudioController.MusicSetThisFrame = false;
 

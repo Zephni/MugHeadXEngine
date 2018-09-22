@@ -73,8 +73,9 @@ namespace MugHeadXEngine.EntityComponents
         float HurtRespite = 0;
         public void Hurt(int amt)
         {
-            if(HP > 0 && HurtRespite == 0)
+            if (HP > 0 && HurtRespite == 0)
             {
+                GameMethods.ShowDamage(amt, Entity);
                 Global.AudioController.Play("SFX/Hurt");
                 HP -= amt;
 
@@ -95,6 +96,7 @@ namespace MugHeadXEngine.EntityComponents
                 // DIE
                 else
                 {
+                    GameMethods.ShowDamage(amt, Entity);
                     Global.AudioController.Play("SFX/Died");
 
                     // Cam shake
@@ -144,7 +146,7 @@ namespace MugHeadXEngine.EntityComponents
                 StaticCoroutines.CoroutineHelper.WaitRun(0.1f, () => {
                     for (int i = 0; i < 17; i++)
                     {
-                        if (Entity.GetComponent<PixelCollider>().Colliding(new Point(0, 1)))
+                        if (Entity.GetComponent<MainCollider>().Colliding(new Point(0, 1)))
                             Entity.Position.Y -= 1;
                         else
                             break;
@@ -549,7 +551,7 @@ namespace MugHeadXEngine.EntityComponents
                 }
             }
 
-            Entity.GetComponent<PixelCollider>().AddHeight = (Crouching) ? -12 : 0;
+            Entity.GetComponent<MainCollider>().AddHeight = (Crouching) ? -12 : 0;
 
             GameData.Set("Player/Direction", (Direction == -1) ? "-1" : "1");
 

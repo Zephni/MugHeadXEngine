@@ -28,7 +28,7 @@ namespace MyGame.Enemies
                     sprite.LoadTexture("Entities/Enemies/Template");
                 });
 
-                entity.AddComponent(new PixelCollider()).Run<PixelCollider>(collider => {
+                entity.AddComponent(new MainCollider()).Run<MainCollider>(collider => {
 
                 });
             });

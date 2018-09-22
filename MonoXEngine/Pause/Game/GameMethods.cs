@@ -14,17 +14,6 @@ namespace MyGame
 {
     public static class GameMethods
     {
-        /*public static void PhysicsActive(bool active)
-        {
-            Global.Entities.FindAll(entity => entity.HasComponent<Physics>()).ForEach(entity => {
-                entity.GetComponent<Physics>().Disabled = !active;
-            });
-
-            Global.Entities.FindAll(entity => entity.HasComponent<PlayerController>()).ForEach(entity => {
-                entity.GetComponent<PlayerController>().Disabled = !active;
-            });
-        }*/
-
         public static T GetProperty<T>(string propertyName)
         {
             if (propertyName == null)
@@ -32,6 +21,39 @@ namespace MyGame
 
             var prop = typeof(T).GetProperty(propertyName);
             return (prop != null) ? (T)prop.GetValue(null, null) : default(T);
+        }
+
+        public static void ShowDamage(int amount, Entity entity, Vector2 offset = default(Vector2))
+        {
+            amount = -amount;
+
+            List<Entity> damageEntities = new List<Entity>();
+
+            for(int i = 0; i < 2; i++)
+            damageEntities.Add(new Entity(item => {
+                item.LayerName = "Main";
+                item.SortingLayer = (i == 0) ? 8 : 9;
+                item.Position = entity.Position + ((i == 0) ? new Vector2(1, 1) : Vector2.Zero);
+                item.AddComponent(new Text()).Run<Text>(text => {
+                    text.Color = (i == 0) ? Color.DarkRed : Color.IndianRed;
+                    text.String = amount.ToString();
+                });
+            }));
+
+            float yLimit = 16;
+            StaticCoroutines.CoroutineHelper.RunUntil(() => { return yLimit < 0; }, () => {
+                yLimit--;
+                for(int i = 0; i < 2; i++)
+                    damageEntities[i].Position += new Vector2(0, (yLimit > 0) ? -(yLimit / 4) : 0);
+            }, () => {
+                StaticCoroutines.CoroutineHelper.RunUntil(() => { return damageEntities[0].Opacity <= 0; }, () => {
+                    for (int i = 0; i < 2; i++)
+                        damageEntities[i].Opacity -= 0.8f * Global.DeltaTime;
+                }, () => {
+                    for (int i = 0; i < 2; i++)
+                        damageEntities[i].Destroy();
+                });
+            });
         }
 
         public static void ShowOptionSelector(Vector2 position, List<Option> optionList, Action<string> action = null, Entity player = null, string texture9Patch = "Defaults/9Patch_8")

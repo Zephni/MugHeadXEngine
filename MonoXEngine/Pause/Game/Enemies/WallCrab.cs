@@ -89,13 +89,13 @@ namespace MyGame.Enemies
                     sprite.RunAnimation("walking");
                 });
 
-                entity.AddComponent(new PixelCollider()).Run<PixelCollider>(pc => { Collider = pc; });
+                entity.AddComponent(new MainCollider()).Run<MainCollider>(pc => { Collider = pc; });
             });
         }
         #endregion
 
         #region Properties
-        PixelCollider Collider;
+        MainCollider Collider;
         Sprite Sprite;
         string Direction = "none";
         string Planted = "top";

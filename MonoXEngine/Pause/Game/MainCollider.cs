@@ -9,7 +9,7 @@ using MonoXEngine.EntityComponents;
 
 namespace MyGame
 {
-    public class PixelCollider : BaseCollider 
+    public class MainCollider : BaseCollider 
     {
         // Add base size change  option
         public int AddWidth = 0;
@@ -18,7 +18,7 @@ namespace MyGame
         public List<Entity> PrevCollidingTriggers;
         public List<Entity> CollidingTriggers;
 
-        public PixelCollider()
+        public MainCollider()
         {
             PrevCollidingTriggers = new List<Entity>();
             CollidingTriggers = new List<Entity>();
@@ -69,8 +69,16 @@ namespace MyGame
             
             foreach(var item in possibleCollidingEntities)
             {
-                if (IsOverlappingPixel(checkArea, new List<Entity>() { item }))
-                    collidingEntities.Add(item);
+                if(item.Collider == Entity.CollisionType.Pixel)
+                {
+                    if (IsColliding(checkArea, new List<Entity>() { item }))
+                        collidingEntities.Add(item);
+                }
+                else if (item.Collider == Entity.CollisionType.Box)
+                {
+                    //if (IsOverlappingBox(new List<Entity>() { item })
+                    //    collidingEntities.Add(item);
+                }
             }                
 
             return collidingEntities;
@@ -78,7 +86,6 @@ namespace MyGame
 
         public override bool Colliding(Point offset, Entity.CollisionType CollisionType = Entity.CollisionType.Pixel)
         {
-
             Rectangle checkArea = new Rectangle(
                 (this.Entity.Position.ToPoint() - (this.Entity.Size/2).ToPoint()) + offset,
                 this.Entity.Size.ToPoint()
@@ -90,7 +97,7 @@ namespace MyGame
             List<Entity> possibleCollidingEntities = new List<Entity>();
             foreach(Entity entity in Global.Entities.FindAll(e => e.LayerName == this.Entity.LayerName))
             {
-                if (entity == Entity || entity.Collider != CollisionType || !entity.CheckPixels)
+                if (entity == Entity || !entity.CheckPixels)
                     continue;
 
                 if (checkArea.Intersects(entity.BoundingBox))
@@ -98,47 +105,70 @@ namespace MyGame
                     possibleCollidingEntities.Add(entity);
                 }
             }
-
-            if (IsOverlappingPixel(checkArea, possibleCollidingEntities))
+            
+            if (IsColliding(checkArea, possibleCollidingEntities))
                 return true;
 
             return false;
         }
 
-        private bool IsOverlappingPixel(Rectangle checkRect, List<Entity> entities)
+        private bool IsColliding(Rectangle checkRect, List<Entity> entities)
         {
             foreach (Entity entity in entities)
             {
-                var Drawable = (entity.GetComponent<Drawable>() != null) ? entity.GetComponent<Drawable>() : entity.GetComponent<Sprite>();
                 
-                if(Drawable == null)
-                    return false;
-
-                Rectangle entityBox = entity.BoundingBox;
-
-                Rectangle.Intersect(ref checkRect, ref entityBox, out Rectangle intersectRect);
-
-                if (intersectRect.Width > 0 && intersectRect.Height > 0)
+                if (entity.Collider == Entity.CollisionType.Pixel || entity.Collider == Entity.CollisionType.Platform)
                 {
-                    intersectRect.Location -= entityBox.Location;
+                    var Drawable = (entity.GetComponent<Drawable>() != null) ? entity.GetComponent<Drawable>() : entity.GetComponent<Sprite>();
 
-                    int totalPixels = intersectRect.Width * intersectRect.Height;
-                    Color[] colors = new Color[totalPixels];
-                    Drawable.Texture2D.GetData(0, intersectRect, colors, 0, totalPixels);
+                    if (Drawable == null)
+                        return false;
 
-                    for (int I = 0; I < colors.Length; I++)
-                        if (colors[I].A != byte.MinValue)
+                    Rectangle entityBox = entity.BoundingBox;
+
+                    Rectangle.Intersect(ref checkRect, ref entityBox, out Rectangle intersectRect);
+
+                    if (intersectRect.Width > 0 && intersectRect.Height > 0)
+                    {
+                        intersectRect.Location -= entityBox.Location;
+
+                        int totalPixels = intersectRect.Width * intersectRect.Height;
+                        Color[] colors = new Color[totalPixels];
+                        Drawable.Texture2D.GetData(0, intersectRect, colors, 0, totalPixels);
+
+                        for (int I = 0; I < colors.Length; I++)
+                            if (colors[I].A != byte.MinValue)
+                            {
+                                if (entity.Trigger)
+                                {
+                                    if (!CollidingTriggers.Contains(entity))
+                                        CollidingTriggers.Add(entity);
+                                }
+                                else
+                                {
+                                    return true;
+                                }
+                            }
+                    }
+                }
+                else if(entity.Collider == Entity.CollisionType.Box)
+                {
+                    Rectangle rect = new Rectangle(
+                        (entity.BoundingBox.Center + entity.BoxColliderRect.Location) - entity.BoxColliderRect.Size/new Point(2, 2),
+                        entity.BoxColliderRect.Size
+                    );
+                    if (Entity.BoundingBox.Intersects(rect))
+                    {
+                        if (entity.Trigger)
                         {
-                            if(entity.Trigger)
-                            {
-                                if(!CollidingTriggers.Contains(entity))
-                                    CollidingTriggers.Add(entity);
-                            }
-                            else
-                            {
-                                return true;
-                            }
+                            if (!CollidingTriggers.Contains(entity))
+                                CollidingTriggers.Add(entity);
                         }
+                        else
+                        {
+                            return true;
+                        }
+                    }
                 }
             }
 

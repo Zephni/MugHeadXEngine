@@ -35,10 +35,12 @@ namespace MonoXEngine
 
         public int SortingLayer;
 
+        public Rectangle BoxColliderRect;
+
         public enum CollisionType
         {
             None,
-            BoundingBox,
+            Box,
             Pixel,
             Platform
         }

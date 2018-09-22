@@ -42,9 +42,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="MonoXEngine\EntityComponents\BaseCollider.cs" />
+    <Compile Include="Pause\Game\Enemies\Spikes.cs" />
     <Compile Include="Pause\Game\RenderBlender.cs" />
     <Compile Include="Pause\Game\Physics.cs" />
-    <Compile Include="Pause\Game\PixelCollider.cs" />
+    <Compile Include="Pause\Game\MainCollider.cs" />
     <Compile Include="MonoXEngine\AudioController.cs" />
     <Compile Include="MonoXEngine\Camera.cs" />
     <Compile Include="MonoXEngine\DataSet.cs" />

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Pause/Content/Fonts/Arial-12.spritefont</SourceFile>
-  <SourceTime>2018-09-18T18:25:22.1709167+01:00</SourceTime>
-  <DestFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Pause/Content/bin/Windows/Fonts/Arial-12.xnb</DestFile>
-  <DestTime>2018-09-22T11:50:30.107161+01:00</DestTime>
+  <SourceFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Pause/Content/Fonts/HeartbitBold.spritefont</SourceFile>
+  <SourceTime>2018-09-22T13:45:14.4597183+01:00</SourceTime>
+  <DestFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Pause/Content/bin/Windows/Fonts/HeartbitBold.xnb</DestFile>
+  <DestTime>2018-09-22T13:45:34.9380083+01:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2017-03-01T15:05:36+00:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>
