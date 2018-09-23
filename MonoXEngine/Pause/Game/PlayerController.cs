@@ -161,6 +161,23 @@ namespace MugHeadXEngine.EntityComponents
 
             // New collides
             Entity.CollidedWithTrigger = obj => {
+                if(obj.Name == "MovablePlatform")
+                {
+                    MainCollider mainCollider = Entity.GetComponent<MainCollider>();
+                    if(mainCollider.CollidingWith(new Rectangle(1, (int)Entity.Size.Y+1, (int)Entity.Size.X-2, 1), entity => entity.Name == "MovablePlatform").Count > 0)
+                    {
+                        float prev = obj.Position.X;
+                        float cur = obj.Position.X;
+                        StaticCoroutines.CoroutineHelper.RunUntil(() => { return !IsGrounded; }, () => {
+                            cur = obj.Position.X;
+                            if(prev != cur)
+                            {
+                                Entity.Position.X += (cur - prev);
+                                prev = obj.Position.X;
+                            }
+                        });
+                    }
+                }
                 if (obj.Name == "CameraLock")
                 {
                     foreach (var item in obj.Data["Type"].Split(','))
@@ -347,7 +364,7 @@ namespace MugHeadXEngine.EntityComponents
                     Deceleration = 8f;
                     Gravity = 8f;
                     JumpStrength = 3.3f;
-                    MaxX = 1.7f;
+                    MaxX = 2f;
                     MaxDown = 4f;
                 }
                 else if (MovementMode == MovementModes.Paddleing)
@@ -466,7 +483,7 @@ namespace MugHeadXEngine.EntityComponents
                     }
                 }
 
-                if (IsGrounded && MovementEnabled && ((!ObstructCrouching && Global.InputManager.Held(InputManager.Input.Down)) || (IsGrounded && Collider.Colliding(new Point(0, -10)))))
+                if (IsGrounded && MovementEnabled && ((!ObstructCrouching && Global.InputManager.Held(InputManager.Input.Down)) || (IsGrounded && Collider.Colliding(new Rectangle(2, -10, (int)Entity.Size.X -4, 1)))))
                 {
                     Crouching = true;
                 }
@@ -554,6 +571,8 @@ namespace MugHeadXEngine.EntityComponents
             Entity.GetComponent<MainCollider>().AddHeight = (Crouching) ? -12 : 0;
 
             GameData.Set("Player/Direction", (Direction == -1) ? "-1" : "1");
+
+            //CameraController.Instance.Mode = CameraController.Modes.SnapToTarget;
 
             base.Update();
         }

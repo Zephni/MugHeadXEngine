@@ -48,13 +48,17 @@ namespace MyGame
             CollidingTriggers = new List<Entity>();
         }
 
-        public List<Entity> CollidingWith(Rectangle rect, Predicate<Entity> predicate)
+        public List<Entity> CollidingWith(Rectangle offset, Predicate<Entity> predicate)
         {
             List<Entity> collidingEntities = new List<Entity>();
 
+            int sx = (offset.Size.X == 0) ? (int)Entity.Size.X : offset.Size.X;
+            int sy = (offset.Size.Y == 0) ? (int)Entity.Size.Y : offset.Size.Y;
+            offset.Size = new Point(sx, sy);
+
             Rectangle checkArea = new Rectangle(
-                (this.Entity.Position.ToPoint() + rect.Location),
-                rect.Size
+                (Entity.Position - Entity.Size / 2).ToPoint() + offset.Location,
+                offset.Size
             );
 
             List<Entity> possibleCollidingEntities = new List<Entity>();
@@ -66,22 +70,9 @@ namespace MyGame
                 if (checkArea.Intersects(entity.BoundingBox))
                     possibleCollidingEntities.Add(entity);
             }
-            
-            foreach(var item in possibleCollidingEntities)
-            {
-                if(item.Collider == Entity.CollisionType.Pixel)
-                {
-                    if (IsColliding(checkArea, new List<Entity>() { item }))
-                        collidingEntities.Add(item);
-                }
-                else if (item.Collider == Entity.CollisionType.Box)
-                {
-                    //if (IsOverlappingBox(new List<Entity>() { item })
-                    //    collidingEntities.Add(item);
-                }
-            }                
+                     
 
-            return collidingEntities;
+            return possibleCollidingEntities;
         }
 
         public override bool Colliding(Rectangle offset, Entity.CollisionType CollisionType = Entity.CollisionType.Pixel)
@@ -95,8 +86,8 @@ namespace MyGame
                 offset.Size
             );
 
-            checkArea.Size += new Point(AddWidth, AddHeight);
-            checkArea.Location -= new Point(AddWidth, AddHeight);
+            //checkArea.Size += new Point(AddWidth, AddHeight);
+            //checkArea.Location -= new Point(AddWidth, AddHeight);
 
             List<Entity> possibleCollidingEntities = new List<Entity>();
             foreach(Entity entity in Global.Entities.FindAll(e => e.LayerName == this.Entity.LayerName))

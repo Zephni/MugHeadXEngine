@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using StaticCoroutines;
+using System;
 
 namespace MonoXEngine.EntityComponents
 {
@@ -87,7 +88,7 @@ namespace MonoXEngine.EntityComponents
             {
                 spriteBatch.Draw(
                     this.Texture2D,
-                    new Rectangle(this.Entity.Position.ToPoint(), this.Entity.Size.ToPoint()),
+                    new Rectangle(new Point((int)Math.Floor(Entity.Position.X), (int)Math.Floor(Entity.Position.Y)), this.Entity.Size.ToPoint()),
                     this.SourceRectangle,
                     Color * this.Entity.Opacity,
                     this.Entity.Rotation,

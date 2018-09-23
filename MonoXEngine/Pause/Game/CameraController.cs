@@ -79,6 +79,8 @@ namespace MyGame
 
         public void Update()
         {
+            //if (Global.InputManager.Held(InputManager.Input.L1))
+            //    return;
             if (TargetX == null || TargetY == null)
                 return;
 
@@ -108,11 +110,10 @@ namespace MyGame
 
                 Vector2 xyDist = new Vector2(targetXY.X - camPos.X, targetXY.Y - camPos.Y);
                 double distance = Math.Sqrt(xyDist.X * xyDist.X + xyDist.Y * xyDist.Y);
-
                 
                 camPos += new Vector2(
-                    Math.Min(xyDist.X * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier,
-                    Math.Min(xyDist.Y * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier
+                    Math.Min(xyDist.X * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier * 0.5f,
+                    Math.Min(xyDist.Y * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier * 0.5f
                     );
 
                 if (Snapping)

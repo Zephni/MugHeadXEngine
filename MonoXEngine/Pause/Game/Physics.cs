@@ -47,6 +47,7 @@ namespace MyGame
             
         }
 
+        float floatingX;
         public override void Update()
         {
             if (Collider == null)
@@ -62,24 +63,35 @@ namespace MyGame
                 this.MoveX = Math.Min(Math.Max(this.MoveX, -this.MaxX), this.MaxX);
                 this.MoveY = Math.Min(Math.Max(this.MoveY, -this.MaxUp), this.MaxDown);
 
-                // X move
-                for (int X = 0; X < Math.Abs(this.MoveX); X++)
+                int addSubOne = 0;
+                if (Math.Abs(floatingX) >= 1)
                 {
-                    if (Collider.Colliding(new Point((MoveX > 0) ? 1 : -1, 0)))
+                    addSubOne = (floatingX >= 1) ? 1 : -1;
+                    floatingX += (floatingX >= 1) ? -1 : 1;
+                }
+
+                floatingX += MoveX % 1;
+                
+                int finalX = (int)this.MoveX + addSubOne;
+
+                // X move
+                for (int X = 0; X < Math.Abs(finalX); X++)
+                {
+                    if (Collider.Colliding(new Point((finalX > 0) ? 1 : -1, 0)))
                     {
                         // Upwards slope check
-                        if (IsGrounded && !Collider.Colliding(new Point((MoveX > 0) ? 1 : -1, -1)))
+                        if (IsGrounded && !Collider.Colliding(new Point((finalX > 0) ? 1 : -1, -1)))
                             this.Entity.Position.Y -= 1;
                         else
                             this.MoveX = 0;
                     }
 
                     // Downwards slope check
-                    if (IsGrounded && !Collider.Colliding(new Point((MoveX > 0) ? 1 : -1, 1)) && !Collider.Colliding(new Point((MoveX > 0) ? 1 : -1, 1), Entity.CollisionType.Platform))
+                    if (IsGrounded && !Collider.Colliding(new Point((finalX > 0) ? 1 : -1, 1)) && !Collider.Colliding(new Point((finalX > 0) ? 1 : -1, 1), Entity.CollisionType.Platform))
                         this.Entity.Position.Y += 1;
 
                     if (this.MoveX != 0)
-                        this.Entity.Position.X += (this.MoveX > 0) ? 1 : -1;
+                        this.Entity.Position.X += (finalX > 0) ? 1 : -1;
                 }
 
                 // Y move

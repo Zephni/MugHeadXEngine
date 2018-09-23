@@ -127,6 +127,7 @@ namespace MonoXEngine
                 Global.Entities[I].Update();
 
             Coroutines.Update(Global.DeltaTime);
+
             base.Update(gameTime);
         }
 

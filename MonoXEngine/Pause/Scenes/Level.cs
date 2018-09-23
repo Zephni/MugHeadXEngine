@@ -44,6 +44,7 @@ namespace MyGame.Scenes
                     component.Color = Color.Yellow;
 
                     entity.UpdateAction = e => {
+                        component.String = "";
                         //component.String = "Entities: " + Global.CountEntities().ToString() + ", Coroutines: " + Coroutines.Count.ToString() + ", FPS: " + Global.FPS.ToString();
                         //component.String = String.Join(", ", GameGlobal.Player.GetComponent<MainCollider>().PrevCollidingTriggers.Select(x => x.Name).ToArray());
                         component.String += (GameGlobal.DebugString.Length > 0 ) ? " | " +GameGlobal.DebugString : "";
@@ -149,7 +150,7 @@ namespace MyGame.Scenes
             {
                 entity.LayerName = "Main";
                 entity.SortingLayer = 10;
-                entity.Position = GameGlobal.Player.Position + new Vector2(16 * 2, 0);
+                entity.Position = GameGlobal.Player.Position + new Vector2(32 * 2, 0);
                 entity.AddComponent(new Sprite()).Run<Sprite>(sprite =>
                 {
                     sprite.BuildRectangle(new Point(32, 16), Color.White);
@@ -170,7 +171,7 @@ namespace MyGame.Scenes
 
             LevelTime += Global.DeltaTime;
 
-            CameraController.Update();
+            MyGame.CameraController.Instance.Update();
 
             // Temp speed up game
             if (Keyboard.GetState().IsKeyDown(Keys.W))

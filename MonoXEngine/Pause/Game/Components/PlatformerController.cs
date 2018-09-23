@@ -3,7 +3,7 @@ using MonoXEngine.EntityComponents;
 
 namespace MyGame
 {
-    public class PlatformerController : Physics
+    public class PlatformerControllerUnused : Physics
     {
         public float Acceleration;
         public float Deceleration;
@@ -14,7 +14,7 @@ namespace MyGame
 
         BaseCollider passThru;
 
-        public PlatformerController(BaseCollider collider)
+        public PlatformerControllerUnused(BaseCollider collider)
         {
             Acceleration = 4f;
             Deceleration = 4f;
@@ -42,7 +42,7 @@ namespace MyGame
 
             if (MovementEnabled && Global.InputManager.Held(InputManager.Input.Left))
                 MoveX -= Acceleration * Global.DeltaTime;
-            if(MoveX < 0)
+            if (MoveX < 0)
             {
                 MoveX += Deceleration * Global.DeltaTime;
                 if (MoveX >= -Deceleration * Global.DeltaTime) MoveX = 0;
