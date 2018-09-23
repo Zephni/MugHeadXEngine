@@ -41,12 +41,13 @@ namespace MyGame.Enemies
             TriggerCollider = new Entity(entity => {
                 entity.Name = "Enemy";
                 entity.LayerName = "Main";
+                entity.SortingLayer = 100;
                 entity.Collider = Entity.CollisionType.Pixel;
                 entity.Trigger = true;
                 entity.Data.Add("damage", Damage.ToString());
 
                 entity.AddComponent(new Sprite()).Run<Sprite>(sprite => {
-                    sprite.BuildRectangle(new Point(10, 10), Color.Blue);
+                    sprite.BuildRectangle(new Point(10, 10), Color.White);
                     sprite.Visible = false;
                 });
 

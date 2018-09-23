@@ -84,11 +84,15 @@ namespace MyGame
             return collidingEntities;
         }
 
-        public override bool Colliding(Point offset, Entity.CollisionType CollisionType = Entity.CollisionType.Pixel)
+        public override bool Colliding(Rectangle offset, Entity.CollisionType CollisionType = Entity.CollisionType.Pixel)
         {
+            int sx = (offset.Size.X == 0) ? (int)Entity.Size.X : offset.Size.X;
+            int sy = (offset.Size.Y == 0) ? (int)Entity.Size.Y : offset.Size.Y;
+            offset.Size = new Point(sx, sy);
+
             Rectangle checkArea = new Rectangle(
-                (this.Entity.Position.ToPoint() - (this.Entity.Size/2).ToPoint()) + offset,
-                this.Entity.Size.ToPoint()
+                (Entity.Position - Entity.Size/2).ToPoint() + offset.Location,
+                offset.Size
             );
 
             checkArea.Size += new Point(AddWidth, AddHeight);

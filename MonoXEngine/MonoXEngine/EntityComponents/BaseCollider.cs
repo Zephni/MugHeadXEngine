@@ -6,7 +6,11 @@ namespace MonoXEngine.EntityComponents
 {
     public abstract class BaseCollider : EntityComponent
     {
-        public abstract bool Colliding(Point offset, Entity.CollisionType CollisionType = Entity.CollisionType.Pixel);
+        public abstract bool Colliding(Rectangle offset, Entity.CollisionType CollisionType = Entity.CollisionType.Pixel);
+        public virtual bool Colliding(Point offset, Entity.CollisionType CollisionType = Entity.CollisionType.Pixel)
+        {
+            return Colliding(new Rectangle(offset, Point.Zero));
+        }
 
         public override void Start()
         {
