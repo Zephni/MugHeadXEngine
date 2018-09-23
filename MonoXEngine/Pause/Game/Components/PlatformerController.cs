@@ -42,14 +42,14 @@ namespace MyGame
 
             if (MovementEnabled && Global.InputManager.Held(InputManager.Input.Left))
                 MoveX -= Acceleration * Global.DeltaTime;
-            else if(MoveX < 0)
+            if(MoveX < 0)
             {
                 MoveX += Deceleration * Global.DeltaTime;
                 if (MoveX >= -Deceleration * Global.DeltaTime) MoveX = 0;
             }
             if (MovementEnabled && Global.InputManager.Held(InputManager.Input.Right))
                 MoveX += Acceleration * Global.DeltaTime;
-            else if (MoveX > 0)
+            if (MoveX > 0)
             {
                 MoveX -= Deceleration * Global.DeltaTime;
                 if (MoveX <= Deceleration * Global.DeltaTime) MoveX = 0;

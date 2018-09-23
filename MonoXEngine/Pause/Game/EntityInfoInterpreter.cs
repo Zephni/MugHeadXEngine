@@ -132,7 +132,7 @@ namespace MyGame
                     entity.Name = "InteractScript";
                     entity.LayerName = "Main";
                     entity.Collider = Entity.CollisionType.Pixel;
-                    entity.Trigger = true;
+                    entity.Trigger = Entity.TriggerTypes.NonSolid;
 
                     entity.Data.Add("Script", data.GetString("script"));
 
@@ -162,7 +162,7 @@ namespace MyGame
                     entity.Name = "TouchScript";
                     entity.LayerName = "Main";
                     entity.Collider = Entity.CollisionType.Pixel;
-                    entity.Trigger = true;
+                    entity.Trigger = Entity.TriggerTypes.NonSolid;
 
                     entity.Data.Add("Script", data.GetString("script"));
 
@@ -221,7 +221,7 @@ namespace MyGame
                 new Entity(entity => {
                     entity.Name = "Chest";
                     entity.LayerName = "Main";
-                    entity.Trigger = true;
+                    entity.Trigger = Entity.TriggerTypes.NonSolid;
                     entity.Collider = Entity.CollisionType.Pixel;
                     entity.SortingLayer = GameGlobal.Player.SortingLayer - 1;
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
@@ -240,7 +240,7 @@ namespace MyGame
                 new Entity(entity => {
                     entity.Name = "NPC";
                     entity.LayerName = "Main";
-                    entity.Trigger = true;
+                    entity.Trigger = Entity.TriggerTypes.NonSolid;
                     entity.Collider = Entity.CollisionType.Pixel;
                     entity.SortingLayer = GameGlobal.Player.SortingLayer;
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
@@ -257,7 +257,7 @@ namespace MyGame
                 new Entity(entity => {
                     entity.Name = "Water";
                     entity.LayerName = "Main";
-                    entity.Trigger = true;
+                    entity.Trigger = Entity.TriggerTypes.NonSolid;
                     entity.Collider = Entity.CollisionType.Pixel;
                     entity.SortingLayer = 4;
                     entity.Opacity = 1f;
@@ -350,7 +350,7 @@ namespace MyGame
                     entity.Name = "AutoDoor";
                     entity.LayerName = "Main";
                     entity.Collider = Entity.CollisionType.Pixel;
-                    entity.Trigger = true;
+                    entity.Trigger = Entity.TriggerTypes.NonSolid;
 
                     ZInterpreter data = new ZInterpreter(entityInfo.Data);
                     entity.Data.Add("Level", data.GetString("level"));
@@ -370,7 +370,7 @@ namespace MyGame
                     entity.Name = "Door";
                     entity.LayerName = "Main";
                     entity.Collider = Entity.CollisionType.Pixel;
-                    entity.Trigger = true;
+                    entity.Trigger = Entity.TriggerTypes.NonSolid;
 
                     ZInterpreter data = new ZInterpreter(entityInfo.Data);
                     entity.Data.Add("Level", data.GetString("level"));
@@ -425,7 +425,7 @@ namespace MyGame
             else if(entityInfo.Name == "CameraLock")
             {
                 new Entity(entity => {
-                    entity.Trigger = true;
+                    entity.Trigger = Entity.TriggerTypes.NonSolid;
                     entity.Name = "CameraLock";
                     entity.LayerName = "Main";
                     entity.Collider = Entity.CollisionType.Pixel;

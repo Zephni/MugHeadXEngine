@@ -143,8 +143,26 @@ namespace MyGame.Scenes
                     GameGlobal.Fader.RunFunction("FadeIn");
                 });
             }
+
+            // Test
+            new Entity(entity =>
+            {
+                entity.LayerName = "Main";
+                entity.SortingLayer = 10;
+                entity.Position = GameGlobal.Player.Position + new Vector2(16 * 2, 0);
+                entity.AddComponent(new Sprite()).Run<Sprite>(sprite =>
+                {
+                    sprite.BuildRectangle(new Point(32, 16), Color.White);
+                });
+
+                entity.AddComponent(new MovablePlatform(entity.Position)).Run<MovablePlatform>(mp =>
+                {
+                    mp.Speed = 1f;
+                    mp.XDistance = 32;
+                });
+            });
         }
-        
+
         public override void Update()
         {
             if (LevelTime < 0.5f)

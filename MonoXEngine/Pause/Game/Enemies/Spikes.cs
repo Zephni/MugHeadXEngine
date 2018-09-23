@@ -43,7 +43,7 @@ namespace MyGame.Enemies
                 entity.Origin = new Vector2(0f, 0f);
                 entity.Collider = Entity.CollisionType.Box;
                 entity.BoxColliderRect = new Rectangle(0, 2, 10, 2);
-                entity.Trigger = true;
+                entity.Trigger = Entity.TriggerTypes.NonSolid;
                 entity.Data.Add("damage", Damage.ToString());
 
                 entity.AddComponent(new Sprite()).Run<Sprite>(sprite => {

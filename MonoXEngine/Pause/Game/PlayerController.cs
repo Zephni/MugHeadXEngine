@@ -122,7 +122,7 @@ namespace MugHeadXEngine.EntityComponents
         {
             Entity.Name = "Player";
             Entity.LayerName = "Main";
-            Entity.Trigger = true;
+            Entity.Trigger = Entity.TriggerTypes.NonSolid;
             Entity.Collider = Entity.CollisionType.Pixel;
 
             this.Entity.AddComponent(passThru);

@@ -28,7 +28,7 @@ namespace MyGame
                 entity.Name = "SavePoint";
                 entity.Position = entityInfo.Position * 16;
                 entity.LayerName = "Main";
-                entity.Trigger = true;
+                entity.Trigger = Entity.TriggerTypes.NonSolid;
                 //entity.SortingLayer = GameGlobal.PlayerGraphicEntity.SortingLayer-1;
                 entity.Origin = Vector2.Zero;
                 entity.AddComponent(new Sprite()).Run<Sprite>(sprite => {

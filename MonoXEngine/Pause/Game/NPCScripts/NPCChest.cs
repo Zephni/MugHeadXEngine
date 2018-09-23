@@ -19,7 +19,7 @@ namespace MyGame
             new Entity(entity => {
                 entity.Name = "NPCChest";
                 entity.LayerName = "Main";
-                entity.Trigger = true;
+                entity.Trigger = Entity.TriggerTypes.NonSolid;
                 entity.Collider = Entity.CollisionType.Pixel;
                 entity.SortingLayer = GameGlobal.PlayerGraphicEntity.SortingLayer - 1;
                 entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;

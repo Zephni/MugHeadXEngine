@@ -28,7 +28,14 @@ namespace MonoXEngine
 
         private Dictionary<string, Action<Entity, Action<Entity>>> Functions = new Dictionary<string, Action<Entity, Action<Entity>>>();
 
-        public bool Trigger = false;
+        public enum TriggerTypes
+        {
+            None,
+            NonSolid,
+            Solid
+        }
+
+        public TriggerTypes Trigger = TriggerTypes.None;
         public Action<Entity> CollidedWithTrigger;
         public Action<Entity> CollidingWithTrigger;
         public Action<Entity> UnCollidedWithTrigger;
@@ -92,7 +99,7 @@ namespace MonoXEngine
             {
                 this.LayerName = Global.MainSettings.Get<string>(new string[] { "Defaults", "Layer" });
                 Global.Entities.Add(this);
-                if(action != null)
+                if (action != null)
                     action.Invoke(this);
                 this.Start();
             }
@@ -105,7 +112,7 @@ namespace MonoXEngine
         public Entity BuildPrefab(string layerName = null)
         {
             Entity newEntity = Cloner.Copy(this);
-            
+
             if (layerName == null)
                 newEntity.LayerName = Global.MainSettings.Get<string>(new string[] { "Defaults", "Layer" });
             else
@@ -155,7 +162,7 @@ namespace MonoXEngine
         public Action<Entity> UpdateAction;
         public virtual void Update()
         {
-            if(this.UpdateAction != null)
+            if (this.UpdateAction != null)
                 UpdateAction(this);
 
             foreach (EntityComponent component in this.EntityComponents)
@@ -185,7 +192,7 @@ namespace MonoXEngine
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            foreach(Drawable drawable in this.EntityComponents.FindAll(
+            foreach (Drawable drawable in this.EntityComponents.FindAll(
                 e => e.GetType().IsSubclassOf(typeof(Drawable)) || e.GetType() == typeof(Drawable)))
             {
                 drawable.Draw(spriteBatch);

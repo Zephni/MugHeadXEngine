@@ -43,7 +43,7 @@ namespace MyGame.Enemies
                 entity.LayerName = "Main";
                 entity.SortingLayer = 100;
                 entity.Collider = Entity.CollisionType.Pixel;
-                entity.Trigger = true;
+                entity.Trigger = Entity.TriggerTypes.NonSolid;
                 entity.Data.Add("damage", Damage.ToString());
 
                 entity.AddComponent(new Sprite()).Run<Sprite>(sprite => {
@@ -70,7 +70,7 @@ namespace MyGame.Enemies
                 entity.Position = (entityInfo.Position * 16);
                 entity.Origin = new Vector2(0.5f, 1f);
                 entity.Collider = Entity.CollisionType.Pixel;
-                entity.Trigger = true;
+                entity.Trigger = Entity.TriggerTypes.NonSolid;
 
                 if (Planted == "top")
                 {

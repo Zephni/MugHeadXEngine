@@ -143,10 +143,13 @@ namespace MyGame
                         for (int I = 0; I < colors.Length; I++)
                             if (colors[I].A != byte.MinValue)
                             {
-                                if (entity.Trigger)
+                                if (entity.Trigger != Entity.TriggerTypes.None)
                                 {
                                     if (!CollidingTriggers.Contains(entity))
                                         CollidingTriggers.Add(entity);
+
+                                    if (entity.Trigger == Entity.TriggerTypes.Solid)
+                                        return true;
                                 }
                                 else
                                 {
@@ -163,10 +166,13 @@ namespace MyGame
                     );
                     if (Entity.BoundingBox.Intersects(rect))
                     {
-                        if (entity.Trigger)
+                        if (entity.Trigger != Entity.TriggerTypes.None)
                         {
                             if (!CollidingTriggers.Contains(entity))
                                 CollidingTriggers.Add(entity);
+
+                            if (entity.Trigger == Entity.TriggerTypes.Solid)
+                                return true;
                         }
                         else
                         {

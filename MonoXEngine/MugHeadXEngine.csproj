@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="MonoXEngine\EntityComponents\BaseCollider.cs" />
+    <Compile Include="Pause\Game\Components\MovablePlatform.cs" />
     <Compile Include="Pause\Game\Enemies\Spikes.cs" />
     <Compile Include="Pause\Game\RenderBlender.cs" />
     <Compile Include="Pause\Game\Physics.cs" />
