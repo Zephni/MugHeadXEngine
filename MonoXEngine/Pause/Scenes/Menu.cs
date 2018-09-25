@@ -100,25 +100,35 @@ namespace MyGame.Scenes
                     }
                     else if (result == "options")
                     {
-
-                        Option muteOption = new Option("mute", "Mute: "+((Global.AudioController.MasterVolume == 0) ? "Yes" : "No"), new Vector2(0, 0));
+                        Option fullscreenOption = new Option("fullscreen", "FULL SCREEN: " + ((MonoXEngineGame.Instance.Graphics.IsFullScreen) ? "YES" : "NO"), new Vector2(0, 0));
+                        Option muteOption = new Option("mute", "MUTE: " + ((Global.AudioController.MasterVolume == 0) ? "YES" : "NO"), new Vector2(0, 16));
 
                         GameMethods.ShowOptionSelector(
                             new Vector2(-66, -70),
                             new List<Option>() {
+                                fullscreenOption,
                                 muteOption,
-                                new Option("back", "Back", new Vector2(0, 16))
+                                new Option("back", "BACK", new Vector2(0, 32))
                             },
                             optResult =>
                             {
+                                if (optResult == "fullscreen")
+                                {
+                                    MonoXEngineGame.Instance.Graphics.ToggleFullScreen();
+                                    fullscreenOption.Text = "FULL SCREEN: " + ((MonoXEngineGame.Instance.Graphics.IsFullScreen) ? "YES" : "NO");
+                                }
                                 if (optResult == "mute")
                                 {
                                     Global.AudioController.MasterVolume = ((Global.AudioController.MasterVolume == 0) ? 1 : 0);
-                                    MainMenu();
+                                    muteOption.Text = "MUTE: " + ((Global.AudioController.MasterVolume == 0) ? "YES" : "NO");
                                 }
                                 else if (optResult == "back")
+                                {
+                                    GameMethods.CurrentOptionSelector.Close();
                                     MainMenu();
+                                }
                             }
+                            , false
                         );
                     }
                 });

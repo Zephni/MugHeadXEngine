@@ -75,9 +75,14 @@ namespace MyGame
             }
         }
 
-        public void Build(Vector2 position, List<Option> optionList, Action<string> action = null, string texture9Patch = "Defaults/9Patch_8")
+        public bool CloseAfter = true;
+        public List<Option> CurrentOptions;
+
+        public void Build(Vector2 position, List<Option> optionList, Action<string> action = null, bool closeAfter = true, string texture9Patch = "Defaults/9Patch_8")
         {
             Selecting = true;
+            CloseAfter = closeAfter;
+            CurrentOptions = optionList;
 
             Selector = new Entity(entity => {
                 entity.LayerName = DefaultLayerName;
@@ -133,11 +138,21 @@ namespace MyGame
         {
             action?.Invoke(SelectedOption.ID);
 
-            for (int I = 0; I < optionList.Count; I++)
-                optionList[I].Destroy();
+            if(CloseAfter)
+            {
+                Close();
+            }
+        }
+
+        public void Close()
+        {
+            for (int I = 0; I < CurrentOptions.Count; I++)
+                CurrentOptions[I].Destroy();
 
             Container.Destroy();
             Selector.Destroy();
+
+            CurrentOptions = new List<Option>();
 
             Selecting = false;
         }

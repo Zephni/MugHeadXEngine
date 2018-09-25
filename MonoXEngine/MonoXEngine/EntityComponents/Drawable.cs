@@ -92,7 +92,7 @@ namespace MonoXEngine.EntityComponents
                     this.SourceRectangle,
                     Color * this.Entity.Opacity,
                     this.Entity.Rotation,
-                    this.Entity.Origin * this.Entity.Size,
+                    (this.Entity.Origin * this.Entity.Size).ToPoint().ToVector2(), // Hmm
                     SpriteEffect,
                     0
                 );

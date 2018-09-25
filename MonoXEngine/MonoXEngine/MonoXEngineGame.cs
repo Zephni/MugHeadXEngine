@@ -21,7 +21,7 @@ namespace MonoXEngine
         /// <summary>
         /// GraphicsDeviceManager must be defined in construct
         /// </summary>
-        private GraphicsDeviceManager Graphics;
+        public GraphicsDeviceManager Graphics;
 
         /// <summary>
         /// ViewportTexture
@@ -58,7 +58,11 @@ namespace MonoXEngine
                     this.ViewportTexture.WindowSizeUpdate();
                 };
             }
-            
+
+            // Presets
+            IsFixedTimeStep = false;
+            Graphics.SynchronizeWithVerticalRetrace = true;
+
             // Full screen
             if (Global.MainSettings.Get<string>("Viewport", "FullScreen").ToLower() == "true")
             {

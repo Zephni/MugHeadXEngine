@@ -56,18 +56,20 @@ namespace MyGame
             });
         }
 
-        public static void ShowOptionSelector(Vector2 position, List<Option> optionList, Action<string> action = null, Entity player = null, string texture9Patch = "Defaults/9Patch_8")
+        public static OptionSelector CurrentOptionSelector;
+        public static void ShowOptionSelector(Vector2 position, List<Option> optionList, Action<string> action = null, bool closeAfter = true, Entity player = null, string texture9Patch = "Defaults/9Patch_8")
         {
             if(player != null)
                 player.GetComponent<PlayerController>().MovementEnabled = false;
 
             OptionSelector os = new OptionSelector();
+            CurrentOptionSelector = os;
             os.Build(position, optionList, result => {
                 action?.Invoke(result);
 
                 if (player != null)
                     player.GetComponent<PlayerController>().MovementEnabled = true;
-            }, texture9Patch);
+            }, closeAfter, texture9Patch);
         }
 
         public static void ShowMessages(List<MessageBox> Messages, bool? DisablePlayerMovement = null, Action action = null, bool overrideInteraction = false)

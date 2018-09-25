@@ -40,8 +40,6 @@ C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoX
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Graphics\TheTree.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Fonts\Arial-12.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Fonts\HeartbitXX.xnb
-C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\MyGame\Game\Levels\TheTree.lvl
-C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\MyGame\MainSettings.xml
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\MugHeadXEngine.exe
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\MugHeadXEngine.pdb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\MonoGame.Framework.dll
@@ -88,14 +86,12 @@ C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Backgrounds\RockyBG.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Tilesets\RockyCave.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Graphics\Torch.xnb
-C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\MyGame\Game\Levels\UnderCave.lvl
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Entities\Seagull.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Graphics\Rock1.xnb
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Entities\Seagull.xnb
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Graphics\BigBear.xnb
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Graphics\Rock1.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Graphics\BigBear.xnb
-C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\MyGame\Game\Levels\TheTreeCave.lvl
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Backgrounds\DarkCaveBG.xnb
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Entities\Chest_Majestic.xnb
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\Music\Overworld Happy.xnb
@@ -120,10 +116,7 @@ C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoX
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\Splash.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\Waterfall.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Tilesets\MysticCave.xnb
-C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Graphics\CaveRockWaterFall.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Graphics\Splash.xnb
-C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\MyGame\Game\Levels\MiniCavePassage.lvl
-C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\MyGame\Game\Levels\MysticCave.lvl
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Backgrounds\RockyBG2.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Entities\Enemies\WallCrab.xnb
 C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Entities\SavePoint.xnb
@@ -153,3 +146,16 @@ C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Pause\MainSettings.xml
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Entities\Enemies\Spikes.xnb
 C:\Users\Zephni\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Fonts\HeartbitBold.xnb
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Entities\Enemies\Spikes.xnb
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Graphics\EarthRock.xnb
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Graphics\WaterFall.xnb
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\Died.xnb
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\Hurt.xnb
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Audio\SFX\Save.xnb
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Content\Fonts\HeartbitBold.xnb
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Pause\Game\Levels\UnderCave.lvl
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Pause\Game\Levels\TheTree.lvl
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Pause\Game\Levels\TheTreeCave.lvl
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Pause\Game\Levels\MiniCavePassage.lvl
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Pause\Game\Levels\MysticCave.lvl
+C:\Users\craig.dennis\Documents\Visual Studio 2017\Projects\MugHeadXEngine\MonoXEngine\bin\Windows\x86\Debug\Pause\MainSettings.xml
