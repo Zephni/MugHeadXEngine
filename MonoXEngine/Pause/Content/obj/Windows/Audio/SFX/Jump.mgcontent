@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Pause/Content/Audio/SFX/Jump.wav</SourceFile>
-  <SourceTime>2018-09-18T18:25:22.1552987+01:00</SourceTime>
+  <SourceTime>2018-10-01T21:53:10.7832921+01:00</SourceTime>
   <DestFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Pause/Content/bin/Windows/Audio/SFX/Jump.xnb</DestFile>
-  <DestTime>2018-09-22T11:50:30.5865899+01:00</DestTime>
+  <DestTime>2018-10-01T22:24:01.9252814+01:00</DestTime>
   <Importer>WavImporter</Importer>
   <ImporterTime>2017-03-01T15:05:36+00:00</ImporterTime>
   <Processor>SoundEffectProcessor</Processor>

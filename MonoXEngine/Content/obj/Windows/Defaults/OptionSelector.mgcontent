@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/craig.dennis/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Pause/Content/Defaults/OptionSelector.png</SourceFile>
-  <SourceTime>2018-09-28T09:05:47.8958746+01:00</SourceTime>
-  <DestFile>C:/Users/craig.dennis/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Content/bin/Windows/Defaults/OptionSelector.xnb</DestFile>
-  <DestTime>2018-09-28T13:34:16.1734329+01:00</DestTime>
+  <SourceFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Pause/Content/Defaults/OptionSelector.png</SourceFile>
+  <SourceTime>2018-10-01T21:53:10.8093156+01:00</SourceTime>
+  <DestFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Content/bin/Windows/Defaults/OptionSelector.xnb</DestFile>
+  <DestTime>2018-10-01T21:53:36.3534863+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T15:05:36+00:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

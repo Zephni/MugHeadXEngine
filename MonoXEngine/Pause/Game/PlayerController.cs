@@ -575,13 +575,13 @@ namespace MugHeadXEngine.EntityComponents
                 Direction = Pushing;
                 if(Pushing == 1)
                 {
-                    if (Global.InputManager.Held(InputManager.Input.Left) && !Entity.GetComponent<MainCollider>().Colliding(new Rectangle(-1, -2, 1, (int)Entity.Size.Y - 2))) { Entity.Position.X -= 1; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
-                    if (Global.InputManager.Held(InputManager.Input.Right) && !PushingObject.GetComponent<MainCollider>().Colliding(new Rectangle((int)PushingObject.Size.X+2, -2, 1, (int)PushingObject.Size.Y - 2))) { Entity.Position.X += 1; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
+                    if (Global.InputManager.Held(InputManager.Input.Left) && !Entity.GetComponent<MainCollider>().Colliding(new Rectangle(-1, -2, 1, (int)Entity.Size.Y - 2))) { Entity.Position.X -= 0.5f; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
+                    if (Global.InputManager.Held(InputManager.Input.Right) && !PushingObject.GetComponent<MainCollider>().Colliding(new Rectangle((int)PushingObject.Size.X+2, -2, 1, (int)PushingObject.Size.Y - 2))) { Entity.Position.X += 0.5f; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
                 }
                 else if(Pushing == -1)
                 {
-                    if (Global.InputManager.Held(InputManager.Input.Left) && !PushingObject.GetComponent<MainCollider>().Colliding(new Rectangle(-2, -2, 1, (int)PushingObject.Size.Y - 2))) { Entity.Position.X -= 1; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
-                    if (Global.InputManager.Held(InputManager.Input.Right) && !Entity.GetComponent<MainCollider>().Colliding(new Rectangle((int)Entity.Size.X+1, -2, 1, (int)Entity.Size.Y - 2))) { Entity.Position.X += 1; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
+                    if (Global.InputManager.Held(InputManager.Input.Left) && !PushingObject.GetComponent<MainCollider>().Colliding(new Rectangle(-2, -2, 1, (int)PushingObject.Size.Y - 2))) { Entity.Position.X -= 0.5f; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
+                    if (Global.InputManager.Held(InputManager.Input.Right) && !Entity.GetComponent<MainCollider>().Colliding(new Rectangle((int)Entity.Size.X+1, -2, 1, (int)Entity.Size.Y - 2))) { Entity.Position.X += 0.5f; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
                 }
                 
                 if (Global.InputManager.Pressed(InputManager.Input.Action2))

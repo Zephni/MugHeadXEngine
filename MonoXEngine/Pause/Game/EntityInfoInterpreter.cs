@@ -42,7 +42,7 @@ namespace MyGame
                     entity.SortingLayer = 10;
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
                     entity.AddComponent(new Sprite()).Run<Sprite>(sprite => {
-                        sprite.BuildRectangle(new Point(16, 16), Color.MediumPurple);
+                        sprite.LoadTexture("Graphics/WoodenBox");
                     });
                     entity.AddComponent(new MoveableObject());
                 });
