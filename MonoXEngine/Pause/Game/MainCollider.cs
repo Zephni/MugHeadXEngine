@@ -70,7 +70,6 @@ namespace MyGame
                 if (checkArea.Intersects(entity.BoundingBox))
                     possibleCollidingEntities.Add(entity);
             }
-                     
 
             return possibleCollidingEntities;
         }
@@ -86,8 +85,8 @@ namespace MyGame
                 offset.Size
             );
 
-            //checkArea.Size += new Point(AddWidth, AddHeight);
-            //checkArea.Location -= new Point(AddWidth, AddHeight);
+            checkArea.Size += new Point(AddWidth, AddHeight);
+            checkArea.Location -= new Point(AddWidth, AddHeight);
 
             List<Entity> possibleCollidingEntities = new List<Entity>();
             foreach(Entity entity in Global.Entities.FindAll(e => e.LayerName == this.Entity.LayerName))

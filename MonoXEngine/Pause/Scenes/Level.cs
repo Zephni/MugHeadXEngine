@@ -48,6 +48,7 @@ namespace MyGame.Scenes
                         //component.String = "Entities: " + Global.CountEntities().ToString() + ", Coroutines: " + Coroutines.Count.ToString() + ", FPS: " + Global.FPS.ToString();
                         //component.String = String.Join(", ", GameGlobal.Player.GetComponent<MainCollider>().PrevCollidingTriggers.Select(x => x.Name).ToArray());
                         component.String += (GameGlobal.DebugString.Length > 0 ) ? " | " +GameGlobal.DebugString : "";
+                        GameGlobal.DebugString = "";
                     };
                 });
             });
@@ -144,24 +145,6 @@ namespace MyGame.Scenes
                     GameGlobal.Fader.RunFunction("FadeIn");
                 });
             }
-
-            // Test
-            new Entity(entity =>
-            {
-                entity.LayerName = "Main";
-                entity.SortingLayer = 10;
-                entity.Position = GameGlobal.Player.Position + new Vector2(32 * 2, 0);
-                entity.AddComponent(new Sprite()).Run<Sprite>(sprite =>
-                {
-                    sprite.BuildRectangle(new Point(32, 16), Color.White);
-                });
-
-                entity.AddComponent(new MovablePlatform(entity.Position)).Run<MovablePlatform>(mp =>
-                {
-                    mp.Speed = 1f;
-                    mp.XDistance = 32;
-                });
-            });
         }
 
         public override void Update()

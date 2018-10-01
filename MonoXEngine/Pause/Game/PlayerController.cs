@@ -26,6 +26,7 @@ namespace MugHeadXEngine.EntityComponents
         {
             None,
             Normal,
+            Pushing,
             Paddleing
         }
         public float Acceleration;
@@ -37,6 +38,8 @@ namespace MugHeadXEngine.EntityComponents
         public int Direction = 1;
         public bool Crouching = false;
         public bool ObstructCrouching = true;
+        public int Pushing = 0;
+        public Entity PushingObject;
         
         private MovementModes LastMovementMode = MovementModes.None;
         public MovementModes MovementMode = MovementModes.Normal;
@@ -161,7 +164,7 @@ namespace MugHeadXEngine.EntityComponents
 
             // New collides
             Entity.CollidedWithTrigger = obj => {
-                if(obj.Name == "MovablePlatform")
+                if (obj.Name == "MovablePlatform")
                 {
                     MainCollider mainCollider = Entity.GetComponent<MainCollider>();
                     if(mainCollider.CollidingWith(new Rectangle(1, (int)Entity.Size.Y+1, (int)Entity.Size.X-2, 1), entity => entity.Name == "MovablePlatform").Count > 0)
@@ -314,7 +317,7 @@ namespace MugHeadXEngine.EntityComponents
 
                 if (obj.Name == "CameraLock")
                 {
-                    if(!Crouching) // This is because of bug
+                    if(!Crouching && Pushing == 0) // This is because of bug
                     {
                         MyGame.Scenes.Level.CameraController.Target = GameGlobal.PlayerGraphicEntity;
                         MyGame.Scenes.Level.CameraController.ResetMinMax();
@@ -332,8 +335,12 @@ namespace MugHeadXEngine.EntityComponents
         private float WaterLevel = 0;
         public override void Update()
         {
+            // Override direction if pushing
+            if (Pushing != 0)
+                Direction = Pushing;
+
             // Movement mode change
-            if(MovementMode != LastMovementMode)
+            if (MovementMode != LastMovementMode)
             {
                 if(MovementMode == MovementModes.Normal)
                 {
@@ -421,11 +428,19 @@ namespace MugHeadXEngine.EntityComponents
 
             if (MovementMode != MovementModes.None && MovementEnabled)
             {
-                if (Global.InputManager.Held(InputManager.Input.Left) && !Global.InputManager.Held(InputManager.Input.Right)) Direction = -1;
-                else if (Global.InputManager.Held(InputManager.Input.Right) && !Global.InputManager.Held(InputManager.Input.Left)) Direction = 1;
-
                 // Direction
-                MyGame.Scenes.Level.CameraController.Offset = (Direction == -1) ? new Vector2(-16, 0) : new Vector2(16, 0);
+                // Override direction if pushing
+                if (MovementMode == MovementModes.Pushing)
+                {
+                    Direction = Pushing;
+                }
+                else
+                {
+                    if (Global.InputManager.Held(InputManager.Input.Left) && !Global.InputManager.Held(InputManager.Input.Right)) Direction = -1;
+                    else if (Global.InputManager.Held(InputManager.Input.Right) && !Global.InputManager.Held(InputManager.Input.Left)) Direction = 1;
+                    MyGame.Scenes.Level.CameraController.Offset = (Direction == -1) ? new Vector2(-16, 0) : new Vector2(16, 0);
+                }
+                    
             }
             else
             {
@@ -521,6 +536,23 @@ namespace MugHeadXEngine.EntityComponents
                         Crouching = false;
                         GameGlobal.PlayerGraphic.RunAnimation("Stand");
                     }
+
+                    // Pushing
+                    if (Pushing == 0)
+                    {
+                        PushingObject = null;
+                        MainCollider mainCollider = Entity.GetComponent<MainCollider>();
+                        List<Entity> movableObjects = mainCollider.CollidingWith(new Rectangle((Direction == 1) ? (int)Entity.Size.X + 1 : -1, -2, 1, (int)Entity.Size.Y - 2), p => p.Name == "MovableObject");
+                        if (movableObjects.Count > 0 && IsGrounded)
+                        {
+                            if (Global.InputManager.Pressed(InputManager.Input.Action2))
+                            {
+                                PushingObject = movableObjects[0];
+                                Pushing = Direction;
+                                MovementMode = MovementModes.Pushing;
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -537,9 +569,29 @@ namespace MugHeadXEngine.EntityComponents
                     }
                 }
             }
-
+            // Pushing movement
+            else if (MovementMode == MovementModes.Pushing)
+            {
+                Direction = Pushing;
+                if(Pushing == 1)
+                {
+                    if (Global.InputManager.Held(InputManager.Input.Left) && !Entity.GetComponent<MainCollider>().Colliding(new Rectangle(-1, -2, 1, (int)Entity.Size.Y - 2))) { Entity.Position.X -= 1; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
+                    if (Global.InputManager.Held(InputManager.Input.Right) && !PushingObject.GetComponent<MainCollider>().Colliding(new Rectangle((int)PushingObject.Size.X+2, -2, 1, (int)PushingObject.Size.Y - 2))) { Entity.Position.X += 1; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
+                }
+                else if(Pushing == -1)
+                {
+                    if (Global.InputManager.Held(InputManager.Input.Left) && !PushingObject.GetComponent<MainCollider>().Colliding(new Rectangle(-2, -2, 1, (int)PushingObject.Size.Y - 2))) { Entity.Position.X -= 1; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
+                    if (Global.InputManager.Held(InputManager.Input.Right) && !Entity.GetComponent<MainCollider>().Colliding(new Rectangle((int)Entity.Size.X+1, -2, 1, (int)Entity.Size.Y - 2))) { Entity.Position.X += 1; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
+                }
+                
+                if (Global.InputManager.Pressed(InputManager.Input.Action2))
+                {
+                    Pushing = 0;
+                    MovementMode = MovementModes.Normal;
+                }
+            }
             // Paddleing movement
-            if(MovementMode == MovementModes.Paddleing)
+            else if (MovementMode == MovementModes.Paddleing)
             {
                 if (MovementEnabled && GameGlobal.Player.Position.Y == WaterLevel + 1 && Global.InputManager.Pressed(InputManager.Input.Action1))
                 {

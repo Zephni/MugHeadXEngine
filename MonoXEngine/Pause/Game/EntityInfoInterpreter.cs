@@ -34,6 +34,37 @@ namespace MyGame
             {
                 GameGlobal.Player.Position = new Vector2(entityInfo.Position.X * 16, entityInfo.Position.Y * 16);
             }
+            else if (entityInfo.Name == "MovableObject")
+            {
+                ZInterpreter data = new ZInterpreter(entityInfo.Data);
+                new Entity(entity => {
+                    entity.LayerName = "Main";
+                    entity.SortingLayer = 10;
+                    entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
+                    entity.AddComponent(new Sprite()).Run<Sprite>(sprite => {
+                        sprite.BuildRectangle(new Point(16, 16), Color.MediumPurple);
+                    });
+                    entity.AddComponent(new MoveableObject());
+                });
+            }
+            else if (entityInfo.Name == "MovablePlatform")
+            {
+                ZInterpreter data = new ZInterpreter(entityInfo.Data);
+                new Entity(entity => {
+                    entity.LayerName = "Main";
+                    entity.SortingLayer = 10;
+                    entity.Position = entityInfo.Position * 16;
+                    entity.AddComponent(new Sprite()).Run<Sprite>(sprite => {
+                        sprite.BuildRectangle(new Point(32, 16), Color.White);
+                    });
+
+                    entity.AddComponent(new MovablePlatform(entity.Position)).Run<MovablePlatform>(mp => {
+                        mp.Speed = (data.HasKey("speed")) ? data.GetFloat("speed") : 1;
+                        mp.XDistance = (data.HasKey("xdistance")) ? data.GetFloat("xdistance") : 0;
+                        mp.YDistance = (data.HasKey("ydistance")) ? data.GetFloat("ydistance") : 0;
+                    });
+                });
+            }
             else if (entityInfo.Name == "LightSource")
             {
                 ZInterpreter data = new ZInterpreter(entityInfo.Data);

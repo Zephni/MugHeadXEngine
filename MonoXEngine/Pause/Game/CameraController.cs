@@ -34,8 +34,6 @@ namespace MyGame
         public float MaxStep = 1000;
         public float MaxDistance;
 
-        private bool Snapping = false;
-
         public static CameraController Instance = null;
 
         public CameraController()
@@ -68,8 +66,9 @@ namespace MyGame
         {
             if (_target == null)
             {
-                Global.Camera.Position = new Vector2(TargetX.Position.X, TargetY.Position.Y);
-                Snapping = true;
+                CoroutineHelper.RunUntil(0.2f, () => {
+                    Global.Camera.Position = new Vector2(TargetX.Position.X, TargetY.Position.Y);
+                });
             }
             else
             {
@@ -88,14 +87,6 @@ namespace MyGame
 
             if (Mode == Modes.LerpToTarget)
             {
-                if (Snapping)
-                {
-                    PrevEasing = Easing;
-                    PrevMaxStep = MaxStep;
-                    Easing = 1;
-                    MaxStep = 1000;
-                }
-                
                 Vector2 targetXY = new Vector2(TargetX.Position.X + Offset.X, TargetY.Position.Y + Offset.Y);
 
                 // Min, Max X, Y
@@ -112,17 +103,9 @@ namespace MyGame
                 double distance = Math.Sqrt(xyDist.X * xyDist.X + xyDist.Y * xyDist.Y);
                 
                 camPos += new Vector2(
-                    Math.Min(xyDist.X * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier * 0.5f,
-                    Math.Min(xyDist.Y * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier * 0.5f
+                    Math.Min(xyDist.X * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier * 1f,
+                    Math.Min(xyDist.Y * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier * 1f
                     );
-
-                if (Snapping)
-                {
-                    Snapping = false;
-                    SetDefault();
-                    Easing = PrevEasing;
-                    MaxStep = PrevMaxStep;
-                }
             }
             else if(Mode == Modes.SnapToTarget)
             {
