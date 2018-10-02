@@ -33,6 +33,8 @@ namespace MyGame
         public float Easing;
         public float MaxStep = 1000;
         public float MaxDistance;
+        public float SpeedMultiplier = 1;
+        public bool InstantExact = false;
 
         public static CameraController Instance = null;
 
@@ -41,12 +43,11 @@ namespace MyGame
             Mode = Modes.LerpToTarget;
             SetDefault();
 
-            if (Instance == null)
-                Instance = this;
+            Instance = this;
         }
 
-        private float PrevEasing;
-        private float PrevMaxStep;
+        //private float PrevEasing;
+        //private float PrevMaxStep;
 
         public void SetDefault()
         {
@@ -62,24 +63,19 @@ namespace MyGame
             MaxX = null;
         }
 
-        public void SnapOnce(Entity _target = null)
+        public void SnapOnce()
         {
-            if (_target == null)
-            {
-                CoroutineHelper.RunUntil(0.2f, () => {
-                    Global.Camera.Position = new Vector2(TargetX.Position.X, TargetY.Position.Y);
-                });
-            }
-            else
-            {
-                Global.Camera.Position = _target.Position;
-            }
+            CoroutineHelper.RunUntil(0.8f, () => {
+                InstantExact = true;
+            }, () => {
+                InstantExact = false;
+            });
         }
 
         public void Update()
         {
-            //if (Global.InputManager.Held(InputManager.Input.L1))
-            //    return;
+            if (Global.InputManager.Held(InputManager.Input.L1))
+                return;
             if (TargetX == null || TargetY == null)
                 return;
 
@@ -101,11 +97,18 @@ namespace MyGame
 
                 Vector2 xyDist = new Vector2(targetXY.X - camPos.X, targetXY.Y - camPos.Y);
                 double distance = Math.Sqrt(xyDist.X * xyDist.X + xyDist.Y * xyDist.Y);
-                
-                camPos += new Vector2(
-                    Math.Min(xyDist.X * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier * 1f,
-                    Math.Min(xyDist.Y * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier * 1f
+
+                if(!InstantExact)
+                {
+                    camPos += new Vector2(
+                    Math.Min(xyDist.X * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier * SpeedMultiplier,
+                    Math.Min(xyDist.Y * Easing, MaxStep) * MonoXEngineGame.Instance.DeltaTimeMultiplier * SpeedMultiplier
                     );
+                }
+                else
+                {
+                    camPos += xyDist;
+                }
             }
             else if(Mode == Modes.SnapToTarget)
             {

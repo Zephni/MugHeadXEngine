@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoXEngine;
 using MonoXEngine.EntityComponents;
 using MugHeadXEngine;
@@ -30,7 +31,14 @@ namespace MyGame
                     new MessageBox("Ziggy", "Why don't you try it on me!", obj.Position + new Vector2(16, -32))
                 }, true, () =>
                 {
-
+                    // Input icons
+                    if (GameData.Get("Tips/UpToInteract") == null)
+                    {
+                        GameData.Set("Tips/UpToInteract", "1");
+                        Texture2D texture2D = GameMethods.GetInputIcon(InputManager.Input.Up, Global.InputManager.CurrentInputType);
+                        GameMethods.DisplayInputIcon(texture2D, new Vector2(119 * 16 + 8, 57 * 16 + 8 + 2), () => { return false; });
+                        GameMethods.DisplayInputIcon(texture2D, Entity.Find("EarthRock").Position + new Vector2(-8, 32 + 2), () => { return false; });
+                    }
                 }
              );
         }

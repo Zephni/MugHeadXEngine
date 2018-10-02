@@ -109,6 +109,9 @@ namespace MyGame
                         this.Entity.Position.Y += (this.MoveY > 0) ? 1 : -1;
                 }
 
+                // Fix for entity collisions
+                Collider.Colliding(new Point(0, 0));
+
                 // Check if grounded or too deep in ground
                 this.IsGrounded = false;
                 if (Collider.Colliding(new Point(0, 1)) || (UsePlatforms && Collider.Colliding(new Point(0, 1), Entity.CollisionType.Platform) && !Collider.Colliding(new Point(0, 0), Entity.CollisionType.Platform)))

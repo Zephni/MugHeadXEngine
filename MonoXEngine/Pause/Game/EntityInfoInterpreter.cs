@@ -39,7 +39,7 @@ namespace MyGame
                 ZInterpreter data = new ZInterpreter(entityInfo.Data);
                 new Entity(entity => {
                     entity.LayerName = "Main";
-                    entity.SortingLayer = 10;
+                    entity.SortingLayer = GameGlobal.PlayerGraphicEntity.SortingLayer -1;
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
                     entity.AddComponent(new Sprite()).Run<Sprite>(sprite => {
                         sprite.LoadTexture("Graphics/WoodenBox");

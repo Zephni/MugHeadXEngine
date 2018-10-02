@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoXEngine;
 using MonoXEngine.EntityComponents;
 using MugHeadXEngine;
@@ -14,9 +15,8 @@ namespace MyGame.Scenes
     public class Menu : Scene
     {
         public Dictionary<string, string> DebugData = new Dictionary<string, string>() {
-            { "Level",                  "MysticCave" },
-            { "Levels/TheTree/Intro",   "True"},
-            { "Player/Position",    (15*16).ToString()+","+(38*16).ToString() }
+            { "Level",                  "Debug" }
+            //,{ "Player/Position",    (15*16).ToString()+","+(38*16).ToString() }
         };
 
         Entity DebugText;

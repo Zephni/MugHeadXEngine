@@ -64,6 +64,7 @@ namespace MugHeadXEngine.EntityComponents
                     s.AddAnimation(new Animation("Lay", 0.2f, new Point(32, 32), "0,3".ToPointList()));
                     s.AddAnimation(new Animation("Paddleing", 0.3f, new Point(32, 32), "0,4 1,4 2,4 3,4".ToPointList()));
                     s.AddAnimation(new Animation("Falling", 0.15f, new Point(32, 32), "1,5 2,5 3,5".ToPointList()));
+                    s.AddAnimation(new Animation("Pulling", 0.15f, new Point(32, 32), "0,6 1,6 2,6 3,6".ToPointList()));
                 });
             });
         }
@@ -572,6 +573,7 @@ namespace MugHeadXEngine.EntityComponents
             // Pushing movement
             else if (MovementMode == MovementModes.Pushing)
             {
+                int originalX = (int)Entity.Position.X;
                 Direction = Pushing;
                 if(Pushing == 1)
                 {
@@ -583,7 +585,13 @@ namespace MugHeadXEngine.EntityComponents
                     if (Global.InputManager.Held(InputManager.Input.Left) && !PushingObject.GetComponent<MainCollider>().Colliding(new Rectangle(-2, -2, 1, (int)PushingObject.Size.Y - 2))) { Entity.Position.X -= 0.5f; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
                     if (Global.InputManager.Held(InputManager.Input.Right) && !Entity.GetComponent<MainCollider>().Colliding(new Rectangle((int)Entity.Size.X+1, -2, 1, (int)Entity.Size.Y - 2))) { Entity.Position.X += 0.5f; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
                 }
-                
+
+                if(GameGlobal.PlayerGraphic.CurrentAnimation != "Pulling")
+                    GameGlobal.PlayerGraphic.RunAnimation("Pulling");
+
+                GameGlobal.PlayerGraphic.Paused = (originalX == (int)Entity.Position.X);
+
+
                 if (Global.InputManager.Pressed(InputManager.Input.Action2))
                 {
                     Pushing = 0;

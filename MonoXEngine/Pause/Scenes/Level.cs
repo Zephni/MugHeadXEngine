@@ -123,7 +123,7 @@ namespace MyGame.Scenes
                 Easing = 0.08f,
                 MaxStep = 1000
             };
-            CameraController.SnapOnce(GameGlobal.PlayerGraphicEntity);
+            CameraController.SnapOnce();
             CameraController.Mode = CameraController.Modes.LerpToTarget;
 
             // Level script
@@ -141,7 +141,8 @@ namespace MyGame.Scenes
 
             if (GameGlobal.Fader.Data["Cancel"] != "true")
             {
-                CoroutineHelper.WaitRun(0.05f, () => {
+                // This delay is currently for the camera repositioning if min / max are applied
+                CoroutineHelper.WaitRun(0.5f, () => {
                     GameGlobal.Fader.RunFunction("FadeIn");
                 });
             }
@@ -149,9 +150,6 @@ namespace MyGame.Scenes
 
         public override void Update()
         {
-            if (LevelTime < 0.5f)
-                CameraController.SnapOnce();
-
             LevelTime += Global.DeltaTime;
 
             MyGame.CameraController.Instance.Update();

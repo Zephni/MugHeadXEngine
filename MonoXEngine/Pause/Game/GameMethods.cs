@@ -23,6 +23,41 @@ namespace MyGame
             return (prop != null) ? (T)prop.GetValue(null, null) : default(T);
         }
 
+        public static void DisplayInputIcon(Texture2D texture2D, Vector2 position, Func<bool> until, Action callback = null)
+        {
+            new Entity(entity => {
+                entity.LayerName = "Main";
+                entity.SortingLayer = 10;
+                entity.Position = position;
+                entity.AddComponent(new Sprite()).Run<Sprite>(sprite => {
+                    sprite.Texture2D = texture2D;
+                });
+
+                float minOpacity = 0.6f;
+                float maxOpacity = 1f;
+
+                StaticCoroutines.CoroutineHelper.RunUntil(() => { return until(); }, () => {
+                    entity.Opacity = (maxOpacity - (maxOpacity - minOpacity) /2) + ((maxOpacity - minOpacity) / 2) * (float)Math.Sin(GameGlobal.TimeLoop * 5);
+                }, () => {
+                    callback?.Invoke();
+                    entity.Destroy();
+                });
+            });
+        }
+
+        public static Texture2D GetInputIcon(InputManager.Input input, InputManager.InputType inputType)
+        {
+            int iconSize = 16;
+
+            Texture2D allIconsTexture = MonoXEngineGame.Instance.Content.Load<Texture2D>("Graphics/InputIcons");
+            Color[] colors = new Color[iconSize * iconSize];
+            Rectangle rect = new Rectangle(/* X */(int)inputType * iconSize, /* Y */(int)input * iconSize, iconSize, iconSize);
+            allIconsTexture.GetData<Color>(0, rect, colors, 0, colors.Length);
+            Texture2D iconTexture = new Texture2D(Global.GraphicsDevice, iconSize, iconSize);
+            iconTexture.SetData(colors);
+            return iconTexture;
+        }
+
         public static void ShowDamage(int amount, Entity entity, Vector2 offset = default(Vector2))
         {
             amount = -amount;

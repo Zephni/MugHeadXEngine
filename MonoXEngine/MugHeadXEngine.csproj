@@ -45,6 +45,7 @@
     <Compile Include="Pause\Game\Components\MovablePlatform.cs" />
     <Compile Include="Pause\Game\Enemies\Spikes.cs" />
     <Compile Include="Pause\Game\Components\MovableObject.cs" />
+    <Compile Include="Pause\Game\LevelScripts\MysticCave.cs" />
     <Compile Include="Pause\Game\RenderBlender.cs" />
     <Compile Include="Pause\Game\Physics.cs" />
     <Compile Include="Pause\Game\MainCollider.cs" />
@@ -133,6 +134,9 @@
     </Content>
     <Content Include="Pause\Game\Levels\MysticCave.lvl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Pause\Game\Levels\Debug.lvl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup />
