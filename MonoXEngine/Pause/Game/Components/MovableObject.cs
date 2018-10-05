@@ -28,8 +28,8 @@ namespace MyGame
             if (!MainCollider.Colliding(new Rectangle((int)Entity.Size.Y, 0, 0, 1)))
                 Entity.Position.Y += 1;
 
-            while (MainCollider.Colliding(new Rectangle((int)Entity.Size.X + 1, 0, 1, (int)Entity.Size.Y - 1))) Entity.Position.X -= (1 - Heavyness);
-            while (MainCollider.Colliding(new Rectangle(-1, 0, 1, (int)Entity.Size.Y - 1))) Entity.Position.X += (1 - Heavyness);
+            //while (MainCollider.Colliding(new Rectangle((int)Entity.Size.X + 1, 0, 1, (int)Entity.Size.Y - 2))) Entity.Position.X -= (1 - Heavyness);
+            //while (MainCollider.Colliding(new Rectangle(-1, 0, 1, (int)Entity.Size.Y - 2))) Entity.Position.X += (1 - Heavyness);
             while (MainCollider.Colliding(new Rectangle(0, (int)Entity.Size.Y-1, 0, 1))) Entity.Position.Y--;
 
             if (Entity.Data.ContainsKey("PO_ID"))

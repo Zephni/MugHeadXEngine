@@ -573,7 +573,7 @@ namespace MugHeadXEngine.EntityComponents
                     if (Pushing == 0)
                     {
                         PushingObject = null;
-                        List<Entity> movableObjects = MainCollider.CollidingWith(new Rectangle((Direction == 1) ? (int)Entity.Size.X + 1 : -1, -2, 1, (int)Entity.Size.Y - 2), p => p.Name == "MovableObject");
+                        List<Entity> movableObjects = MainCollider.CollidingWith(new Rectangle((Direction == 1) ? (int)Entity.Size.X + 1 : -1, 0, 1, (int)Entity.Size.Y), p => p.Name == "MovableObject");
                         if (movableObjects.Count > 0 && IsGrounded)
                         {
                             if (Global.InputManager.Pressed(InputManager.Input.Action2))
@@ -605,6 +605,7 @@ namespace MugHeadXEngine.EntityComponents
             {
                 int originalX = (int)Entity.Position.X;
                 Direction = Pushing;
+
                 if (Pushing == 1)
                 {
                     if (Global.InputManager.Held(InputManager.Input.Left) && !MainCollider.Colliding(new Rectangle(-1, -2, 1, (int)Entity.Size.Y - 2))) { Entity.Position.X -= 0.5f; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
@@ -616,13 +617,18 @@ namespace MugHeadXEngine.EntityComponents
                     if (Global.InputManager.Held(InputManager.Input.Right) && !MainCollider.Colliding(new Rectangle((int)Entity.Size.X + 1, -2, 1, (int)Entity.Size.Y - 2))) { Entity.Position.X += 0.5f; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
                 }
 
+                if(MainCollider.Colliding(new Point(0, 0)))
+                {
+                    Entity.Position.Y -= 1;
+                }
+
                 if (GameGlobal.PlayerGraphic.CurrentAnimation != "Pulling")
                     GameGlobal.PlayerGraphic.RunAnimation("Pulling");
 
                 GameGlobal.PlayerGraphic.Paused = (originalX == (int)Entity.Position.X);
 
 
-                if (Global.InputManager.Pressed(InputManager.Input.Action2))
+                if (Global.InputManager.Pressed(InputManager.Input.Action2) || !MainCollider.Colliding(new Rectangle((Direction > 0) ? (int)Entity.Size.X + 1 : -1, -2, 1, (int)Entity.Size.Y - 2)))
                 {
                     Pushing = 0;
                     MovementMode = MovementModes.Normal;
