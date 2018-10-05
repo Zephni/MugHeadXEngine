@@ -34,6 +34,12 @@ namespace MyGame
             {
                 GameGlobal.Player.Position = new Vector2(entityInfo.Position.X * 16, entityInfo.Position.Y * 16);
             }
+            else if (entityInfo.Name == "Switch")
+            {
+                new Entity(entity => {
+                    entity.AddComponent(new Switch(entityInfo));
+                });
+            }
             else if (entityInfo.Name == "MovableObject")
             {
                 ZInterpreter data = new ZInterpreter(entityInfo.Data);

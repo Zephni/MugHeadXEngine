@@ -237,6 +237,32 @@ namespace MugHeadXEngine.EntityComponents
                     Hurt(Convert.ToInt16(obj.Data["damage"]));
                 }
 
+                if (obj.Name == "Switch")
+                {
+                    if (Global.InputManager.Pressed(InputManager.Input.Up))
+                    {
+                        MyGame.Switch _switch = obj.GetComponent<MyGame.Switch>();
+                        if(_switch.Entity.Data["value"] == "0")
+                            _switch.UpdateValue("1");
+                        else if (_switch.Entity.Data["value"] == "1")
+                            _switch.UpdateValue("0");
+
+                        string scriptKey = null;
+                        if (_switch.Entity.Data["value"] == "1" && _switch.Entity.Data.ContainsKey("onScript"))
+                            scriptKey = "onScript";
+                        else if (_switch.Entity.Data["value"] == "0" && _switch.Entity.Data.ContainsKey("onScript"))
+                            scriptKey = "offScript";
+
+                        if(scriptKey != null)
+                        {
+                            string[] script = obj.Data[scriptKey].Split('.');
+                            Type type = Type.GetType("MyGame." + script[0]);
+                            MethodInfo mi = type.GetMethod(script[1], BindingFlags.Static | BindingFlags.Public);
+                            mi.Invoke(null, new object[] { obj });
+                        }
+                    }
+                }
+
                 if (obj.Name == "InteractScript")
                 {
                     if (Global.InputManager.Pressed(InputManager.Input.Up))
@@ -469,7 +495,8 @@ namespace MugHeadXEngine.EntityComponents
             {
                 MoveX = 0;
                 MoveY = 0;
-                Kinetic = true;
+                //Kinetic = true;
+                Gravity = 0;
 
                 GameGlobal.PlayerGraphic.RunAnimation("Hanging");
 
@@ -498,7 +525,7 @@ namespace MugHeadXEngine.EntityComponents
                     MovementMode = MovementModes.HangingEdge;
                     MoveX = 0;
                     MoveY = 0;
-                    Kinetic = true;
+                    Gravity = 0;
                 }
 
                 if (!Crouching && MovementEnabled && Global.InputManager.Held(InputManager.Input.Left) && !Global.InputManager.Held(InputManager.Input.Right))

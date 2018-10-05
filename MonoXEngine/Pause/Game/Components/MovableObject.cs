@@ -11,7 +11,7 @@ namespace MyGame
 {
     public class MoveableObject : EntityComponent
     {
-        public float Heavyness = 0.5f;
+        public float Heavyness = 1f;
         public MainCollider MainCollider;
 
         public override void Start()
@@ -26,7 +26,7 @@ namespace MyGame
         public override void Update()
         {
             if (!MainCollider.Colliding(new Rectangle((int)Entity.Size.Y, 0, 0, 1)))
-                Entity.Position.Y += 1;
+                Entity.Position.Y += 2;
 
             //while (MainCollider.Colliding(new Rectangle((int)Entity.Size.X + 1, 0, 1, (int)Entity.Size.Y - 2))) Entity.Position.X -= (1 - Heavyness);
             //while (MainCollider.Colliding(new Rectangle(-1, 0, 1, (int)Entity.Size.Y - 2))) Entity.Position.X += (1 - Heavyness);

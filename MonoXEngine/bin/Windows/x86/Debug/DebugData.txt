@@ -1,1 +1,1 @@
-Level:!:Debug;!;Player/Direction:!:-1;!;Player/Position:!:284.5,198;!;PO_ID:DebugMO/Position:!:261.5,200
+Level:!:MysticCave;!;Player/Direction:!:1;!;Levels/TheTree/Intro:!:True;!;EarthRock/First:!:2;!;Tips/UpToInteract:!:1;!;Player/Position:!:1578,774;!;Switch_ID:MysticCave_HiddenPassage/Value:!:0;!;SavePoint/First:!:1;!;Tips/Action2ToPush:!:1

@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="MonoXEngine\EntityComponents\BaseCollider.cs" />
     <Compile Include="Pause\Game\Components\MovablePlatform.cs" />
+    <Compile Include="Pause\Game\Components\Switch.cs" />
     <Compile Include="Pause\Game\Enemies\Spikes.cs" />
     <Compile Include="Pause\Game\Components\MovableObject.cs" />
     <Compile Include="Pause\Game\LevelScripts\MysticCave.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Pause\Game\PlayerController.cs" />
     <Compile Include="Pause\Game\Scripts\Debug.cs" />
     <Compile Include="Pause\Game\Scripts\SavePoint.cs" />
+    <Compile Include="Pause\Game\Scripts\SwitchScripts.cs" />
     <Compile Include="Pause\Game\ZInterpreter.cs" />
     <Compile Include="Pause\Scenes\Level.cs" />
     <Compile Include="Pause\Scenes\Menu.cs" />

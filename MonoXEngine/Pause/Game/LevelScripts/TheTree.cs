@@ -55,6 +55,7 @@ namespace MyGame
             GameGlobal.PlayerController.MovementEnabled = false;
             GameGlobal.PlayerController.Kinetic = true;
             GameGlobal.PlayerGraphic.Visible = false;
+            GameGlobal.PlayerController.MovementMode = PlayerController.MovementModes.None;
 
             // Camera pan down
             Entity camePos = new Entity(e => { e.Position = GameGlobal.Player.Position + new Vector2(0, -800); });
@@ -150,6 +151,7 @@ namespace MyGame
                                     }, null, () => {
 
                                         GameGlobal.PlayerController.MovementEnabled = true;
+                                        GameGlobal.PlayerController.MovementMode = PlayerController.MovementModes.Normal;
                                         GameGlobal.PlayerController.Kinetic = false;
                                         CameraController.Instance.Easing = 0.1f;
                                         CameraController.Instance.MaxStep = 1000;
