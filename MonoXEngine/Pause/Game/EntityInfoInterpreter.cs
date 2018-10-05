@@ -45,6 +45,16 @@ namespace MyGame
                         sprite.LoadTexture("Graphics/WoodenBox");
                     });
                     entity.AddComponent(new MoveableObject());
+                    if (data.GetString("id") != null)
+                    {
+                        entity.Data.Add("PO_ID", data.GetString("id"));
+                        string poidposstr = GameData.Get("PO_ID:" + entity.Data["PO_ID"] + "/Position");
+                        if (poidposstr != null)
+                        {
+                            string[] poidpos = poidposstr.Split(',');
+                            entity.Position = new Vector2((float)Convert.ToDouble(poidpos[0]), (int)Convert.ToDouble(poidpos[1]));
+                        }
+                    }
                 });
             }
             else if (entityInfo.Name == "MovablePlatform")

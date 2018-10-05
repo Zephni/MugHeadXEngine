@@ -150,7 +150,7 @@ namespace MugHeadXEngine.EntityComponents
             {
                 string[] pPosData = GameData.Get("Player/Position").Split(',');
 
-                Entity.Position = new Vector2(pPosData[0].ToInt() + 8, pPosData[1].ToInt());
+                Entity.Position = new Vector2(pPosData[0].ToFloat() + 0, pPosData[1].ToFloat());
 
                 StaticCoroutines.CoroutineHelper.WaitRun(0.1f, () => {
                     for (int i = 0; i < 17; i++)
