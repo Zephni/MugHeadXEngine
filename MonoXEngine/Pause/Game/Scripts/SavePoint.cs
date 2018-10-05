@@ -88,7 +88,7 @@ namespace MyGame
         public void Save(Vector2 pos)
         {
             Saving = true;
-            GameGlobal.Player.GetComponent<PlayerController>().MovementEnabled = false;
+            GameGlobal.PlayerController.MovementEnabled = false;
 
             if(GameData.Get("SavePoint/First") == null)
             {
@@ -117,7 +117,7 @@ namespace MyGame
                         }
 
                         messageBox.Destroy();
-                        GameGlobal.Player.GetComponent<PlayerController>().MovementEnabled = true;
+                        GameGlobal.PlayerController.MovementEnabled = true;
                         Saving = false;
                     });
                 });

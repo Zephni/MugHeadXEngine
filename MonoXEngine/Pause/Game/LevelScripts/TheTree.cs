@@ -51,9 +51,9 @@ namespace MyGame
                 GameGlobal.Fader.RunFunction("Resume");
                 GameGlobal.Fader.RunFunction("FadeIn");
             });
-            
-            GameGlobal.Player.GetComponent<PlayerController>().MovementEnabled = false;
-            GameGlobal.Player.GetComponent<PlayerController>().Kinetic = true;
+
+            GameGlobal.PlayerController.MovementEnabled = false;
+            GameGlobal.PlayerController.Kinetic = true;
             GameGlobal.PlayerGraphic.Visible = false;
 
             // Camera pan down
@@ -148,17 +148,17 @@ namespace MyGame
                                     GameMethods.ShowMessages(new List<MessageBox>() {
                                         new MessageBox("Pause", "OUCH!", GameGlobal.Player.Position + new Vector2(0, -32)),
                                     }, null, () => {
-                                        
-                                        GameGlobal.Player.GetComponent<PlayerController>().MovementEnabled = true;
-                                        GameGlobal.Player.GetComponent<PlayerController>().Kinetic = false;
+
+                                        GameGlobal.PlayerController.MovementEnabled = true;
+                                        GameGlobal.PlayerController.Kinetic = false;
                                         CameraController.Instance.Easing = 0.1f;
                                         CameraController.Instance.MaxStep = 1000;
                                         CameraController.Instance.Target = GameGlobal.Player;
                                         camePos.Destroy();
 
                                         GameGlobal.PlayerGraphic.RunAnimation("Stand");
-                                        GameGlobal.Player.GetComponent<PlayerController>().Direction = 1;
-                                        GameGlobal.Player.GetComponent<PlayerController>().IsGrounded = true;
+                                        GameGlobal.PlayerController.Direction = 1;
+                                        GameGlobal.PlayerController.IsGrounded = true;
 
                                         GameData.Set("Levels/TheTree/Intro", "True");
 

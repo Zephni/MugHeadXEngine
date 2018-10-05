@@ -71,8 +71,8 @@ namespace MonoXEngine
             else
             {
                 // PreferedBackBuffer (this messes up window resizing atm)
-                //Graphics.PreferredBackBufferWidth = Global.MainSettings.Get<int>("Viewport", "WindowSizeX");
-                //Graphics.PreferredBackBufferHeight = Global.MainSettings.Get<int>("Viewport", "WindowSizeY");
+                Graphics.PreferredBackBufferWidth = Global.MainSettings.Get<int>("Viewport", "WindowSizeX");
+                Graphics.PreferredBackBufferHeight = Global.MainSettings.Get<int>("Viewport", "WindowSizeY");
             }
         }
 

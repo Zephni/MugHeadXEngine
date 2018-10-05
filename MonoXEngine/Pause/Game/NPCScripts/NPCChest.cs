@@ -47,7 +47,7 @@ namespace MyGame
                 obj.GetComponent<Sprite>().RunAnimation("Opening", false);
                 GameData.Set("NPCChest/" + obj.Data["id"] + "/" + "open", "true");
 
-                GameGlobal.Player.GetComponent<PlayerController>().MovementMode = PlayerController.MovementModes.None;
+                GameGlobal.PlayerController.MovementMode = PlayerController.MovementModes.None;
 
                 StaticCoroutines.CoroutineHelper.WaitRun(1, () => {
                     GameMethods.ShowMessages(new List<MessageBox>() {
@@ -59,7 +59,7 @@ namespace MyGame
                             new MessageBox("Pause", "|.|.|.| I wasn't expecting that.", new Vector2(GameGlobal.Player.Position.X, GameGlobal.Player.Position.Y - 20))
                         }, null, () => {
                             StaticCoroutines.CoroutineHelper.WaitRun(1, () => {
-                                GameGlobal.Player.GetComponent<PlayerController>().MovementMode = PlayerController.MovementModes.Normal;
+                                GameGlobal.PlayerController.MovementMode = PlayerController.MovementModes.Normal;
                                 GameData.Set("NPCChest/" + obj.Data["id"] + "/" + "open", "false");
                                 GameData.Set("NPCChest/" + obj.Data["id"] + "/" + "script", "2");
                                 obj.GetComponent<Sprite>().RunAnimation("Closing", false);

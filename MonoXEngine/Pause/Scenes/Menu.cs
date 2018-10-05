@@ -100,8 +100,8 @@ namespace MyGame.Scenes
                     }
                     else if (result == "options")
                     {
-                        Option fullscreenOption = new Option("fullscreen", "FULL SCREEN: " + ((MonoXEngineGame.Instance.Graphics.IsFullScreen) ? "YES" : "NO"), new Vector2(0, 0));
-                        Option muteOption = new Option("mute", "MUTE: " + ((Global.AudioController.MasterVolume == 0) ? "YES" : "NO"), new Vector2(0, 16));
+                        Option fullscreenOption = new Option("fullscreen", "FULL SCREEN: " + ((MonoXEngineGame.Instance.Graphics.IsFullScreen) ? "YES" : "NO "), new Vector2(0, 0));
+                        Option muteOption = new Option("mute", "MUTE: " + ((Global.AudioController.MasterVolume == 0) ? "YES" : "NO "), new Vector2(0, 16));
 
                         GameMethods.ShowOptionSelector(
                             new Vector2(-66, -70),

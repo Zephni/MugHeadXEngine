@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoXEngine;
 using MonoXEngine.EntityComponents;
+using MugHeadXEngine.EntityComponents;
 using StaticCoroutines;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace MyGame
         public static Entity Player;
         public static Entity PlayerGraphicEntity;
         public static Sprite PlayerGraphic { get { return GameGlobal.PlayerGraphicEntity.GetComponent<Sprite>(); } }
+        public static PlayerController PlayerController;
 
         public static float TimeLoop = 0;
 

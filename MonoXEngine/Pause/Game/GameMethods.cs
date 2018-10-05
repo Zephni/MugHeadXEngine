@@ -120,7 +120,7 @@ namespace MyGame
 
                 if(DisablePlayerMovement != null)
                 {
-                    GameGlobal.Player.GetComponent<PlayerController>().MovementMode = (DisablePlayerMovement == true) ? PlayerController.MovementModes.None : PlayerController.MovementModes.Normal;
+                    GameGlobal.PlayerController.MovementMode = (DisablePlayerMovement == true) ? PlayerController.MovementModes.None : PlayerController.MovementModes.Normal;
                 }
 
                 CurrentMessage.Build(() => {
@@ -134,7 +134,7 @@ namespace MyGame
                 action?.Invoke();
 
                 if (DisablePlayerMovement == true)
-                    GameGlobal.Player.GetComponent<PlayerController>().MovementMode = PlayerController.MovementModes.Normal;
+                    GameGlobal.PlayerController.MovementMode = PlayerController.MovementModes.Normal;
             }
         }
 
