@@ -37,14 +37,16 @@ namespace MyGame
                         GameData.Set("Tips/UpToInteract", "1");
                         Texture2D texture2D = GameMethods.GetInputIcon(InputManager.Input.Up, Global.InputManager.CurrentInputType);
                         GameMethods.DisplayInputIcon(texture2D, new Vector2(119 * 16 + 8, 57 * 16 + 2), () => { return false; });
-                        GameMethods.DisplayInputIcon(texture2D, Entity.Find("EarthRock").Position + new Vector2(-8, 32 + 2), () => { return false; });
+                        GameMethods.DisplayInputIcon(texture2D, Entity.Find("EarthRock").Position + new Vector2(-8, 32 + 2), () => { return tempData.ContainsKey("UpArrow"); });
                     }
                 }
              );
         }
 
+        private static Dictionary<string, string> tempData = new Dictionary<string, string>();
         public static void Talk(Entity obj)
         {
+            tempData.Add("UpArrow", "true");
             GameMethods.ShowMessages(new List<MessageBox>() {
                     new MessageBox("Ziggy", "I can't believe you figured it out!", obj.Position + new Vector2(0, -84)),
                     new MessageBox("Ziggy", ".|.|. Well done!", obj.Position + new Vector2(0, -84))
@@ -59,6 +61,7 @@ namespace MyGame
                     StaticCoroutines.CoroutineHelper.RunOverX(3, 64, t => {
                         temp.Position += new Vector2(0, 1f);
                     }, () => {
+                        obj.Destroy();
                         GameData.Set("EarthRock/First", "2");
                         temp.Destroy();
                         GameGlobal.PlayerController.MovementEnabled = true;

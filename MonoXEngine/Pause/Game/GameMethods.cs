@@ -33,7 +33,7 @@ namespace MyGame
                     sprite.Texture2D = texture2D;
                 });
 
-                float minOpacity = 0.6f;
+                float minOpacity = 0.3f;
                 float maxOpacity = 1f;
 
                 StaticCoroutines.CoroutineHelper.RunUntil(() => { return until(); }, () => {
