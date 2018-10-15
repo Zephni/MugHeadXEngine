@@ -174,12 +174,10 @@ namespace MyGame
             else if (entityInfo.Name == "InteractScript")
             {
                 ZInterpreter data = new ZInterpreter(entityInfo.Data);
-
+                
                 new Entity(entity => {
                     entity.Name = "InteractScript";
                     entity.LayerName = "Main";
-                    entity.Collider = Entity.CollisionType.Pixel;
-                    entity.Trigger = Entity.TriggerTypes.NonSolid;
 
                     entity.Data.Add("Script", data.GetString("script"));
 
@@ -189,6 +187,8 @@ namespace MyGame
                         d.BuildRectangle(new Point(entityInfo.Size.X * 16, entityInfo.Size.Y * 16), Color.Blue);
                         d.Visible = false;
                     });
+
+                    entity.AddComponent(new Collider()).Run<Collider>(c => { c.TriggerType = Collider.TriggerTypes.NonSolid; c.ColliderType = Collider.ColliderTypes.Box; });
 
                     if (data.HasKey("autoscript"))
                     {
@@ -208,8 +208,6 @@ namespace MyGame
                 new Entity(entity => {
                     entity.Name = "TouchScript";
                     entity.LayerName = "Main";
-                    entity.Collider = Entity.CollisionType.Pixel;
-                    entity.Trigger = Entity.TriggerTypes.NonSolid;
 
                     entity.Data.Add("Script", data.GetString("script"));
 
@@ -219,6 +217,8 @@ namespace MyGame
                         d.BuildRectangle(new Point(entityInfo.Size.X * 16, entityInfo.Size.Y * 16), Color.Blue);
                         d.Visible = false;
                     });
+
+                    entity.AddComponent(new Collider()).Run<Collider>(c => { c.TriggerType = Collider.TriggerTypes.NonSolid; c.ColliderType = Collider.ColliderTypes.Box; });
                 });
             }
             else if (entityInfo.Name == "Ambience")
@@ -268,8 +268,6 @@ namespace MyGame
                 new Entity(entity => {
                     entity.Name = "Chest";
                     entity.LayerName = "Main";
-                    entity.Trigger = Entity.TriggerTypes.NonSolid;
-                    entity.Collider = Entity.CollisionType.Pixel;
                     entity.SortingLayer = GameGlobal.Player.SortingLayer - 1;
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
                     entity.AddComponent(new Sprite()).Run<Sprite>(d => {
@@ -278,6 +276,8 @@ namespace MyGame
                         d.AddAnimation(new Animation("Opening", 0.1f, new Point(32, 32), new Point(1, 0), new Point(2, 0), new Point(3, 0), new Point(4, 0)));
                         d.RunAnimation("Closed");
                     });
+
+                    entity.AddComponent(new Collider()).Run<Collider>(c => { c.TriggerType = Collider.TriggerTypes.NonSolid; c.ColliderType = Collider.ColliderTypes.Box; });
                 });
             }
             else if (entityInfo.Name == "NPC")
@@ -287,14 +287,14 @@ namespace MyGame
                 new Entity(entity => {
                     entity.Name = "NPC";
                     entity.LayerName = "Main";
-                    entity.Trigger = Entity.TriggerTypes.NonSolid;
-                    entity.Collider = Entity.CollisionType.Pixel;
                     entity.SortingLayer = GameGlobal.Player.SortingLayer;
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
                     entity.Origin = Vector2.Zero;
                     entity.AddComponent(new Drawable()).Run<Drawable>(d => {
                         d.BuildRectangle(new Point(entityInfo.Size.X * 16, entityInfo.Size.Y * 16), Color.CornflowerBlue);
                     });
+
+                    entity.AddComponent(new Collider()).Run<Collider>(c => { c.TriggerType = Collider.TriggerTypes.NonSolid; c.ColliderType = Collider.ColliderTypes.Box; });
                 });
             }
             else if (entityInfo.Name == "Water")
@@ -304,8 +304,6 @@ namespace MyGame
                 new Entity(entity => {
                     entity.Name = "Water";
                     entity.LayerName = "Main";
-                    entity.Trigger = Entity.TriggerTypes.NonSolid;
-                    entity.Collider = Entity.CollisionType.Pixel;
                     entity.SortingLayer = 4;
                     entity.Opacity = 1f;
                     entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
@@ -341,6 +339,8 @@ namespace MyGame
                         });
                         /* /Animate water */
                     });
+
+                    entity.AddComponent(new Collider()).Run<Collider>(c => { c.TriggerType = Collider.TriggerTypes.NonSolid; c.ColliderType = Collider.ColliderTypes.Box; });
                 });
             }
             else if (entityInfo.Name == "Background")
@@ -396,8 +396,6 @@ namespace MyGame
                 new Entity(entity => {
                     entity.Name = "AutoDoor";
                     entity.LayerName = "Main";
-                    entity.Collider = Entity.CollisionType.Pixel;
-                    entity.Trigger = Entity.TriggerTypes.NonSolid;
 
                     ZInterpreter data = new ZInterpreter(entityInfo.Data);
                     entity.Data.Add("Level", data.GetString("level"));
@@ -409,6 +407,8 @@ namespace MyGame
                         d.BuildRectangle(new Point(entityInfo.Size.X * 16, entityInfo.Size.Y * 16), Color.Blue);
                         d.Visible = false;
                     });
+
+                    entity.AddComponent(new Collider()).Run<Collider>(c => { c.TriggerType = Collider.TriggerTypes.NonSolid; c.ColliderType = Collider.ColliderTypes.Box; });
                 });
             }
             else if (entityInfo.Name == "Door")
@@ -416,8 +416,6 @@ namespace MyGame
                 new Entity(entity => {
                     entity.Name = "Door";
                     entity.LayerName = "Main";
-                    entity.Collider = Entity.CollisionType.Pixel;
-                    entity.Trigger = Entity.TriggerTypes.NonSolid;
 
                     ZInterpreter data = new ZInterpreter(entityInfo.Data);
                     entity.Data.Add("Level", data.GetString("level"));
@@ -429,6 +427,8 @@ namespace MyGame
                         d.BuildRectangle(new Point(entityInfo.Size.X * 16, entityInfo.Size.Y * 16), Color.Blue);
                         d.Visible = false;
                     });
+
+                    entity.AddComponent(new Collider()).Run<Collider>(c => { c.TriggerType = Collider.TriggerTypes.NonSolid; c.ColliderType = Collider.ColliderTypes.Box; });
                 });
             }
             else if (entityInfo.Name == "Graphic")
@@ -439,9 +439,43 @@ namespace MyGame
                     entity.Name = "Graphic";
                     entity.LayerName = "Main";
                     entity.SortingLayer = (data.HasKey("sortinglayer")) ? data.GetInt("sortinglayer") : 2;
-                    entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
-                    
-                    if(data.HasKey("id"))
+
+                    entity.Position = (entityInfo.Position * 16);
+
+                    if (data.HasKey("origin"))
+                    {
+                        var origin = data.GetFloatArr("origin");
+                        entity.Origin = new Vector2(origin[0], origin[1]);
+                        if (entity.Origin.X == 1) entity.Position.X += (16 * entity.Origin.X);
+                        if (entity.Origin.Y == 1) entity.Position.Y += (16 * entity.Origin.Y);
+                    }
+
+                    if(data.HasKey("collider"))
+                    {
+                        entity.AddComponent(new Collider());
+
+                        if (data.GetString("collider").ToLower() == "pixel")
+                        {
+                            entity.GetComponent<Collider>().ColliderType = Collider.ColliderTypes.Pixel;
+                        }
+                        else if(data.GetString("collider").ToLower() == "box")
+                        {
+                            if (data.HasKey("boxrect"))
+                            {
+                                int[] boxrect = data.GetIntArr("boxrect");
+                                entity.GetComponent<Collider>().ColliderType = Collider.ColliderTypes.Box;
+                                entity.GetComponent<Collider>().Offset = new Offset(boxrect[0], boxrect[1], boxrect[2], boxrect[3]);
+                            }
+                        }
+                    }
+
+                    if (data.HasKey("offset"))
+                    {
+                        var offset = data.GetFloatArr("offset");
+                        entity.Position += new Vector2(offset[0], offset[1]);
+                    }
+
+                    if (data.HasKey("id"))
                         entity.ID = data.GetString("id");
 
                     entity.AddComponent(new Sprite()).Run<Sprite>(d => {
@@ -472,10 +506,8 @@ namespace MyGame
             else if(entityInfo.Name == "CameraLock")
             {
                 new Entity(entity => {
-                    entity.Trigger = Entity.TriggerTypes.NonSolid;
                     entity.Name = "CameraLock";
                     entity.LayerName = "Main";
-                    entity.Collider = Entity.CollisionType.Pixel;
                     entity.Data.Add("Type", entityInfo.Data);
                     entity.SortingLayer = GameGlobal.Player.SortingLayer;
                     entity.Opacity = 0;
@@ -483,6 +515,8 @@ namespace MyGame
                         d.BuildRectangle(new Point(entityInfo.Size.X * 16, entityInfo.Size.Y * 16), Color.Red);
                         entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
                     });
+
+                    entity.AddComponent(new Collider()).Run<Collider>(c => { c.TriggerType = Collider.TriggerTypes.NonSolid; c.ColliderType = Collider.ColliderTypes.Box; });
                 });
             }
         }

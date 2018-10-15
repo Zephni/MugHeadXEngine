@@ -18,8 +18,11 @@ namespace MonoXEngine
         public Vector2 TextureSize;
         public float Rotation;
         public Dictionary<string, string> Data = new Dictionary<string, string>();
-        public bool CheckPixels = true;
         public string ID = null;
+        public int SortingLayer = 0;
+
+        // Temp
+        public bool IsPlatform = false;
 
         public static Entity Find(string id)
         {
@@ -27,31 +30,6 @@ namespace MonoXEngine
         }
 
         private Dictionary<string, Action<Entity, Action<Entity>>> Functions = new Dictionary<string, Action<Entity, Action<Entity>>>();
-
-        public enum TriggerTypes
-        {
-            None,
-            NonSolid,
-            Solid
-        }
-
-        public TriggerTypes Trigger = TriggerTypes.None;
-        public Action<Entity> CollidedWithTrigger;
-        public Action<Entity> CollidingWithTrigger;
-        public Action<Entity> UnCollidedWithTrigger;
-
-        public int SortingLayer;
-
-        public Rectangle BoxColliderRect;
-
-        public enum CollisionType
-        {
-            None,
-            Box,
-            Pixel,
-            Platform
-        }
-        public CollisionType Collider = CollisionType.None;
 
         public Rectangle BoundingBox
         {

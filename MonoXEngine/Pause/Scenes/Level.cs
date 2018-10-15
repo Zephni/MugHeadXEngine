@@ -87,7 +87,7 @@ namespace MyGame.Scenes
 
             // Player entity
             GameGlobal.Player = new Entity();
-            GameGlobal.Player.AddComponent(new PlayerController(new MainCollider()));
+            GameGlobal.Player.AddComponent(new PlayerController());
 
             Global.AudioController.MusicSetThisFrame = false;
 
@@ -107,11 +107,14 @@ namespace MyGame.Scenes
 
                 // Map collision
                 foreach (var tgroup in tileMap.TileGroupEntities)
+                {
                     if (tgroup.SortingLayer == GameGlobal.Player.SortingLayer)
-                        tgroup.Collider = Entity.CollisionType.Pixel;
-                    else if (tgroup.SortingLayer == GameGlobal.Player.SortingLayer-1)
-                        tgroup.Collider = Entity.CollisionType.Platform;
+                        tgroup.AddComponent(new Collider()).Run<Collider>(c => { c.ColliderType = Collider.ColliderTypes.Pixel; });
 
+                    //if (tgroup.SortingLayer == GameGlobal.Player.SortingLayer - 1)
+                    //    tgroup.IsPlatform = true;
+                }
+                    
                 // Entities
                 new EntityInfoInterpreter(entities);
             });

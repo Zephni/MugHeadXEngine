@@ -34,9 +34,7 @@ namespace MyGame
         public override void Start()
         {
             Entity.Name = "MovablePlatform";
-            Entity.Trigger = Entity.TriggerTypes.Solid;
-            Entity.Collider = Entity.CollisionType.Box;
-            Entity.BoxColliderRect = new Rectangle(new Point(0, 0), Entity.BoundingBox.Size);
+            Entity.AddComponent(new Collider()).Run<Collider>(c => { c.TriggerType = Collider.TriggerTypes.Solid; c.ColliderType = Collider.ColliderTypes.Box; });
         }
 
         public override void Update()

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Pause/Content/Entities/Switch1.png</SourceFile>
-  <SourceTime>2018-10-06T12:42:19.0980197+01:00</SourceTime>
-  <DestFile>C:/Users/Zephni/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Content/bin/Windows/Entities/Switch1.xnb</DestFile>
-  <DestTime>2018-10-06T12:53:47.9713958+01:00</DestTime>
+  <SourceFile>C:/Users/craig.dennis/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Pause/Content/Entities/Switch1.png</SourceFile>
+  <SourceTime>2018-10-05T17:00:18.5564082+01:00</SourceTime>
+  <DestFile>C:/Users/craig.dennis/Documents/Visual Studio 2017/Projects/MugHeadXEngine/MonoXEngine/Content/bin/Windows/Entities/Switch1.xnb</DestFile>
+  <DestTime>2018-10-12T15:36:22.0683894+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T15:05:36+00:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

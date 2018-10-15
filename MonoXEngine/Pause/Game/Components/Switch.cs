@@ -14,7 +14,7 @@ namespace MyGame
     public class Switch : EntityComponent
     {
         Sprite Sprite;
-        ZInterpreter Data;
+        public ZInterpreter Data;
         EntityInfo EntityInfo;
 
         public Switch(EntityInfo entityInfo)
@@ -29,13 +29,14 @@ namespace MyGame
             Entity.LayerName = "Main";
             Entity.SortingLayer = GameGlobal.PlayerGraphicEntity.SortingLayer - 1;
             Entity.Position = (EntityInfo.Position * 16) + (EntityInfo.Size.ToVector2() / 2) * 16;
-            Entity.Trigger = Entity.TriggerTypes.NonSolid;
-            Entity.Collider = Entity.CollisionType.Pixel;
+            Entity.AddComponent(new Collider()).Run<Collider>(c => { c.TriggerType = Collider.TriggerTypes.NonSolid; c.ColliderType = Collider.ColliderTypes.Box; });
 
             if (Data.HasKey("id"))
                 Entity.Data.Add("id", Data.GetString("id"));
 
             Entity.Data.Add("value", (Data.HasKey("value") ? Data.GetString("value") : "0"));
+
+            Entity.Data.Add("enabled", "true");
 
             Entity.AddComponent(new Sprite()).Run<Sprite>(sprite => {
                 Sprite = sprite;

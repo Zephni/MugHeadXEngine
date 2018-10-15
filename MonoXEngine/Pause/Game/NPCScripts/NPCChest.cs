@@ -19,8 +19,7 @@ namespace MyGame
             new Entity(entity => {
                 entity.Name = "NPCChest";
                 entity.LayerName = "Main";
-                entity.Trigger = Entity.TriggerTypes.NonSolid;
-                entity.Collider = Entity.CollisionType.Pixel;
+
                 entity.SortingLayer = GameGlobal.PlayerGraphicEntity.SortingLayer - 1;
                 entity.Position = (entityInfo.Position * 16) + (entityInfo.Size.ToVector2() / 2) * 16;
                 entity.Data.Add("id", data.GetString("id"));
@@ -36,6 +35,8 @@ namespace MyGame
                     else
                         d.RunAnimation("Closed");
                 });
+
+                entity.AddComponent(new Collider()).Run<Collider>(c => { c.TriggerType = Collider.TriggerTypes.NonSolid; c.ColliderType = Collider.ColliderTypes.Box; });
             });
         }
 

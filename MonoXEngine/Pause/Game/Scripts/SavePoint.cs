@@ -20,7 +20,7 @@ namespace MyGame
         public static bool Saving = false;
 
         Entity Entity;
-        MainCollider Collider;
+        Collider Collider;
 
         public SavePoint(EntityInfo entityInfo)
         {
@@ -28,20 +28,21 @@ namespace MyGame
                 entity.Name = "SavePoint";
                 entity.Position = entityInfo.Position * 16;
                 entity.LayerName = "Main";
-                entity.Trigger = Entity.TriggerTypes.NonSolid;
+                
                 //entity.SortingLayer = GameGlobal.PlayerGraphicEntity.SortingLayer-1;
                 entity.Origin = Vector2.Zero;
                 entity.AddComponent(new Sprite()).Run<Sprite>(sprite => {
                     sprite.LoadTexture("Entities/SavePoint");
                 });
 
-                entity.AddComponent(new MainCollider()).Run<MainCollider>(collider => { Collider = collider;});
+                entity.AddComponent(new Collider()).Run<Collider>(collider => { Collider = collider; Collider.TriggerType = Collider.TriggerTypes.NonSolid; });
 
                 StaticCoroutines.CoroutineHelper.Always(() => {
-                    Collider.Colliding(new Point(0, 0));
+                    Collider.CheckOffset(new Offset());
                 });
             });
 
+            /*
             Entity.CollidingWithTrigger = obj => {
                 if (Saving)
                     return;
@@ -49,6 +50,7 @@ namespace MyGame
                 if (obj.Name == "Player" && Global.InputManager.Pressed(InputManager.Input.Up))
                     Save(Entity.Position + new Vector2(0, -32));
             };
+            */
 
             Level.RenderBlender.DrawableTextures.AddRange(new List<DrawableTexture>(){
                 new RenderBlender.DrawableTexture("alphamask2"){

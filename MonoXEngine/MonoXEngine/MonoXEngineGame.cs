@@ -71,8 +71,8 @@ namespace MonoXEngine
             else
             {
                 // PreferedBackBuffer (this messes up window resizing atm)
-                //Graphics.PreferredBackBufferWidth = Global.MainSettings.Get<int>("Viewport", "WindowSizeX");
-                //Graphics.PreferredBackBufferHeight = Global.MainSettings.Get<int>("Viewport", "WindowSizeY");
+                Graphics.PreferredBackBufferWidth = Global.MainSettings.Get<int>("Viewport", "WindowSizeX");
+                Graphics.PreferredBackBufferHeight = Global.MainSettings.Get<int>("Viewport", "WindowSizeY");
             }
         }
 
@@ -142,10 +142,6 @@ namespace MonoXEngine
                 GraphicsDevice.Clear(Color.Black);
                 foreach (KeyValuePair<string, SpriteBatchLayer> SpriteBatchLayer in Global.SpriteBatchLayers)
                 {
-                    // Unstable sort (unused)
-                    /*List<Entity> Entities = Global.Entities.FindAll(e => e.LayerName == SpriteBatchLayer.Key);
-                    Entities.Sort((v1, v2) => { return v1.SortingLayer - v2.SortingLayer; });*/
-
                     // Stable sort (to prevent object changing "layer" within same sorting layer)
                     List<Entity> Entities = Global.Entities.FindAll(e => e.LayerName == SpriteBatchLayer.Key);
                     Entities = Entities.OrderBy(x => x.SortingLayer).ToList();

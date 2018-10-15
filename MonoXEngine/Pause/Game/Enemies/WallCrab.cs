@@ -42,9 +42,9 @@ namespace MyGame.Enemies
                 entity.Name = "Enemy";
                 entity.LayerName = "Main";
                 entity.SortingLayer = 100;
-                entity.Collider = Entity.CollisionType.Pixel;
-                entity.Trigger = Entity.TriggerTypes.NonSolid;
                 entity.Data.Add("damage", Damage.ToString());
+
+                entity.AddComponent(new Collider()).Run<Collider>(c => { c.ColliderType = Collider.ColliderTypes.Box; c.TriggerType = Collider.TriggerTypes.NonSolid; });
 
                 entity.AddComponent(new Sprite()).Run<Sprite>(sprite => {
                     sprite.BuildRectangle(new Point(10, 10), Color.White);
@@ -69,8 +69,8 @@ namespace MyGame.Enemies
                 entity.SortingLayer = 6;
                 entity.Position = (entityInfo.Position * 16);
                 entity.Origin = new Vector2(0.5f, 1f);
-                entity.Collider = Entity.CollisionType.Pixel;
-                entity.Trigger = Entity.TriggerTypes.NonSolid;
+
+                entity.AddComponent(new Collider()).Run<Collider>(c => { c.ColliderType = Collider.ColliderTypes.Box; c.TriggerType = Collider.TriggerTypes.NonSolid; });
 
                 if (Planted == "top")
                 {
@@ -90,13 +90,13 @@ namespace MyGame.Enemies
                     sprite.RunAnimation("walking");
                 });
 
-                entity.AddComponent(new MainCollider()).Run<MainCollider>(pc => { Collider = pc; });
+                entity.AddComponent(new Collider()).Run<Collider>(pc => { Collider = pc; });
             });
         }
         #endregion
 
         #region Properties
-        MainCollider Collider;
+        Collider Collider;
         Sprite Sprite;
         string Direction = "none";
         string Planted = "top";
@@ -111,17 +111,17 @@ namespace MyGame.Enemies
             // Check positioning and direction
             if (Direction == "left")
             {
-                if (Planted == "top" && !Collider.Colliding(new Point(-12, 1))) ChangePlanted("left");
-                else if (Planted == "bottom" && !Collider.Colliding(new Point(12, -1))) ChangePlanted("right");
-                else if (Planted == "left" && !Collider.Colliding(new Point(1, 8))) ChangePlanted("bottom");
-                else if ((Planted == "right" && !Collider.Colliding(new Point(-1, -8)))) ChangePlanted("top");
+                if (Planted == "top" && !Collider.CheckOffset(new Offset(-12, 1))) ChangePlanted("left");
+                else if (Planted == "bottom" && !Collider.CheckOffset(new Offset(-12, 1))) ChangePlanted("right");
+                else if (Planted == "left" && !Collider.CheckOffset(new Offset(1, 8))) ChangePlanted("bottom");
+                else if ((Planted == "right" && !Collider.CheckOffset(new Offset(-1, -8)))) ChangePlanted("top");
             }
             else if (Direction == "right") // Needs copying from above in places
             {
-                if (Planted == "top" && !Collider.Colliding(new Point(12, 1))) ChangePlanted("right");
-                else if (Planted == "bottom" && !Collider.Colliding(new Point(-12, -1))) ChangePlanted("left");
-                else if (Planted == "right" && !Collider.Colliding(new Point(-1, 8))) ChangePlanted("bottom");
-                else if (Planted == "left" && !Collider.Colliding(new Point(1, -8))) ChangePlanted("top");
+                if (Planted == "top" && !Collider.CheckOffset(new Offset(12, 1))) ChangePlanted("right");
+                else if (Planted == "bottom" && !Collider.CheckOffset(new Offset(-12, -1))) ChangePlanted("left");
+                else if (Planted == "right" && !Collider.CheckOffset(new Offset(-1, 8))) ChangePlanted("bottom");
+                else if (Planted == "left" && !Collider.CheckOffset(new Offset(1, -8))) ChangePlanted("top");
             }
 
             // Move

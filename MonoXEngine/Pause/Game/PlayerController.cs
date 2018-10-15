@@ -41,24 +41,18 @@ namespace MugHeadXEngine.EntityComponents
         public bool ObstructCrouching = true;
         public int Pushing = 0;
         public Entity PushingObject;
-        public MainCollider MainCollider;
 
         private MovementModes LastMovementMode = MovementModes.None;
         public MovementModes MovementMode = MovementModes.Normal;
 
-        BaseCollider passThru;
-
         List<Entity> PlayerCollidingTriggers = new List<Entity>();
 
-        public PlayerController(BaseCollider collider)
+        public PlayerController()
         {
-            passThru = collider;
-            MainCollider = (MainCollider)collider;
             GameGlobal.PlayerController = this;
 
             GameGlobal.PlayerGraphicEntity = new Entity(e => {
                 e.SortingLayer = 4;
-                e.CheckPixels = false;
                 e.AddComponent(new Sprite() { Texture2D = Global.Content.Load<Texture2D>("Entities/Pause") }).Run<Sprite>(s => {
                     s.Visible = true;
                     s.AddAnimation(new Animation("Stand", 0.2f, new Point(32, 32), "0,0".ToPointList()));
@@ -129,14 +123,13 @@ namespace MugHeadXEngine.EntityComponents
 
         public override void Start()
         {
+            Entity.AddComponent(new Collider()).Run<Collider>(c => { Collider = c; });
+
             Entity.Name = "Player";
             Entity.LayerName = "Main";
-            Entity.Trigger = Entity.TriggerTypes.NonSolid;
-            Entity.Collider = Entity.CollisionType.Pixel;
+            Collider.TriggerType = Collider.TriggerTypes.NonSolid;
+            Collider.ColliderType = Collider.ColliderTypes.Box;
 
-            this.Entity.AddComponent(passThru);
-            this.Collider = passThru;
-            passThru = null;
             ObstructCrouching = false;
 
             //
@@ -155,7 +148,7 @@ namespace MugHeadXEngine.EntityComponents
                 StaticCoroutines.CoroutineHelper.WaitRun(0.1f, () => {
                     for (int i = 0; i < 17; i++)
                     {
-                        if (MainCollider.Colliding(new Point(0, 1)))
+                        if (Collider.CheckOffset(new Offset(0, null, null, 1)))
                             Entity.Position.Y -= 1;
                         else
                             break;
@@ -167,12 +160,13 @@ namespace MugHeadXEngine.EntityComponents
             {
                 Direction = (GameData.Get("Player/Direction") == "1") ? 1 : -1;
             }
-
+            
             // New collides
-            Entity.CollidedWithTrigger = obj => {
+            Collider.CollidedWithTrigger = obj => {
                 if (obj.Name == "MovablePlatform")
                 {
-                    if(MainCollider.CollidingWith(new Rectangle(1, (int)Entity.Size.Y+1, (int)Entity.Size.X-2, 1), entity => entity.Name == "MovablePlatform").Count > 0)
+                    /*
+                    if(Collider.CollidingWith(new Rectangle(1, (int)Entity.Size.Y+1, (int)Entity.Size.X-2, 1), entity => entity.Name == "MovablePlatform").Count > 0)
                     {
                         float prev = obj.Position.X;
                         float cur = obj.Position.X;
@@ -184,7 +178,7 @@ namespace MugHeadXEngine.EntityComponents
                                 prev = obj.Position.X;
                             }
                         });
-                    }
+                    }*/
                 }
                 if (obj.Name == "CameraLock")
                 {
@@ -228,7 +222,7 @@ namespace MugHeadXEngine.EntityComponents
             };
 
             // Current collides
-            Entity.CollidingWithTrigger = obj => {
+            Collider.CollidingWithTrigger = obj => {
                 if (!MovementEnabled || MovementMode == MovementModes.None)
                     return;
 
@@ -241,23 +235,17 @@ namespace MugHeadXEngine.EntityComponents
                 {
                     if (Global.InputManager.Pressed(InputManager.Input.Up))
                     {
-                        MyGame.Switch _switch = obj.GetComponent<MyGame.Switch>();
-                        if(_switch.Entity.Data["value"] == "0")
-                            _switch.UpdateValue("1");
-                        else if (_switch.Entity.Data["value"] == "1")
-                            _switch.UpdateValue("0");
-
-                        string scriptKey = null;
-                        if (_switch.Entity.Data["value"] == "1" && _switch.Entity.Data.ContainsKey("onScript"))
-                            scriptKey = "onScript";
-                        else if (_switch.Entity.Data["value"] == "0" && _switch.Entity.Data.ContainsKey("onScript"))
-                            scriptKey = "offScript";
-
-                        if(scriptKey != null)
+                        if(obj.Data["enabled"] == "true")
                         {
-                            string[] script = obj.Data[scriptKey].Split('.');
-                            Type type = Type.GetType("MyGame." + script[0]);
-                            MethodInfo mi = type.GetMethod(script[1], BindingFlags.Static | BindingFlags.Public);
+                            MyGame.Switch _switch = obj.GetComponent<MyGame.Switch>();
+                            if (_switch.Entity.Data["value"] == "0")
+                                _switch.UpdateValue("1");
+                            else if (_switch.Entity.Data["value"] == "1")
+                                _switch.UpdateValue("0");
+
+                            Type type = Type.GetType("MyGame.SwitchScripts");
+                            string id = obj.Data["id"];
+                            MethodInfo mi = type.GetMethod(id, BindingFlags.Static | BindingFlags.Public);
                             mi.Invoke(null, new object[] { obj });
                         }
                     }
@@ -342,7 +330,7 @@ namespace MugHeadXEngine.EntityComponents
             };
 
             // New uncollides
-            Entity.UnCollidedWithTrigger = obj => {
+            Collider.UnCollidedWithTrigger = obj => {
                 if (!MovementEnabled)
                     return;
 
@@ -457,6 +445,14 @@ namespace MugHeadXEngine.EntityComponents
             }
             LastMovementMode = MovementMode;
 
+            // Temp
+            if (Global.InputManager.Held(InputManager.Input.Up))
+            {
+                MoveY = 0;
+                Entity.Position.Y -= 4;
+            }
+                
+
             if (MovementMode != MovementModes.None && MovementEnabled)
             {
                 // Direction
@@ -520,7 +516,7 @@ namespace MugHeadXEngine.EntityComponents
 
                 // Hanging
                 int HangingOffset = 3;
-                if (!IsGrounded && MoveY > 0 && MainCollider.Colliding(new Rectangle((Direction > 0) ? (int)Entity.Size.X + 1 : -1, HangingOffset, 1, 1)) && !MainCollider.Colliding(new Rectangle((Direction > 0) ? (int)Entity.Size.X + 1 : -1, HangingOffset-(int)MoveY-1, 1, 1)))
+                if (!IsGrounded && MoveY > 0 && Collider.CheckOffset(new Offset((Direction > 0) ? (int)Entity.Size.X + 1 : -1, HangingOffset, 1, 1)) && !Collider.CheckOffset(new Offset((Direction > 0) ? (int)Entity.Size.X + 1 : -1, HangingOffset-(int)MoveY-1, 1, 1)))
                 {
                     MovementMode = MovementModes.HangingEdge;
                     MoveX = 0;
@@ -557,9 +553,9 @@ namespace MugHeadXEngine.EntityComponents
                     }
                 }
 
-                if (IsGrounded && MovementEnabled && ((!ObstructCrouching && Global.InputManager.Held(InputManager.Input.Down)) || (IsGrounded && Collider.Colliding(new Rectangle(2, -10, (int)Entity.Size.X - 4, 1)))))
+                if (IsGrounded && MovementEnabled && ((!ObstructCrouching && Global.InputManager.Held(InputManager.Input.Down)) || (IsGrounded && Collider.CheckOffset(new Offset(2, -10, -4, 1)))))
                 {
-                    Crouching = true;
+                    //Crouching = true;
                 }
 
                 if (!Kinetic && Crouching)
@@ -590,7 +586,7 @@ namespace MugHeadXEngine.EntityComponents
                         GameGlobal.PlayerGraphic.RunAnimation("Stand");
                     }
 
-                    if (Crouching && !Global.InputManager.Held(InputManager.Input.Down) && !Collider.Colliding(new Point(0, -10)))
+                    if (Crouching && !Global.InputManager.Held(InputManager.Input.Down) && !Collider.CheckOffset(new Offset(0, -10)))
                     {
                         Crouching = false;
                         GameGlobal.PlayerGraphic.RunAnimation("Stand");
@@ -600,12 +596,13 @@ namespace MugHeadXEngine.EntityComponents
                     if (Pushing == 0)
                     {
                         PushingObject = null;
-                        List<Entity> movableObjects = MainCollider.CollidingWith(new Rectangle((Direction == 1) ? (int)Entity.Size.X + 1 : -1, 0, 1, (int)Entity.Size.Y), p => p.Name == "MovableObject");
-                        if (movableObjects.Count > 0 && IsGrounded)
+                        if (IsGrounded && Collider.OverlappingEntity(p => p.Name == "MovableObject"))
                         {
+                            Entity movableObject = Collider.OverlappingEntities.Find(p => p.Name == "MovableObject");
+
                             if (Global.InputManager.Pressed(InputManager.Input.Action2))
                             {
-                                PushingObject = movableObjects[0];
+                                PushingObject = movableObject;
                                 Pushing = Direction;
                                 MovementMode = MovementModes.Pushing;
                             }
@@ -633,18 +630,20 @@ namespace MugHeadXEngine.EntityComponents
                 int originalX = (int)Entity.Position.X;
                 Direction = Pushing;
 
+                Collider pushingObjectCollider = PushingObject.GetComponent<Collider>();
+
                 if (Pushing == 1)
                 {
-                    if (Global.InputManager.Held(InputManager.Input.Left) && !MainCollider.Colliding(new Rectangle(-1, -2, 1, (int)Entity.Size.Y - 2))) { Entity.Position.X -= 0.5f; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
-                    if (Global.InputManager.Held(InputManager.Input.Right) && !PushingObject.GetComponent<MainCollider>().Colliding(new Rectangle((int)PushingObject.Size.X + 2, -2, 1, (int)PushingObject.Size.Y - 2))) { Entity.Position.X += 0.5f; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
+                    if (Global.InputManager.Held(InputManager.Input.Left) && !Collider.CheckOffset(new Offset(-1, -2, 1, (int)Entity.Size.Y - 2))) { Entity.Position.X -= 0.5f; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
+                    if (Global.InputManager.Held(InputManager.Input.Right) && !pushingObjectCollider.CheckOffset(new Offset((int)PushingObject.Size.X + 2, -2, 1, (int)PushingObject.Size.Y - 2))) { Entity.Position.X += 0.5f; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
                 }
                 else if (Pushing == -1)
                 {
-                    if (Global.InputManager.Held(InputManager.Input.Left) && !PushingObject.GetComponent<MainCollider>().Colliding(new Rectangle(-2, -2, 1, (int)PushingObject.Size.Y - 2))) { Entity.Position.X -= 0.5f; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
-                    if (Global.InputManager.Held(InputManager.Input.Right) && !MainCollider.Colliding(new Rectangle((int)Entity.Size.X + 1, -2, 1, (int)Entity.Size.Y - 2))) { Entity.Position.X += 0.5f; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
+                    if (Global.InputManager.Held(InputManager.Input.Left) && !pushingObjectCollider.CheckOffset(new Offset(-2, -2, 1, (int)PushingObject.Size.Y - 2))) { Entity.Position.X -= 0.5f; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
+                    if (Global.InputManager.Held(InputManager.Input.Right) && !Collider.CheckOffset(new Offset((int)Entity.Size.X + 1, -2, 1, (int)Entity.Size.Y - 2))) { Entity.Position.X += 0.5f; PushingObject.Position.X = Entity.Position.X + ((Pushing == 1) ? 12 : -12); }
                 }
 
-                if(MainCollider.Colliding(new Point(0, 0)))
+                if (Collider.CheckOffset(new Offset(1, Collider.CheckArea.Height - 1, Collider.CheckArea.Width - 2, 1), p => p.Name != "MovableObject")) // Needs sorting
                 {
                     Entity.Position.Y -= 1;
                 }
@@ -654,8 +653,7 @@ namespace MugHeadXEngine.EntityComponents
 
                 GameGlobal.PlayerGraphic.Paused = (originalX == (int)Entity.Position.X);
 
-
-                if (Global.InputManager.Pressed(InputManager.Input.Action2) || !MainCollider.Colliding(new Rectangle((Direction > 0) ? (int)Entity.Size.X + 1 : -1, -2, 1, (int)Entity.Size.Y - 2)))
+                if (Global.InputManager.Pressed(InputManager.Input.Action2) || !PushingObject.GetComponent<MoveableObject>().IsGrounded)
                 {
                     Pushing = 0;
                     MovementMode = MovementModes.Normal;
@@ -691,7 +689,7 @@ namespace MugHeadXEngine.EntityComponents
                 }
             }
 
-            MainCollider.AddHeight = (Crouching) ? -12 : 0;
+            //MainCollider.AddHeight = (Crouching) ? -12 : 0;
 
             GameData.Set("Player/Direction", (Direction == -1) ? "-1" : "1");
 

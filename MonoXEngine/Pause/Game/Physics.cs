@@ -21,7 +21,7 @@ namespace MyGame
         public float MoveX;
         public float MoveY;
         public bool IsGrounded;
-        public BaseCollider Collider;
+        public Collider Collider;
         public bool UsePlatforms = true;
 
         public Physics()
@@ -77,17 +77,17 @@ namespace MyGame
                 // X move
                 for (int X = 0; X < Math.Abs(finalX); X++)
                 {
-                    if (Collider.Colliding(new Point((finalX > 0) ? 1 : -1, 0)))
+                    if (Collider.CheckOffset(new Offset((finalX > 0) ? 1 : -1, 0)))
                     {
                         // Upwards slope check
-                        if (IsGrounded && !Collider.Colliding(new Point((finalX > 0) ? 1 : -1, -1)))
+                        if (IsGrounded && !Collider.CheckOffset(new Offset((finalX > 0) ? 1 : -1, -1)))
                             this.Entity.Position.Y -= 1;
                         else
                             this.MoveX = 0;
                     }
 
                     // Downwards slope check
-                    if (IsGrounded && !Collider.Colliding(new Point((finalX > 0) ? 1 : -1, 1)) && !Collider.Colliding(new Point((finalX > 0) ? 1 : -1, 1), Entity.CollisionType.Platform))
+                    if (IsGrounded && !Collider.CheckOffset(new Offset((finalX > 0) ? 1 : -1, 1)) && !Collider.CheckOffset(new Offset((finalX > 0) ? 1 : -1, 1), p => p.IsPlatform))
                         this.Entity.Position.Y += 1;
 
                     if (this.MoveX != 0)
@@ -97,11 +97,11 @@ namespace MyGame
                 // Y move
                 for (int Y = 0; Y < Math.Abs(this.MoveY); Y++)
                 {
-                    if (Collider.Colliding(new Point(0, (MoveY > 0) ? 1 : -1)))
+                    if (Collider.CheckOffset(new Offset(0, (MoveY > 0) ? 1 : -1)))
                         this.MoveY = 0;
 
                     if(UsePlatforms && MoveY > 0) // Uses layer offset for platforms, can be turned off
-                        if (Collider.Colliding(new Point(0, 1), Entity.CollisionType.Platform) && !Collider.Colliding(new Point(0, 0), Entity.CollisionType.Platform))
+                        if (Collider.CheckOffset(new Offset(0, 1), p => p.IsPlatform) && !Collider.CheckOffset(new Offset(0, 0), p => p.IsPlatform))
                             this.MoveY = 0;
                             
 
@@ -110,11 +110,11 @@ namespace MyGame
                 }
 
                 // Fix for entity collisions
-                Collider.Colliding(new Point(0, 0));
+                Collider.CheckOffset(new Offset(0, 0));
 
                 // Check if grounded or too deep in ground
                 this.IsGrounded = false;
-                if (Collider.Colliding(new Point(0, 1)) || (UsePlatforms && Collider.Colliding(new Point(0, 1), Entity.CollisionType.Platform) && !Collider.Colliding(new Point(0, 0), Entity.CollisionType.Platform)))
+                if (Collider.CheckOffset(new Offset(0, 1)) || (UsePlatforms && Collider.CheckOffset(new Offset(0, 1), p => p.IsPlatform) && !Collider.CheckOffset(new Offset(0, 0), p => p.IsPlatform)))
                     this.IsGrounded = true;
             }
         }

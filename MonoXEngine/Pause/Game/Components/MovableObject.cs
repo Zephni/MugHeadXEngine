@@ -12,25 +12,28 @@ namespace MyGame
     public class MoveableObject : EntityComponent
     {
         public float Heavyness = 1f;
-        public MainCollider MainCollider;
+        public Collider Collider;
+
+        public bool IsGrounded
+        {
+            get
+            {
+                return Collider.CheckOffset(new Offset(0, (int)Entity.Size.Y +1, null, 2));
+            }
+        }
 
         public override void Start()
         {
             Entity.Name = "MovableObject";
-            Entity.Trigger = Entity.TriggerTypes.Solid;
-            Entity.Collider = Entity.CollisionType.Pixel;
-            Entity.BoxColliderRect = new Rectangle(new Point(0, 0), Entity.BoundingBox.Size);
-            Entity.AddComponent(new MainCollider()).Run<MainCollider>(mc => { MainCollider = mc; });
+            Entity.AddComponent(new Collider()).Run<Collider>(c => { Collider = c; c.TriggerType = Collider.TriggerTypes.Solid; c.ColliderType = Collider.ColliderTypes.Box; });
         }
 
         public override void Update()
         {
-            if (!MainCollider.Colliding(new Rectangle((int)Entity.Size.Y, 0, 0, 1)))
+            if (!Collider.CheckOffset(new Offset(0, null, null, 1)))
                 Entity.Position.Y += 2;
 
-            //while (MainCollider.Colliding(new Rectangle((int)Entity.Size.X + 1, 0, 1, (int)Entity.Size.Y - 2))) Entity.Position.X -= (1 - Heavyness);
-            //while (MainCollider.Colliding(new Rectangle(-1, 0, 1, (int)Entity.Size.Y - 2))) Entity.Position.X += (1 - Heavyness);
-            while (MainCollider.Colliding(new Rectangle(0, (int)Entity.Size.Y-1, 0, 1))) Entity.Position.Y--;
+            while (Collider.CheckOffset(new Offset(0, (int)Entity.Size.Y+1, null, 1))) Entity.Position.Y--;
 
             if (Entity.Data.ContainsKey("PO_ID"))
                 GameData.Set("PO_ID:" + Entity.Data["PO_ID"] + "/Position", Entity.Position.X.ToString() + "," + Entity.Position.Y.ToString());

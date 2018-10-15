@@ -41,7 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="MonoXEngine\EntityComponents\BaseCollider.cs" />
+    <Compile Include="Pause\Game\Components\Collider.cs" />
     <Compile Include="Pause\Game\Components\MovablePlatform.cs" />
     <Compile Include="Pause\Game\Components\Switch.cs" />
     <Compile Include="Pause\Game\Enemies\Spikes.cs" />
@@ -49,7 +49,6 @@
     <Compile Include="Pause\Game\LevelScripts\MysticCave.cs" />
     <Compile Include="Pause\Game\RenderBlender.cs" />
     <Compile Include="Pause\Game\Physics.cs" />
-    <Compile Include="Pause\Game\MainCollider.cs" />
     <Compile Include="MonoXEngine\AudioController.cs" />
     <Compile Include="MonoXEngine\Camera.cs" />
     <Compile Include="MonoXEngine\DataSet.cs" />
@@ -62,7 +61,6 @@
     <Compile Include="MonoXEngine\Extensions.cs" />
     <Compile Include="MonoXEngine\Global.cs" />
     <Compile Include="MonoXEngine\MonoXEngineGame.cs" />
-    <Compile Include="Pause\Game\Components\PlatformerController.cs" />
     <Compile Include="MonoXEngine\Cloner.cs" />
     <Compile Include="MonoXEngine\Structs\Animation.cs" />
     <Compile Include="MonoXEngine\ViewportTexture.cs" />

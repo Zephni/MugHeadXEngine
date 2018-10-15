@@ -41,9 +41,9 @@ namespace MyGame.Enemies
                 entity.SortingLayer = 6;
                 entity.Position = (entityInfo.Position * 16);
                 entity.Origin = new Vector2(0f, 0f);
-                entity.Collider = Entity.CollisionType.Box;
-                entity.BoxColliderRect = new Rectangle(0, 2, 10, 2);
-                entity.Trigger = Entity.TriggerTypes.NonSolid;
+
+                entity.AddComponent(new Collider()).Run<Collider>(c => { c.TriggerType = Collider.TriggerTypes.NonSolid; c.ColliderType = Collider.ColliderTypes.Box; });
+
                 entity.Data.Add("damage", Damage.ToString());
 
                 entity.AddComponent(new Sprite()).Run<Sprite>(sprite => {
